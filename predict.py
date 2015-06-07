@@ -11,6 +11,16 @@ from math import sqrt
 import pandas as pd
 import numpy as np
 
+logging.getLogger("requests").setLevel(logging.WARNING)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(process)d - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
 def predictWinners(predictions):
 	"""
 	Given a datafile with 4 columns:
@@ -24,7 +34,7 @@ def predictWinners(predictions):
 	#load data
 	#predictions = pd.read_csv(datafile)
 
-	print("Cleaning data!")
+	logger.info("Converting probabilities to 0s and 1s")
 
 	#group by game id
 	groupedByGame = predictions.groupby("gameId")
@@ -76,20 +86,14 @@ if __name__ == "__main__":
   				'dominationKills',
   				]
 
-  	print(train[features].shape)
-  	X_new = SelectKBest(f_regression).fit_transform(train[features], train['standing'])
- 	print X_new.shape
-
-	print("Building random forest!")  			
-  	randomForest = RandomForestClassifier(n_estimators=200, )
+	logger.info("Building random forest!")  			
+  	randomForest = RandomForestClassifier(n_estimators=1000, )
   	randomForest.fit(train[features], train['standing'])
   
   	#predictions = randomForest.predict(test[features])
   	#get the probability that the team wins and that it loses
   	predictions = randomForest.predict_proba(test[features])
-  	print(randomForest.classes_)
-  	print(predictions[0:15])
-
+  	
   	submission = pd.DataFrame({"id":test.index.values, 
   		"standing":[i[1] for i in predictions], 
   		"gameId":test['gameId'],
@@ -101,6 +105,6 @@ if __name__ == "__main__":
 
   	rms = sqrt(mean_squared_error(test['standing'], submission['standing']))
 
-  	print("RMSE: {0}".format(rms))
+  	logger.info("RMSE: {0}".format(rms))
 
   	submission.to_csv("submission.csv")

@@ -13,18 +13,21 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.INFO)
-
-filehndlr = logging.FileHandler("log.log")
-filehndlr.setLevel(logging.DEBUG)
-
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(process)d - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-filehndlr.setFormatter(formatter)
 
-logger.addHandler(ch)
-logger.addHandler(filehndlr)
+if 'ch' not in logger.handlers:
+    ch = logging.StreamHandler(sys.stdout)
+    ch.name ='ch'
+    ch.setLevel(logging.INFO)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
+if 'filehandler' not in logger.handlers:
+    filehndlr = logging.FileHandler("log.log")
+    filehndlr.name = 'filehandler'
+    filehndlr.setLevel(logging.DEBUG)
+    filehndlr.setFormatter(formatter)
+    logger.addHandler(filehndlr)
 
 logger.info('LIBRARY LOADED---------------------------------')
 

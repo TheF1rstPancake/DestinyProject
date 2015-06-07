@@ -6,7 +6,23 @@ import sqlite3
 import zipfile
 import StringIO
 import os
-NETWORKS = {"XBL":1, "PSN":2}                               #network names to values
+import logging
+import sys
+
+logging.getLogger("requests").setLevel(logging.WARNING)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+
+filehndlr = logging.FileHandler("log.log")
+filehndlr.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(process)d - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+filehndlr.setFormatter(formatter)
 
 #open configuration from yaml file
 #user needs to create this file and add the following three fields
@@ -18,6 +34,7 @@ with open("config.yaml", 'r') as f:
         CONFIG = yaml.load(f)
 
 HEADERS = {"X-API-Key":CONFIG['API_KEY']}  #headers we need to add to the request
+NETWORKS = {"XBL":1, "PSN":2}              #network names to values
 
 
 CLASS_HASH = {                                              #the hash for class types
@@ -44,32 +61,36 @@ def upsert(base, key, dictionary):
         base[key] = dictionary
     return base
 
-def JSONtoDict(response):
-    """
-    Take a urllib2 response object and loads the data into a dictionary
-    """
-    data = json.loads(response.read())
-    
-    #if there is nothing in the data['Response'] then the request did not go through properly
-    #if not data['Response']:
-    #    raise NoDataError
-
-    return data
-
-
 def getPvPGame(gameId):
+    """
+    Get the data for a single PvP game.
+    :param gameId:  the unique game identifier
+    """
     response = requests.get("http://www.bungie.net/platform/Destiny/Stats/PostGameCarnageReport/{0}/".format(gameId))
     if response is None:
         raise NoDataError("No data returned for game {0}".format(gameId))
     return response.json()
 
 def getAggregateAcitivtyStats(membershipId, characterId, network='XBL', definitions=False):
+    """
+    Get the aggregate stats for a player
+    :param membershipId:    membershipId of a player
+    :param characterId:     Id for a character for the member
+    :param network:         XBL or PSN.  The network that the player belongs to.
+    :param definitions:     True or False.  If you want the definitions that come along with the request
+    """
     response = requests.get("http://www.bungie.net/platform/Destiny/Stats/AggregateActivityStats/1/{0}/{1}/?definitions={2}".format(membershipId,characterId,definitions))
 
     return response.json()
 
 def getMembershipID(gamertag, network='XBL', definitions=False):
+    """
+    Given a user's name, return their Destiny membershipId.
 
+    :param gamertag:    user's name
+    :param network:         XBL or PSN.  The network that the player belongs to.
+    :param definitions:     True or False.  If you want the definitions that come along with the request
+    """
     #http://www.bungie.net/Platform/Destiny/SearchDestinyPlayer/{membershipType}/{tag}/
     #replace spaces with %20
     gamertag = re.sub(r' ','%20',gamertag)
@@ -208,7 +229,8 @@ def fetchManifest():
     local_filename = world_manifest.split('/')[-1]
 
     #check to see if the manifest has updated
-    if world_manifest != CONFIG['Manifest']:
+    #or if the manifest doesn't exist locally
+    if world_manifest != CONFIG['Manifest'] || local_filename not in os.listdir(config['ManifestDirectory']):
         #download new manifest
         url = "http://www.bungie.net{0}".format(world_manifest)
         r = requests.get(url)
@@ -218,6 +240,7 @@ def fetchManifest():
 
         #update the manifest in config
         CONFIG['Manifest'] = world_manifest
+        CONFIG['MANIFEST_FILE'] = os.path.join(CONFIG['ManifestDirectory'], local_filename)
 
         #write the new config out
         with open("config.yaml", 'w') as f:
@@ -226,10 +249,9 @@ def fetchManifest():
         #unzip content
         try:
             z = zipfile.ZipFile(StringIO.StringIO(r.content))
-            z.extractall()
+            z.extractall(path=CONFIG['ManifestDirectory'])
         except:
             raise
-
 
     return local_filename
 
