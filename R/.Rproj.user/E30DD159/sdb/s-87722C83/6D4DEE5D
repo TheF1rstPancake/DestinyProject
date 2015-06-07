@@ -1,0 +1,17 @@
+{
+    "contents" : "#connect to the local copy of the destiny manifest\n\nlibrary(\"RSQLite\")\nlibrary(\"RJSONIO\")\nsqlite <- dbDriver(\"SQLite\")\ndestiny.manifest <- dbConnect(sqlite, \"manifest/world_sql_content_5c414893dac0deb1f473b74243454790.content\")\ndbListTables(destiny.manifest)\n\ngetMapInfo <- function(database, hash) {\n  queryString = paste(\"select * from DestinyActivityBundleDefinition where id = '\", \n                      hash, \"'\", sep=\"\")\n  response <- dbGetQuery(database, queryString)\n  \n  return (response)\n\n}\n\ngetMapName <- function(database,hash) {\n  mapInfo <- getMapInfo(database,hash)\n  if (length(mapInfo$json) == 0){\n    json <- fromJSON(paste(\"http://www.bungie.net/Platform/Destiny/Manifest/activity/\",\n                           hash,\"/\", sep=\"\"))\n    return (json$Response$data$activity$activityName)\n  }\n  json <- fromJSON(mapInfo$json)\n  \n  return (json$activityName)\n  \n}",
+    "created" : 1432185441452.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3792651347",
+    "id" : "6D4DEE5D",
+    "lastKnownWriteTime" : 1433532071,
+    "path" : "~/CSCI183/DestinyBlogProject/R/manifestConnect.R",
+    "project_path" : "manifestConnect.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

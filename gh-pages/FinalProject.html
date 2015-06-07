@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet" type="text/css"/>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <style>
+      .plot {
+        outline: 2px solid;
+        margin: 10px 10px 10px 10px;
+
+      }
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Final Project</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>CSCI 183: Final Project</h1>
+        <h2>Optimizing Crucible Returns in Bungie's Destiny</h2>
+        <p style="color:white">A look at trends within Destiny's competitive multiplayer and what players can do to increase their chances for victory.</p>
+        <a href="https://github.com/Jalepeno112/CSCI183/" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <blockquote>
+            <p>The Crucbile is no place for mercy</p>
+            <footer>Lord Shaxx</footer>
+          </blockquote>
+
+          </br>
+
+          <h3><a id="post" class="anchor" href="#post" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h3>
+          <p>
+            In many video games, the opportunity for player to receive loot is tied to their performance. Victory in story missions or against other players in competitive multiplayer is directly tied to getting bigger and better weapons and armor. <a href= "http://bungie.net">Bungie’s Destiny </a> hasn’t always been a shining example of this (in fact it is often the antithesis of this) but after the most recent update with the release of House of Wolves, players are now rewarded more frequently if they win multiplayer matches.
+          </br></br>
+            The point of this project is to examine trends within Destiny’s competitive multiplayer games. The idea is that if I can find a model that accurately predicts who wins and who loses, then we can find tangible things players can do in order to boost their chances of winning (and getting more loot).
+          </br></br>
+            For this project, I created two dataset by doing a random walk through some post game data (also referred to as Post Game Carnage Reports).  Bungie stores all of this data online and it is publicly accessible through a REST API.  The first dataset was created about a week before the release of House of Wolves, and the other dataset was created about a week after.  The reason for doing the second dataset after the release of House of Wolves was to show that the trends that I discuss in this project do not only pertain to pre-House of Wolves Destiny.  After any major update, there is a large amount of flux happening in the community.  New weapons, armor, maps, and level cap change the game.  I think using data from this time-frame strengthens the findings of this project.  These findings do not just hold true to the pre-House of Wolves games, but hold true right now.
+            </br></br>
+            The datasets were then combined to create one large rectangular matrix with over 150,000 rows and 60 columns. This boils down to only being about 11,500 games worth of information. When considering the number of games of Destiny that have been played over time, this number is very small, but I do feel it is large and diverse enough to be an accurate sample of the data.
+          </br></br>
+
+            I used a mixture of R and Python to complete this project.
+            A lot of the initial exploratory data analysis was done in R, but everything else was done in Python.
+
+            You can get the code from <a href="https://github.com/Jalepeno112/CSCI183/tree/gh-pages/DestinyBlogProject"> this github repo </a>
+          </p>
+
+          <h3>
+          <a id="buildingdataset" class="anchor" href="#buildingdataset" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building the Dataset</h3>
+          <p>
+          Bungie has a REST API (that they call the <a href="http://www.bungie.net/platform/Destiny/help/">Destiny Platform</a>) that can be used to get Post Game Carnage Reports. A user makes a request, and the server sends them back a nice JSON file to parse. I had been working on a small Python library to handle making requests to the Destiny Platform and I had just enough of it developed to be able to use on this project. It handles requesting data and checking for errors that occur during that process.
+        </br></br>
+          I then built another Python script that utilizes that library to do a “random walk” through Post Game Carnage Reports. This random walk does the following: given a player’s name get their most recent game, then pick a player from that game and get their most recent game that isn’t the same as one that we already have, and then pick another player from that game and so on. I was having a problem where this fetch process would die every so often due to errors between my interface and the Destiny Platform (the source of which I still haven’t fully figured out). In order to deal with this, I created a list of starting players, and if an error occurs, the random walk jumps to the next player in the list and starts from there. This list of “anchors” includes myself and 8 other people that I know play frequently. That way, I know that their most recent game is actually recent.
+        </br></br>
+          This dataset is biased in that it only looks at one gametype – Control. That means that the findings from this project apply to Control, but not necessarily to all other gametypes. The reasons for picking Control are:
+          
+          <ol>
+            <li>It seems to be more popular (or it is at the very least my favorite)</li>
+            <li>It’s team based </li>
+            <li>There are objectives other than straight kill the other player</li>
+          </ol>
+        </br>
+          I think each of these reasons is significant. Since Control is very popular, that means more people care about what how to optimize their performance for it. The fact that it’s team based adds an extra layer of complexity. Someone doesn’t need to have the highest score in order to win a game (and they can still have that score and lose a game), and my model needs to make use of features that take this into account. Objectives also throw an extra layer of dimension. In Clash, the goal the simply to kill the other team more often than they kill you. The team with the highest number of kills, and the least number of deaths, is going to win which is not necessarily true in Control. While the kills and victory are strongly correlated, having more kills than the other team doesn't always mean victory.
+        </br></br>
+          Every row in the dataset is a different player from a different game. There are repeat players in the dataset, but they always belong to a different game. Every column in the dataset is a different feature that I thought might be helpful in predicting who wins and who loses. The only column name which might be confusing is the “refrencedId” column, which was a typo of “referenceId” which tells you what map the match was played on. 
+          </p>
+          <h3>
+          <a id="lookingatdata" class="anchor" href="#lookingatdata" aria-hidden="true"><span class="octicon octicon-link"></span></a>Looking at the Data
+          </h3>
+
+          <p>
+          After building the dataset, I pulled it into R to take a quick look at some trends in the data. There were a lot of them, but I am only including the ones that I found to be the most interesting.
+        </br></br>
+          One of the first trends I went to look at was player weapon usage. From personal experience, it often feels as though the same weapons are used all the time, so I wanted to see if that was true. It turns out, that the top 15 weapons account for just over 50% of all usage.  While creating the dataset, I looked at the two weapons that a player had the most kills with that game.  Some of the top 15 most used weapons also appear in the top 15 second most used weapons. For example, Felwinter's Lie for some people is their most used weapon at the end of a game, but is other player’s second most used weapon at the end of a game.
+          </p>
+          <img src="images/graphs/top15WeaponsUsed.png"/>
+
+          <p>
+          I then wanted to see how weapon usage is connected to victory. As you can see in the plot below, while these weapons are used very often, they don’t necessarily increase a player’s chance for victory. All of the weapons have a victory rate of about 50%.  The Stranger's Rifle is interesting to see here because it is a lower-tiered weapon than everything else.  The Stranger's Rifle could also be considered an outlier as it is arguably the best rare-tierd weapon in the game.  The main point here is that while people prefer to use Legendary and Exoctic weapons, they seem to make no difference in a player's chance for winning.
+          </p>
+
+          <img src ="images/graphs/top15WeaponVictoryRate.png"/>
+
+          <p>
+          Another interesting set of factors to look at is map. It is often argued that certain teams on certain maps always win.  This leads to people sometimes leaving a match because they believe that the odds are stacked against them.
+          </p>
+
+           <div id="victoryByMap" class="plot">
+            <h2 style="text-align:center">Victory Rate for each Team by Map</h2>
+            <svg></svg>
+            <script src='javascripts/victoryByMap.js'></script>
+          </div>
+
+          <p>
+          All things being equal, we would expect the victory rate for each team on any give map to be about 50%. According to this plot, that is not the case. Firebase Delphi has the most significant gap where <strong>Alpha Team</strong> wins almost <strong>56%</strong> games.  Anomaly has a similar problem except this time it is Bravo team that tends to dominate.
+        </br></br>
+          It's also neat to look at the frequency that maps are played on.  This really has no impact on the conclusions I reached about victory on certain maps but it does show that some of the more heavily played maps actually have some of the worst bias.  Shores of Time is one of the more frequently played maps, and it is also one of the more heavily biased maps.
+          </p>
+
+          <img src="images/graphs/mapFrequency.png"/>
+
+          <p>
+            We can also look at which maps have the worst quit rate.  Losing a team member can definitely set a team back, and as we can see, certain teams tend to quit more on maps than others.  This also seems to be corelated to victory rate of a team on a given map.
+          </p>
+
+          <div id="quittingByMap" class="plot">
+            <h2 style="text-align:center">Quitting Rate for each Team by Map</h2>
+            <svg></svg>
+            <script src='javascripts/quittingByMap.js'></script>
+          </div>
+
+          <p>
+          We can also look at  a player’s Combat Rating. Combat Rating is a metric that Bungie created to effectively rank player’s along a scale.
+          </p>
+
+          <img src ="images/graphs/combatRating_Victory.png"/>
+
+          <p>
+          Combat Rating appears to be directly tied to a player’s victory rate with the only anomaly being when a player has a combat rating of 0. Since Bungie keeps track of the combat rating in their system, I am assuming that it is a time dependent variable.  As player's win and lose over time, I would expect their combat rating to change.  Another interesting project could be to try and reverse engineer the combat rating of a player over time. The overall point here is that a player’s combat rating is a very good indicator of whether or not that player will win.  It is also a team-independent variable which makes it very interesting to consider.  When predicting victory, should we compare teams based on their average combat rating, or should we compare only the highest combat rating in each team?
+          </p>
+
+          <h3>
+          <a id="predicting" class="anchor" href="#predicting" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predicting Victory
+
+          </h3>
+
+          <p>
+          The first step I took in predicting victory was to do a quick random forest on the data and see what happened. Doing this gave me a root mean square error of over 50%. This is unsurprising since this model attempted to predict a player’s victory based on their own stats and therefore players on the same team were being given different standing.
+
+        </br></br>
+          The next step was then to melt the dataset down into a team based dataset instead of a player based dataset. Each game would have two vectors associated with it – one for Alpha team and one for Bravo team. The features of each team were built off of the data of the player’s of each team.
+
+          After rebuilding the dataset in this fashion, I then split the data into training and test sets and ran 10-fold repeated cross validation on them. This gave me the probabilities that a particular team would be given a 1 for their victory variable. A value of 1 actually corresponds to defeat (this is how it is stored in the Destiny Platform) I then took this output and ran it through a Python script that looked at each game and compared these probabilities. Within each game, the winning team is the team with the smaller probability, and the loser therefore the one with the higher probability. In the event that these probabilities are the same, one team is randomly chosen to be the victor.
+        </br></br>
+          This method gave me a root mean square error of <strong>14.5%</strong>. This also only used a handful of features. I was also careful to avoid features that are dead giveaways for victory (like the actual team score).
+          </p>
+
+          <h3>
+          <a id="securingvictory" class="anchor" href="#securingvictory" aria-hidden="true"><span class="octicon octicon-link"></span></a>Securing Victory
+          </h3>
+
+          <p>
+          So what can players do to secure victory?
+          </p>
+          
+          <h4>
+          <a id="mvp" class="anchor" href="#mvp" aria-hidden="true"><span class="octicon octicon-link"></span></a>MVP
+          </h4>
+          <p>
+          For starters, always shoot to be the best player in the game. Seem simple and intuitive, but teams with the highest scoring player on them win over 80% of the time. This value deviates only slightly even if the team with the highest scoring player also has the lowest scoring player.  So either be the best yourself or attach yourself to someone who is.
+          </p>
+          <img src='images/graphs/highLowVictory.png'/>
+
+
+          <h4>
+          <a id="playwithfriends" class="anchor" href="#playwithfriends" aria-hidden="true"><span class="octicon octicon-link"></span></a>Play With Friends
+          </h4>
+          <p>
+          Being on a team with friends also increases chances for winning. The less fireteams on a team, thereby the more friends you being into a match with you, the more likely you are to win.
+          </p>
+          <img src='images/graphs/fireteamVictory.png'/>
+
+          <h4>
+          <a id="withabang" class="anchor" href="#withabang" aria-hidden="true"><span class="octicon octicon-link"></span></a>Send them out with a bang
+          </h4>
+          <p>
+          This one goes two ways.  Being able to effectively use your heavy weapons increases the likelihood of victory, but also preventing the other team from being able to use theirs ends in their defeat. If you can't use your own heavy, you would be just as well off trying to steal theirs.
+          </p>
+          <img src="images/graphs/heavyWeaponVictory.png"/>
+
+          <h4>
+            <a id="thisismyrifle" class="anchor" href="#thisismyrifle" aria-hidden="true"><span class="octicon octicon-link"></span></a>This is my rifle; this is my gun
+          </h4>
+          <p>
+            Be careful how heavily you rely on sniper rifles on certain maps.  
+            While setting up shop and camping usually results in less deaths, teams who rely on snipers more heavily during a game tend to lose.
+          </p>
+          <div id="sniperRatioVictoryPlot" class="plot">
+            <h2 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h2>
+            <svg></svg>
+            <script src="javascripts/sniperRatioVictory.js"></script>
+          </div>
+
+          <h4>
+            PTFO
+          </h4>
+          <p>
+            Playing the objective is important.  Controling zones gives you a multiplier which is going to increase your average score per kill, and as you can see from the following graph, the average score per kill for winning teams is greater than the average score per kill for losing teams.
+          </p>
+           <div id="averageScorePerKill" class="plot">
+            <h2 style="text-align:center">Average Score per Kill</h2>
+            <svg></svg>
+            <script src='javascripts/averageScorePerKill.js'></script>
+          </div>
+
+          <p>
+           Furthermore, teams often question whether or not to go for domination.
+           The benefit is the max multiplier, but the cost is that you might cause the game to switch the spawn points, and place the enemy team behind you.
+           As we've seen, starting spawn location on a map is important, and so a team that pushes for domination may end up in swaping spawns.
+          </p>
+          <div id="dominationKills" class="plot">
+            <h2 style="text-align: center">Domination Kills by Map</h2>
+            <svg></svg>
+            <script src='javascripts/dominationKills.js'></script>
+          </div>
+          
+          <p>
+            From this plot though, we can clearly see that domination is helpful in winning.
+            Players are awarded a "Domination" medal when they kill an enemy player while their team holds all three points.
+            On average, it looks like winning teams get at least 1 domination kill a match, while losing teams on average get one every other match.
+            The fact that domination kills stay so low is an indication that domination generally doesn't last for long.
+            Teams really only seem to get a few kills out of their domination before the other team wins back a point, but those few kills also seem to make a huge difference.      
+          </p>
+
+        </br>
+        <p>
+          These are only a few trends that I gathered from the dataset.  I'm sure there are others.  
+          The overarching idea is that there are definitely concrete things players can do to boost their chances of winning.
+        </p>
+
+        <h4>
+        <a id="conclusion" class="anchor" href="#conclusion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusion
+        </h4>
+        <p>
+          There is a lot more to gain from the Destiny API.  
+          This is only data from Control, it would be interesting to look at other gametypes and see how the gametype changes player behavior.
+          It would also be interesting to try and apply the Control model to other gametypes.  
+          The place that this might have the most impact is in the Trails of Osiris gametype.  
+          The stakes in that gamemode are so high, that being able to determine victory would be huge.
+        </br>
+          It would also be cool to look at how these trends have developed over time.
+          There have been several updates to weapon stats, and to where objectives are located on certain maps.
+          Running this analysis before and after each update may give insight into how effective these updates were.
+          For example, auto rifles were nerfed hard early in the game, while hand cannons and pulse rifles received a buff.
+          I would expcet to see that auto rifle usage decreased heavily, while hand cannon and pulse rifle usage rose to fill in the gap.
+          </br>
+          The last thing that I would like to be able to do is to only use features that are known before the game starts (i.e. character level, class, combat rating, etc.) to see if we can predict a winning team before the game even starts.
+          This would allow players to see what their chances of winning are before entering a game, and potentially to be able to figure out how to adjust themselves so that their team has a higher chance of victory.
+        </br>
+          All of the interactive plots on this page (and some others) can be found by going to <a href="http://jalepeno112.github.io/CSCI183/gh-pages/fullPlots/">this page </a>
+        </p>
+
+        </section>
+        <aside id="sidebar">
+          <a href="https://github.com/Jalepeno112/CSCI183/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Jalepeno112/CSCI183/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/Jalepeno112/CSCI183"></a> is maintained by <a href="https://github.com/Jalepeno112">Jalepeno112</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>  
+  </body>
+</html>

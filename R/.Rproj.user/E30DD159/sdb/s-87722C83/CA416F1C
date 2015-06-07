@@ -1,0 +1,17 @@
+{
+    "contents" : "library(\"ggplot2\")\nlibrary(\"doBy\")\nlibrary('caret')\n\nrmse <- function(sim, obj) {\n  error <- sim - obj\n  return(sqrt(mean(error^2)))\n}\n\n#break data into train and test sets\nset.seed(17)\ndata <- read.csv(\"../data.csv\")\nprint(\"Converting some columns to factors\")\n#convert these columns to factors glm\n#col_names <- c(\"characterClass\")\n# do do it for some names in a vector named 'col_names'\n#data[,col_names] <- lapply(data[,col_names] , factor)\ndata$characterClass <- factor(data$characterClass)\ndata$standing_inverse <- (data$standing *-1) + 1\n\nprint(\"Splitting into train and test data\")\ntrain_ind <- sample(seq_len(nrow(data)), size=.5*nrow(data))\ntrain <- data[train_ind,]\ntest <- data[-train_ind,]\n\n\nformula <- standing ~ characterLevel + combatRating + characterClass + orbsGathered +\n  mostUsedWeapon1 + mostUsedWeapon2 + killsDeathsRatio + defensiveKills +\n  offensiveKills + objectivesCompleted + killsDeathsAssists + refrencedId + team\n\n#fit <- glm(formula, family = \"gaussian\", data = train)\n#predictions <- predict(fit,test,type='response')\n\n#10 fold CV \nprint(\"Running 10 fold CV\")\nfitControl <- trainControl(method='repeatedcv', \n                           number=10, \n                           repeats=1,\n                           verbose=TRUE)\n\nfit1<-train(formula,\n            data=train,\n            method='gbm',\n            trControl = fitControl,\n            verbose=FALSE\n)\n\nprint(\"Making predicitons\")\npredicitons <- predict(fit1, test, type=\"raw\")\n\ndata.predictions <- data.frame(standing= round(predictions), id = test$X)\n\nrootMeanError <- rmse(data.predictions$standing, test$standing)\nprint(rootMeanError)\n",
+    "created" : 1432052585010.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3023202682",
+    "id" : "CA416F1C",
+    "lastKnownWriteTime" : 1433609486,
+    "path" : "~/CSCI183/DestinyBlogProject/R/model.R",
+    "project_path" : "model.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
