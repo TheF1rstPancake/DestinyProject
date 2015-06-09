@@ -1,0 +1,7 @@
+data_pre_houseOfWolves.csv
+	DestinyBlogProject.py was run a week before the release of House of Wolves, and that dataset was stored here
+
+data_post_houseOfWolves.csv
+	DestinyBlogProject.py was run a week after the release of House of Wolves and the dataset was stored here
+
+data.csv is the combination of both datasets

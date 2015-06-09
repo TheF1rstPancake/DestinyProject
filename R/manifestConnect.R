@@ -3,7 +3,7 @@
 library("RSQLite")
 library("RJSONIO")
 sqlite <- dbDriver("SQLite")
-destiny.manifest <- dbConnect(sqlite, "manifest/world_sql_content_5c414893dac0deb1f473b74243454790.content")
+destiny.manifest <- dbConnect(sqlite, "../manifest/world_sql_content_5c414893dac0deb1f473b74243454790.content")
 dbListTables(destiny.manifest)
 
 getMapInfo <- function(database, hash) {

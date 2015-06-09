@@ -61,7 +61,7 @@ def predictWinners(predictions):
 if __name__ == "__main__":
 	#create training and testing datasets
 	#just split the data in half
-	teamData = pd.read_csv("teamData.csv")
+	teamData = pd.read_csv("datafiles/teamData.csv")
 	train = teamData.ix[0:len(teamData)/2, ]
 	test = teamData.ix[(len(teamData)/2 + 1):len(teamData), ]
 
@@ -93,7 +93,7 @@ if __name__ == "__main__":
   	#predictions = randomForest.predict(test[features])
   	#get the probability that the team wins and that it loses
   	predictions = randomForest.predict_proba(test[features])
-  	
+
   	submission = pd.DataFrame({"id":test.index.values, 
   		"standing":[i[1] for i in predictions], 
   		"gameId":test['gameId'],
@@ -107,4 +107,4 @@ if __name__ == "__main__":
 
   	logger.info("RMSE: {0}".format(rms))
 
-  	submission.to_csv("submission.csv")
+  	submission.to_csv("datafiles/submission.csv")

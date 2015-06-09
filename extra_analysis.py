@@ -14,6 +14,20 @@ PLOT_TEMPLATES = "plotTemplates"
 
 jinja2_env = jinja2.Environment(loader=jinja2.FileSystemLoader('plotTemplates'))
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.INFO)
+
+filehndlr = logging.FileHandler("log.log")
+filehndlr.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(process)d - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+filehndlr.setFormatter(formatter)
+
+
 class destinyPlot(object):
 	def __init__(self, data, title, key, htmlFilePath, subtitle,
 					plotText = "Hello World!", 
@@ -71,7 +85,7 @@ class destinyPlot(object):
 			f.write(output)
 
 def objectivesByMap(data):
-	print("Building objectives completed per winner and loser")
+	logger.info("Building objectives completed per winner and loser")
 
 	groupedByMapStanding = data.groupby(['refrencedId', 'standing'])
 
@@ -95,7 +109,7 @@ def objectivesByMap(data):
 						)
 
 def getWeaponRatiosByMap(data):
-	print("Building weapon ratios per map")
+	logger.info("Building weapon ratios per map")
 	weaponColumns = [c for c in data.columns if 'weapon' in c and 'Heavy' not in c and 'Secondary' not in c and 'Primary' not in c]
 	groupedByMap = data.groupby('refrencedId')
 
@@ -115,10 +129,9 @@ def getWeaponRatiosByMap(data):
 					jsFilePath = FULL_PLOT_JS_DIRECTORY,
 					)
 
-	return weaponRatios
 
 def quittingByMap(data):
-	print("Building quitting rate per map by team")
+	logger.info("Building quitting rate per map by team")
 	teamKeys = [16, 17]
 	teamKeysToTitles = {16:'Alpha', 17:"Bravo"}
 
@@ -144,12 +157,8 @@ def quittingByMap(data):
 					jsFilePath = FULL_PLOT_JS_DIRECTORY,
 					)
 
-
-	#with open(os.path.join('..','gh-pages', 'datafiles', 'quittingByMap.json'), 'w') as f:
-	#	json.dump(quittingByMap, f)
-
 def neutralizedVersusCaptured(data):
-	print("Building neutralizedVersusCaptured")
+	logger.info("Building neutralizedVersusCaptured")
 	groupedByMapStanding = data.groupby(['refrencedId', 'standing'])
 
 	victoryToString ={0:"Winners",1:"Losers"}
@@ -172,7 +181,7 @@ def neutralizedVersusCaptured(data):
 						)
 
 def dominationByMap(data):
-	print("Building domination kills for each team by map")
+	logger.info("Building domination kills for each team by map")
 	groupedByMapStanding = data.groupby(['refrencedId', 'standing'])
 
 	victoryToString ={0:"Winners",1:"Losers"}
@@ -200,7 +209,7 @@ def dominationByMap(data):
 	#	json.dump(dominationKills, f)
 
 def victoryByMapAndTeam(data):
-	print("Building victory by map and team")
+	logger.info("Building victory by map and team")
 	teamKeys = [16, 17]
 
 	teamKeysToTitles = {16:'Alpha', 17:"Bravo"}
@@ -232,7 +241,7 @@ def victoryByMapAndTeam(data):
 	#	json.dump(victoryByMap, f)
 
 def weaponsByClass(data):
-	print("Building weapons per class")
+	logger.info("Building weapons per class")
 	data = data[data['characterClass'] != '0']
 	groupByClass = data.groupby(['characterClass'])
 	weaponColumns = [c for c in data.columns if 'weapon' in c and 'Heavy' not in c and 'Secondary' not in c and 'Primary' not in c]
@@ -252,11 +261,9 @@ def weaponsByClass(data):
 			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
 			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
-	#with open(os.path.join('..','gh-pages', 'datafiles', 'weaponsByClass.json'), 'w') as f:
-	#	json.dump(weaponRatios, f)
 
 def scorePerKill(data):
-	print("Building score per kill")
+	logger.info("Building score per kill")
 	groupedByMapStanding = data.groupby(['refrencedId', 'standing'])
 
 	victoryToString ={0:"Winners",1:"Losers"}
@@ -277,11 +284,9 @@ def scorePerKill(data):
 			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
 
-	#with open(os.path.join('..','gh-pages', 'datafiles', 'averageScorePerKills.json'), 'w') as f:
-	#	json.dump(averageScorePerKill, f)
 
 def getSniperRatiosByVictory(data):
-	print("Building sniper ratio victory")
+	logger.info("Building sniper ratio victory")
 	victoryToString ={0:"Winners",1:"Losers"}
 	groupedByMapStanding = teamData.groupby(['refrencedId', 'standing'])
 
@@ -303,13 +308,11 @@ def getSniperRatiosByVictory(data):
 			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
 			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
-	return sniperRatios
-
 def classLevelVictory(data):
 	"""
 	Build json file for a graph that displays how frequent a class wins based on their level
 	"""
-	print("Building victory rates for each class by character level")
+	logger.info("Building victory rates for each class by character level")
 	data = data[data['characterClass'] != '0']
 	data = data[data['characterLevel'] != 0]
 
@@ -317,7 +320,6 @@ def classLevelVictory(data):
 
 	groupByClass = data.groupby(['characterClass', 'characterLevel'])
 
-	print("Formatting data")
 
 	characterKeys = ['Warlock', 'Titan', 'Hunter']
 	levelKeys = list(set([level for _,level in groupByClass.groups.keys()]))
@@ -357,7 +359,7 @@ def predictedVsActual(actual, predicted):
 	teamKeys = [16, 17]
 	gameIdKeys = list(set([gameId for _,gameId in actual_groupedByTeam.groups.keys()]))
 
-	print("Formatting actual data")
+	logger.info("Formatting actual data")
 
 	actual_json = [{'key':teamToString[team], 
 							'values': [{
@@ -366,7 +368,7 @@ def predictedVsActual(actual, predicted):
 							} for gameId in gameIdKeys if (team,gameId) in actual_groupedByTeam.groups.keys()]
 						 } for team in teamKeys]
 
-	print("Formatting predicted data")
+	logger.info("Formatting predicted data")
 	predicted_groupedByTeam = predicted.groupby(['team','gameId'])
 	gameIdKeys = list(set([gameId for _,gameId in actual_groupedByTeam.groups.keys()]))
 
@@ -380,7 +382,7 @@ def predictedVsActual(actual, predicted):
 	return (actual_json + predicted_json)
 
 def victoryRateByWeapon(teamData):
-	print("Building weapon ratios per map and victory")
+	logger.info("Building weapon ratios per map and victory")
 	weaponColumns = [c for c in data.columns if 'weapon' in c and 'Heavy' not in c and 'Secondary' not in c and 'Primary' not in c]
 	groupedByMap = data.groupby(['refrencedId','standing'])
 
@@ -407,8 +409,8 @@ def victoryRateByWeapon(teamData):
 					)
 
 if __name__ == "__main__":
-	teamData = pd.read_csv("teamData.csv")
-	data = pd.read_csv("data.csv")
+	teamData = pd.read_csv("datafiles/teamData.csv")
+	data = pd.read_csv("datafiles/data.csv")
 	getWeaponRatiosByMap(teamData)
 	objectivesByMap(teamData)
 	quittingByMap(data)

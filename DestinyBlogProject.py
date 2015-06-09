@@ -540,7 +540,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_games", default=1000, type=int)
-    parser.add_argument("--datafilename", default="data.csv")
+    parser.add_argument("--datafilename", default="datafiles/data.csv")
 
     args = parser.parse_args()    
 

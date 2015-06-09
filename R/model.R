@@ -9,7 +9,7 @@ rmse <- function(sim, obj) {
 
 #break data into train and test sets
 set.seed(17)
-data <- read.csv("../data.csv")
+data <- read.csv("../datafiles/data.csv")
 print("Converting some columns to factors")
 #convert these columns to factors glm
 #col_names <- c("characterClass")

@@ -15,7 +15,7 @@ victoryRate <- function(x) {
   return(1-mean(x))
 }
 
-data <- read.csv("../data.csv")
+data <- read.csv("../datafiles/data.csv")
 
 grouped.byWeapon <- summaryBy(X ~ mostUsedWeapon1Name, data = data, FUN=length)
 grouped.byWeapon <- grouped.byWeapon[order(grouped.byWeapon$X.length), ]

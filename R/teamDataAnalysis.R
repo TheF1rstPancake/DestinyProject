@@ -10,7 +10,7 @@ rmse <- function(sim, obj) {
   return(sqrt(mean(error^2)))
 }
 
-teamData <- read.csv("../teamData.csv")
+teamData <- read.csv("../datafiles/teamData.csv")
 
 #split the data straight down the middle into traning and test sets
 #the reason we do it this way is because we need to keep games grouped together

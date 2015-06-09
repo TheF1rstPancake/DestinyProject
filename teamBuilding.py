@@ -5,6 +5,7 @@ import pandas as pd
 import logging
 import sys
 import argparse
+import numpy as np
 
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
@@ -106,6 +107,7 @@ def groupByTeam(dataFileName):
 			teamDict['objectivesCompleted'] = teamData['objectivesCompleted'].sum()
 			teamDict['objectivesCompletedAvg'] = teamData['objectivesCompleted'].mean()
 			teamDict['zonesNeutralized'] = teamData['zonesNeutralized'].sum()
+			teamDict['capturedNeutralizedRatio'] = float((teamData['objectivesCompleted']/teamData['zonesNeutralized']).replace([np.inf,-np.inf],0).mean())
 
 			#get the number of exotic and legendary weapons that a team used
 			teamDict['numberOfExotics'] = len(teamData.ix[teamData['mostUsedWeapon1Tier'] == 'Exotic', 'mostUsedWeapon1Tier']) + len(teamData.ix[teamData['mostUsedWeapon2Tier'] == 'Exotic', 'mostUsedWeapon2Tier'])
@@ -163,46 +165,13 @@ def groupByTeam(dataFileName):
 		team_df = pd.DataFrame.from_records(teamBreakdown)
 		outData = pd.concat([outData,team_df], ignore_index=True)
 	return outData
-
-def predictWinners(datafile):
-	"""
-	Given a datafile with 4 columns:
-		index (id)
-		gameId
-		standing
-		team
-	Predict who wins and who looses a game.
-	"""
-
-	#load data
-	predictions = pd.read_csv(datafile)
-
-	#group by game id
-	groupedByGame = predictions.groupby("gameId")
-
-	#for each game, predict one winner and one loser
-	#UNLESS there is only one team, in which case they are automatically assinged as the winner (standing -> 0 is winner, 1 is loser)
-	for gameId in groupedByGame.groups.keys():
-		group  = groupedByGame.get_group(gameId)
-		print(group)
-		if len(group) == 1:
-			predictions.ix[predictions['id'] == group['id'].values[0],'standing'] = 0
-		else:
-			if group['standing'].values[0] > group['standing'].values[1]:
-				predictions.ix[predictions['id'] == group['id'].values[0], 'standing'] = 1
-				predictions.ix[predictions['id'] == group['id'].values[1], 'standing'] = 0
-			else:
-				predictions.ix[predictions['id'] == group['id'].values[0], 'standing'] = 0
-				predictions.ix[predictions['id'] == group['id'].values[1], 'standing'] = 1
-
-	predictions.to_csv("predictions_binomial.csv")
 			
 if __name__=="__main__":
 	print("Hello World")
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument("--datafile", default="data.csv")
-	parser.add_argument("--outfile", default="teamData.csv")
+	parser.add_argument("--datafile", default="datafiles/data.csv")
+	parser.add_argument("--outfile", default="datafiles/teamData.csv")
 
 	args = parser.parse_args()
 
