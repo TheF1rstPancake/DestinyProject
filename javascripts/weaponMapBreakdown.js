@@ -4,12 +4,10 @@ var data = $.getJSON('datafiles/weapon_sums.json', function(test_data){
     var plotDiv = "#plot";
     var plotSvg = plotDiv + " svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
-    var width = nv.utils.windowSize().width - margin.right - margin.left;
-    var height = nv.utils.windowSize().height  - margin.top - margin.bottom;;
     nv.addGraph({
         generate: function() {
-            width = $(plotDiv).width() - margin.right - margin.left,
-            height = ($(plotDiv).height()*3) - margin.top - margin.bottom;
+            var width = $(plotDiv).width() - margin.right - margin.left,
+                height = ($(plotDiv).height()) - margin.top - margin.bottom;
             var chart = nv.models.multiBarChart()
                 .width(width)
                 .height(height)
@@ -39,8 +37,8 @@ var data = $.getJSON('datafiles/weapon_sums.json', function(test_data){
         callback: function(graph) {
             nv.utils.windowResize(function() {
               
-                width = $(plotDiv).width() - margin.right - margin.left,
-                height = ($(plotDiv).height()*3) - margin.top - margin.bottom;
+                var width = $(plotDiv).width() - margin.right - margin.left,
+                    height = ($(plotDiv).height()) - margin.top - margin.bottom;
                 graph.width(width).height(height);
 
                 d3.select(plotSv)

@@ -2,10 +2,10 @@ var data = $.getJSON('datafiles/weaponsByClass.json', function(test_data){
     //var plotDiv = "#testPlot svg"
     var plotDiv = "#weaponByClass svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
-    var width = 700 - margin.right - margin.left,
-        height = 650 - margin.top - margin.bottom;
     nv.addGraph({
         generate: function() {            
+            var width = $(plotDiv).width() - margin.right - margin.left,
+                height = ($(plotDiv).height()) - margin.top - margin.bottom;
             var chart = nv.models.multiBarChart()
                 .width(width)
                 .height(height)
@@ -35,6 +35,8 @@ var data = $.getJSON('datafiles/weaponsByClass.json', function(test_data){
         },
         callback: function(graph) {
             nv.utils.windowResize(function() {
+                var width = $(plotDiv).width() - margin.right - margin.left,
+                    height = ($(plotDiv).height()) - margin.top - margin.bottom;
                 graph.width(width).height(height);
 
                 d3.select(plotDiv)

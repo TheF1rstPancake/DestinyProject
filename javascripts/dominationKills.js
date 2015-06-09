@@ -11,7 +11,7 @@ var data = $.getJSON('datafiles/dominationKills.json', function(test_data){
     nv.addGraph({
         generate: function() {   
             var width = $(plotDiv).width() - margin.right - margin.left,
-                height = ($(plotDiv).height()*3) - margin.top - margin.bottom;
+                height = ($(plotDiv).height()) - margin.top - margin.bottom;
 
             var chart = nv.models.multiBarChart()
                 .width(width)

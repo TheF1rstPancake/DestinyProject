@@ -13,8 +13,9 @@ var data = $.getJSON('datafiles/actualVsPredicted.json', function(test_data){
               );
            });
 
-            var width = nv.utils.windowSize().width,
-                height = nv.utils.windowSize().height;
+            var width = $(plotDiv).width() - margin.right - margin.left,
+                height = ($(plotDiv).height()) - margin.top - margin.bottom;
+
             /*var width = 700,
                 height = 600;*/
             
@@ -47,8 +48,8 @@ var data = $.getJSON('datafiles/actualVsPredicted.json', function(test_data){
             nv.utils.windowResize(function() {
                 /*var width = 700,
                 height = 600;*/
-                var width = nv.utils.windowSize().width,
-                height = nv.utils.windowSize().height;
+                var width = $(plotDiv).width() - margin.right - margin.left,
+                    height = ($(plotDiv).height()) - margin.top - margin.bottom;
 
                 graph.width(width).height(height);
 
