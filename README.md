@@ -8,6 +8,9 @@ Bungie provides a REST API for accessing basically all the data that you could p
 This repo contains a lot of different code files all meant to do different things.
 This was more an expiriment on how to get data out of the REST API.
 
+This project originally started as a side project that I did in my free time, and then a final project for a class, and has gone back to something I am just going for fun.
+The code is kind of a mess, but I really wanted to get what I've done out there just so that there is an example of how to use the Destiny REST API with Python.
+
 ### Base
 
 The destinyPlatform.py file contains the basic functions necessary to pull data out of the API
@@ -31,4 +34,6 @@ Probably the most useful thing in this repo.  Under the datafiles directory	ther
 
 data.csv contains over 160,000 rows and 60 columns taken from about 11,500 games.  Each row is a different player, and every column a different feature.
 teamData.cssv split data.csv into games and then merged each team into one vector, so its only about 23,000 rows (11,500 *2) and 60 columns.
+
+
 
