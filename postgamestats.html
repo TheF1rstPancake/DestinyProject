@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Post Game Stats</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/css/cyborg.min.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/plug-ins/1.10.6/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.6/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script src="/static/js/index.js"></script>
+    <script>
+        function buildSummaries() {
+            URL_BASE = "http://localhost:8888/"
+            fetch = URL_BASE + "get_games"
+        }
+    </script>
+</head>
+<body>
+    <h1>Post Game Stats</h1>
+    <table id="gamesummaries">
+        <thead>
+            <tr>
+                <th>Game Type</th>
+                <th>Map</th>
+                <th>Date</th>
+                <th>Victory</th>
+            </tr>
+        </thead>
+        {% for g in games %}
+        <tr>
+            <td>g['Response']['activityDetails']</td>
+            <td></td>
+        </tr>
+    </table>
+</body>
+</html>

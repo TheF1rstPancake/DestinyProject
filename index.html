@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+
+
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/static/css/cyborg.min.css" rel="stylesheet"/>
+    <link href="//cdn.datatables.net/plug-ins/1.10.6/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet"/>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.6/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script src="/static/js/index.js"></script>
+    <title>PGCR</title>
+
+    <script>
+        $(document).ready(function () {
+            $('#gamertag').change(function () {
+                getCharacters();
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>PGCR</h1>
+            <p>Enter your gamertag, select a character and then see your most recent 
+                <strong>P</strong>ost <strong>G</strong>ame <strong>C</strong>arnage <strong>R</strong>eport</p>
+        </div>
+        <form id="pgcrForm" method="GET" action='' onsubmit="generateQuery()">
+            <div class="form-group">
+                <label for="gamertag">Gamertag</label>
+                <input type="text" class="form-control" id="gamertag" required />
+            </div>
+            <div class="form-group">
+                <label for="characters">Characters</label>
+                <table id="characters" class="table">
+                    <thead>
+                        <tr>
+                            <th id="checkHead">Check</th>
+                            <th id="emblemHead">Emblem</th>
+                            <th id="levelHead">Level</th>
+                            <th id="classHead">Class</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
