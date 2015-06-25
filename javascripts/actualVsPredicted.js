@@ -13,11 +13,8 @@ var data = $.getJSON('datafiles/actualVsPredicted.json', function(test_data){
               );
            });
 
-            var width = $(plotDiv).width() - margin.right - margin.left,
-                height = ($(plotDiv).height()) - margin.top - margin.bottom;
-
-            /*var width = 700,
-                height = 600;*/
+            var width = ($(plotDiv).width() + 300) - margin.right - margin.left,
+                height = ($(plotDiv).height() + 300) - margin.top - margin.bottom;
             
             var chart = nv.models.lineChart()
                 .width(width)

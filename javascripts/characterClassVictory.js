@@ -3,11 +3,9 @@ var plotDiv = "#testPlot svg"
 var data = $.getJSON('datafiles/characterClassVictory.json', function(test_data){
     nv.addGraph({
         generate: function() {
-            var width = $(plotDiv).width() - margin.right - margin.left,
-                height = ($(plotDiv).height()) - margin.top - margin.bottom;
-                            /*var width = 700,
-                height = 600;*/
-            
+            var width = ($(plotDiv).width() + 300) - margin.right - margin.left,
+                height = ($(plotDiv).height() + 300) - margin.top - margin.bottom;
+           
             var chart = nv.models.lineChart()
                 .width(width)
                 .height(height)

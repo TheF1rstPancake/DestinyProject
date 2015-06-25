@@ -5,8 +5,8 @@ var data = $.getJSON('datafiles/victoryByMap.json', function(test_data){
     var colors = ['#FF0000', '#0000FF']
     nv.addGraph({
         generate: function() {            
-            var width = $(plotDiv).width() - margin.right - margin.left,
-                height = ($(plotDiv).height()) - margin.top - margin.bottom;
+            var width = ($(plotDiv).width() + 300) - margin.right - margin.left,
+                height = ($(plotDiv).height() + 300) - margin.top - margin.bottom;
             var chart = nv.models.multiBarChart()
                 .width(width)
                 .height(height)

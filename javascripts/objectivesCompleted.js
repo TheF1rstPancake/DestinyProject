@@ -4,8 +4,8 @@ var data = $.getJSON('datafiles/objectivesCompleted.json', function(test_data){
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
     nv.addGraph({
         generate: function() {
-            var width = $(plotDiv).width() - margin.right - margin.left,
-                height = ($(plotDiv).height()) - margin.top - margin.bottom;
+            var width = ($(plotDiv).width() + 300) - margin.right - margin.left,
+                height = ($(plotDiv).height() + 300) - margin.top - margin.bottom;
 
             var chart = nv.models.multiBarChart()
                 .width(width)

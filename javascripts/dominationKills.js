@@ -7,11 +7,10 @@ var data = $.getJSON('datafiles/dominationKills.json', function(test_data){
     var plotDiv = "#dominationKills";
     var plotSvg = plotDiv + " svg";
     var margin = {top: 20, right: 50, bottom: 10, left: 50};
-
     nv.addGraph({
         generate: function() {   
             var width = $(plotDiv).width() - margin.right - margin.left,
-                height = ($(plotDiv).height()) - margin.top - margin.bottom;
+                height = ($(plotDiv).height() + 300) - margin.top - margin.bottom;
 
             var chart = nv.models.multiBarChart()
                 .width(width)
