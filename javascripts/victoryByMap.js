@@ -2,7 +2,6 @@ var data = $.getJSON('datafiles/victoryByMap.json', function(test_data){
     //var plotDiv = "#testPlot svg"
     var plotDiv = "#victoryByMap svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
-    var colors = ['#FF0000', '#0000FF']
     nv.addGraph({
         generate: function() {            
             var width = ($(plotDiv).width() + 300) - margin.right - margin.left,

@@ -2,7 +2,6 @@ var data = $.getJSON('datafiles/quittingByMap.json', function(test_data){
     //var plotDiv = "#testPlot svg"
     var plotDiv = "#quittingByMap svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
-    var colors = ['#FF0000', '#0000FF']
 
     nv.addGraph({
         generate: function() {       
