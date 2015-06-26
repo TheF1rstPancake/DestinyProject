@@ -12,7 +12,6 @@ var data = $.getJSON('datafiles/quittingByMap.json', function(test_data){
                 .height(height)
                 .stacked(false)
                 .reduceXTicks(false)   //If 'false', every single x-axis tick label will be rendered.
-                .color(colors)
                 ;
 
             chart.yAxis
