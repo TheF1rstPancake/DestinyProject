@@ -102,4 +102,10 @@ def main():
     tornado.ioloop.IOLoop.instance().start()  
     access_log.info('Ready to receive requests on {0}'.format(args.port))
 if __name__ == "__main__":
+    """
+    To run:
+        >>> python server.py --port=PORT --debug=True
+
+    where PORT is the port you want to run the server on
+    """
     main()

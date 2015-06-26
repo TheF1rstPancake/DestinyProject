@@ -1,5 +1,10 @@
 """
 Split a dataset built from the Destiny Platform REST API into a smaller subset of teams.
+
+to run:
+	>>> python teamBuilding.py datafile 
+
+This will produce a file called "teamData.csv"
 """
 import pandas as pd
 import logging
@@ -9,7 +14,7 @@ import numpy as np
 
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 
 logger = logging.getLogger(__name__)

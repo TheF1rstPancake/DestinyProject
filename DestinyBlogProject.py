@@ -29,7 +29,7 @@ if 'filehandler' not in logger.handlers:
     filehndlr.setFormatter(formatter)
     logger.addHandler(filehndlr)
 
-logger.info('LIBRARY LOADED---------------------------------')
+logger.info('LIBRARY LOADED---------------------------------\n')
 
 HOOLIGAN_COMMITTEE = ["Jalepeno112","lil spoon 219", 
                      "ArcticSupremecy", "sunnyD7768",
@@ -74,7 +74,6 @@ def getGame(membershipId, uniqueGameIds=[]):
     #   averageScorePerLife
     #   averageScorePerKill
     #   combatRating
-    #print(most_recent)
 
     #game_id is the unique identifier for the GAME
     #reference_id is the unique identifier for the MAP that the game is played on
@@ -164,7 +163,7 @@ def getGame(membershipId, uniqueGameIds=[]):
                          'offensiveKills','defensiveKills', 'fireTeamId', 'longestKillSpree', 
                          'weaponKillsShotgun','weaponKillsSuper','weaponKillsSniper','weaponKillsMelee',
                          'weaponKillsPulseRifle','weaponKillsFusionRifle', 'weaponKillsScoutRifle','weaponKillsRocketLauncher',
-                         'weaponKillsAutoRifle', 'weaponKillsMachinegun', 'weaponKillsHandCannon',
+                         'weaponKillsAutoRifle', 'weaponKillsMachinegun', 'weaponKillsHandCannon', 'weaponKillsSideArm',
                          'killsOfPlayerHunter', 'killsOfPlayerTitan','killsOfPlayerWarlock',
                          'deathsOfPlayerHunter','deathsOfPlayerTitan','deathsOfPlayerWarlock', 
                          "medalsDominationKill", "zonesNeutralized",
@@ -309,25 +308,6 @@ def runBlogProject(start_user = ["Jalepeno112"], num_games=1000, datafilename = 
     #if result comes back with a 0, then something eventually went wrong in the walk
     #go to the next user in our list in order to get data
     #if result is 1, we got all the data we wanted off one person
-    """
-    for user in start_user:
-        #get all of their characters
-        membershipId = destiny.getMembershipID(user)
-
-        logger.info("Starting walk with user {0}".format(user))
-
-        #get the membership id and start walking
-        start_user_membershipId = destiny.getMembershipID(user)
-        result,game_data_user = randomWalk(start_user_membershipId)
-
-        #build dataframe
-        game_data = pd.concat([game_data,game_data_user],ignore_index=True)
-
-        if result == 0:
-            logger.warning("Walk terminated early due to error!")
-        else:
-            logger.info("Walk completed!")
-    """
     start_users_ids = [destiny.getMembershipID(user) for user in start_user]
 
     p = multiprocessing.Pool(4)
@@ -350,9 +330,10 @@ def runBlogProject(start_user = ["Jalepeno112"], num_games=1000, datafilename = 
 
 def _adjustData(game_data, columnTitle = None):
     """
-    Designed to fix the current dataset we have and add new data to it.
-    go through the weapon columns and add further data about them.  Namely, weapon name and tier (ie. exoctic, legendary,etc.)
-    Also add the date that the game occured to each row
+    Go through the weapon columns and add further data about them.  Namely, weapon name and tier (ie. exoctic, legendary,etc.)
+    We do it after fetching the entire dataset because it is easier to do this at the end than after each fetch.
+    This way, we only have to one fetch to get the stats for each unique weapon in the dataset.
+    
     :param game_data:   the data frame of game data compiled by running :func:`runBlogProject`
 
     """
@@ -390,51 +371,6 @@ def _adjustData(game_data, columnTitle = None):
 
         game_data.to_csv("data_updated.csv",encoding='utf-8')
 
-def _adjustDates(game_data):
-    #add dates
-    #get unique gameIds and build a map of those game dates to ids
-    game_data['date'] = 'None'
-    unique_game_ids = game_data['gameId'].unique()
-    unique_game_map = {}
-
-    for i in unique_game_ids:
-        logger.info("Getting date for game {0}".format(i))
-        game_map = {i : {"date":'None'}}
-        definition = destiny.getPvPGame(i)
-        if definition['ErrorStatus'] == 'Success':
-            game_map[i]['date']= definition['Response']['data']['period']
-        unique_game_map.update(game_map)
-
-    for gameId, data in unique_game_map.iteritems():
-        logger.info("Updating data frame for game {0}".format(i))
-        game_data.ix[game_data["gameId"] == gameId, "date"] = data['date']
-
-    game_data.to_csv("data_updated.csv")
-
-def _addMachinegunKills(game_data):
-    game_data['weaponKillsMachinegun'] = 0
-    game_data['weaponKillsHandCannon'] = 0
-    game_data['weaponKillsSideArm'] = 0
-
-    groupByGame = game_data.groupby("gameId")
-
-    totalGames = len(groupByGame)
-    count = 1
-    for group in list(groupByGame.groups.keys()):
-        logger.info("Grabbing for game {0}; {1} out of {2}".format(group, count, totalGames))
-        game_json = destiny.getPvPGame(group)
-        for player in game_json['Response']['data']['entries']:
-            memId = player['player']['destinyUserInfo']['membershipId']
-            if 'weaponKillsHandCannon' in player['extended']['values']:
-                game_data.ix[(game_data['gameId'] == group) & (game_data['membershipId'] == int(memId)), 'weaponKillsHandCannon'] = player['extended']['values']['weaponKillsHandCannon']['basic']['value']
-            if 'weaponKillsMachinegun' in player['extended']['values']:
-                game_data.ix[(game_data['gameId'] == group) & (game_data['membershipId'] == int(memId)), 'weaponKillsMachinegun'] = player['extended']['values']['weaponKillsMachinegun']['basic']['value']
-            if 'weaponKillsSideArm' in player['extended']['values']:
-                game_data.ix[(game_data['gameId'] == group) & (game_data['membershipId'] == int(memId)), 'weaponKillsSideArm'] = player['extended']['values']['weaponKillsSideArm']['basic']['value']
-
-        count = count + 1
-    game_data.to_csv("data_post_houseOfWolvesUpdate.csv", encoding='utf-8')
-
 def _addFeatureMultiProcess(game_data, func, **kwargs):
     """
     Add a new feature to a dataframe by chunking the dataframe and then applying a function over the chunks.
@@ -442,6 +378,10 @@ def _addFeatureMultiProcess(game_data, func, **kwargs):
 
     .. note::
         The function you pass must modify the dataframe **and** return it.
+        See the functions below for examples.
+
+    :param game_data:   pandas dataframe containing all of the data
+    :param func:        name of the function we want to use to modify the dataframe
     """
     start = time.time()
     p = multiprocessing.Pool(4)
@@ -467,6 +407,36 @@ def _addFeatureMultiProcess(game_data, func, **kwargs):
     game_data.to_csv("data_updated_multi.csv")
 
     return game_data
+
+
+
+"""
+All of the following functions were used to add more information to the dataset after it had initially been build
+"""
+def _addMissingWeapons(game_data):
+    game_data['weaponKillsMachinegun'] = 0
+    game_data['weaponKillsHandCannon'] = 0
+    game_data['weaponKillsSideArm'] = 0
+
+    groupByGame = game_data.groupby("gameId")
+
+    totalGames = len(groupByGame)
+    count = 1
+    for group in list(groupByGame.groups.keys()):
+        logger.info("Grabbing for game {0}; {1} out of {2}".format(group, count, totalGames))
+        game_json = destiny.getPvPGame(group)
+        for player in game_json['Response']['data']['entries']:
+            memId = player['player']['destinyUserInfo']['membershipId']
+            if 'weaponKillsHandCannon' in player['extended']['values']:
+                game_data.ix[(game_data['gameId'] == group) & (game_data['membershipId'] == int(memId)), 'weaponKillsHandCannon'] = player['extended']['values']['weaponKillsHandCannon']['basic']['value']
+            if 'weaponKillsMachinegun' in player['extended']['values']:
+                game_data.ix[(game_data['gameId'] == group) & (game_data['membershipId'] == int(memId)), 'weaponKillsMachinegun'] = player['extended']['values']['weaponKillsMachinegun']['basic']['value']
+            if 'weaponKillsSideArm' in player['extended']['values']:
+                game_data.ix[(game_data['gameId'] == group) & (game_data['membershipId'] == int(memId)), 'weaponKillsSideArm'] = player['extended']['values']['weaponKillsSideArm']['basic']['value']
+
+        count = count + 1
+    game_data.to_csv("data_post_houseOfWolvesUpdate.csv", encoding='utf-8')
+
 
 def _addZonesNeutralized(game_data):
     game_data['zonesNeutralized'] = 0
@@ -519,20 +489,9 @@ def _addGrenadeKills(game_data):
                  game_data.ix[(game_data['gameId'] == group) & (game_data['membershipId'] == int(memId)), 'weaponKillsRelic'] = player['extended']['values']['weaponKillsRelic']['basic']['value']
         count = count + 1
     return game_data
-    #game_data.to_csv("data_updated.csv", encoding='utf-8')
-
-def _mergeOldAndNew():
-    new_data = pd.read_csv("data_post_houseOfWolves.csv")
-
-    del(new_data['weaponKillsMachinegunweaponKillsHandCannon'])
-    _addMachinegunKills(new_data)
-
-    old_data = pd.read_csv("data_pre_houseOfWolves.csv")
-    del(old_data['Unnamed: 0'])
-    del(old_data['Unnamed: 0.1'])
-    del(old_data['Unnamed: 0.1.1'])
-
-    new_data = pd.concat([new_data, old_data])
+"""
+END SECTION
+"""
 
 
 if __name__ == "__main__":
@@ -543,8 +502,6 @@ if __name__ == "__main__":
     parser.add_argument("--datafilename", default="datafiles/data.csv")
 
     args = parser.parse_args()    
-
-    print(args)
 
     runBlogProject(start_user=HOOLIGAN_COMMITTEE, 
         num_games=args.num_games, datafilename=args.datafilename)

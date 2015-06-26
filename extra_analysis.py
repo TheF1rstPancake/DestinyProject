@@ -23,7 +23,7 @@ ch.setLevel(logging.INFO)
 filehndlr = logging.FileHandler("log.log")
 filehndlr.setLevel(logging.DEBUG)
 
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(process)d - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(module)s - %(process)d - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 filehndlr.setFormatter(formatter)
 
@@ -85,6 +85,11 @@ class destinyPlot(object):
 			f.write(output)
 
 def objectivesByMap(data):
+	"""
+	Create the graph that shows the average number of objectives winning teams capture per game versus losing teams.
+
+	:param data:	the data from teamData.csv
+	"""
 	logger.info("Building objectives completed per winner and loser")
 
 	groupedByMapStanding = data.groupby(['refrencedId', 'standing'])
@@ -109,6 +114,11 @@ def objectivesByMap(data):
 						)
 
 def getWeaponRatiosByMap(data):
+	"""
+	Build the graph that shows the usage of each weapon type on each map
+
+	:param data:	the data from teamData.csv
+	"""
 	logger.info("Building weapon ratios per map")
 	weaponColumns = [c for c in data.columns if 'weapon' in c and 'Heavy' not in c and 'Secondary' not in c and 'Primary' not in c]
 	groupedByMap = data.groupby('refrencedId')
@@ -131,6 +141,11 @@ def getWeaponRatiosByMap(data):
 
 
 def quittingByMap(data):
+	"""
+	Build the graph that looks at the quit rate by team on each map
+
+	:param data:	the data from teamData.csv
+	"""
 	logger.info("Building quitting rate per map by team")
 	teamKeys = [16, 17]
 	teamKeysToTitles = {16:'Alpha', 17:"Bravo"}

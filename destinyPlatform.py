@@ -20,7 +20,7 @@ ch.setLevel(logging.INFO)
 filehndlr = logging.FileHandler("log.log")
 filehndlr.setLevel(logging.DEBUG)
 
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(process)d - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(module)s - %(process)d - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 filehndlr.setFormatter(formatter)
 
@@ -64,6 +64,7 @@ def upsert(base, key, dictionary):
 def getPvPGame(gameId):
     """
     Get the data for a single PvP game.
+
     :param gameId:  the unique game identifier
     """
     response = requests.get("http://www.bungie.net/platform/Destiny/Stats/PostGameCarnageReport/{0}/".format(gameId))
@@ -107,6 +108,12 @@ def getMembershipID(gamertag, network='XBL', definitions=False):
     return data['Response'][0]['membershipId']
 
 def getCharacters(membershipId, network='XBL'):
+    """
+    Return the character ID and type for all characters for a given user
+
+    :param membershipId:    the unique membership id for a user.  Usually aquired by going :func:`getMembershipID` 
+    """
+
     try:
         character_info = getCharacterInfo(membershipId)
     except NoDataError as e:
@@ -119,11 +126,18 @@ def getCharacters(membershipId, network='XBL'):
 
 
 def getCharacterInfo(membershipId,network='XBL'):
-   response = requests.get("http://www.bungie.net/Platform/Destiny/{0}/Account/{1}/".format(NETWORKS[network],membershipId),
-                           headers=HEADERS)
-   data = response.json()
+    """
+    Get a response from the Account endpoint on the Destint platform.
+    This contains information about the user and all of their characters
 
-   return data
+    :param membershipId:    the unique membership id for a user.  Usually aquired by going :func:`getMembershipID` 
+    """ 
+
+    response = requests.get("http://www.bungie.net/Platform/Destiny/{0}/Account/{1}/".format(NETWORKS[network],membershipId),
+                           headers=HEADERS)
+    data = response.json()
+
+    return data
 
 def getActivityHistory(membershipID, characterID, network="XBL",mode="None",count=25,page=0,definitions=False):
     network = NETWORKS[network]
@@ -137,6 +151,11 @@ def getMostRecentPvPGames(membershipID, characterID, network ="XBL", count = 25,
     """
     Fetch the most recent PVP games for a particular character
     
+    :param membershipID:    the unique membership id for a user.  Usually aquired by going :func:`getMembershipID` 
+    :param characterID:     the unique id for a character for a user.
+    :param network:         the network that the user belongs to.  Defaults to XBL, other option is PSN.
+    :param count:           the number of games we want to fetch
+    :param mode:            the type of games we want to retrieve.  For all valid options go to http://www.bungie.net/platform/Destiny/help/HelpDetail/GET?uri=Stats%2fActivityHistory%2f%7bmembershipType%7d%2f%7bdestinyMembershipId%7d%2f%7bcharacterId%7d%2f
     """
     history = getActivityHistory(membershipID, characterID, mode = mode, count = count)
     
@@ -157,6 +176,7 @@ def getMostRecentPvPGames(membershipID, characterID, network ="XBL", count = 25,
 def getInventoryItemOnline(itemHash):
     """
     Get a weapon's definition using the Destiny Platform REST API rather than the database
+
     .. note::
         this function was created because I was having a problem where item hashes were not being found in the downloaded manifest
         but were valid when passed to the REST API 
@@ -185,6 +205,12 @@ def getItemFromManifest(table, hash):
     return respose
 
 def fetchFile(url, local_filename):
+    """
+    Get a file from a url and save it.
+
+    :param url:                 url containing file
+    :param local_filename:      name of the file you want to save locally
+    """
     r = requests.get(url, stream=True)
     with open(local_filename, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024): 
@@ -206,6 +232,11 @@ def fetchAndUnzip(url):
         raise
 
 def getMapName(hash):
+    """
+    Given a hash for a map, get its name
+
+    :param hash:    hash value that is for a Destiny map
+    """
     url = "http://www.bungie.net/Platform/Destiny/Manifest/activity/{0}".format(int(hash))
     r = requests.get(url)
     if r != 200:
@@ -230,13 +261,20 @@ def fetchManifest():
 
     #check to see if the manifest has updated
     #or if the manifest doesn't exist locally
-    if world_manifest != CONFIG['Manifest'] || local_filename not in os.listdir(config['ManifestDirectory']):
+    if world_manifest != CONFIG['Manifest'] or local_filename not in os.listdir(config['ManifestDirectory']):
         #download new manifest
         url = "http://www.bungie.net{0}".format(world_manifest)
         r = requests.get(url)
         
         if r.status_code != 200:
             raise requests.HTTPError
+
+        #unzip content
+        try:
+            z = zipfile.ZipFile(StringIO.StringIO(r.content))
+            z.extractall(path=CONFIG['ManifestDirectory'])
+        except:
+            raise
 
         #update the manifest in config
         CONFIG['Manifest'] = world_manifest
@@ -246,12 +284,6 @@ def fetchManifest():
         with open("config.yaml", 'w') as f:
                f.write(yaml.dump(CONFIG))
 
-        #unzip content
-        try:
-            z = zipfile.ZipFile(StringIO.StringIO(r.content))
-            z.extractall(path=CONFIG['ManifestDirectory'])
-        except:
-            raise
 
     return local_filename
 
