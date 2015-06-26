@@ -35341,3 +35341,138 @@
 2015-06-04 20:51:24,614 - DestinyBlogProject - 4168 - INFO - Grabbing game 2536570877; 715 out of 715
 2015-06-04 20:51:26,313 - DestinyBlogProject - 5296 - INFO - Data fetched in 1191.85699987 seconds
 2015-06-04 20:51:26,313 - DestinyBlogProject - 5296 - INFO - Building dataframe from chunks and writing to file
+2015-06-24 21:47:42,358 - __main__ - 5424 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:47:45,223 - __parents_main__ - 7584 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:47:45,227 - __parents_main__ - 1876 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:47:45,246 - __parents_main__ - 5136 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:47:45,283 - __parents_main__ - 7272 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:47:46,394 - __parents_main__ - 7272 - INFO - Using game 2402454176
+2015-06-24 21:47:46,407 - __parents_main__ - 1876 - INFO - Using game 2847995350
+2015-06-24 21:47:46,433 - __parents_main__ - 7272 - INFO - Games: 0
+2015-06-24 21:47:46,434 - __parents_main__ - 1876 - INFO - Games: 0
+2015-06-24 21:47:46,456 - __parents_main__ - 7584 - INFO - Using game 2864468888
+2015-06-24 21:47:46,457 - __parents_main__ - 5136 - INFO - Using game 2729655349
+2015-06-24 21:47:46,470 - __parents_main__ - 5136 - INFO - Games: 0
+2015-06-24 21:47:46,473 - __parents_main__ - 7584 - INFO - Games: 0
+2015-06-24 21:47:47,125 - __parents_main__ - 7272 - INFO - Using game 2716943009
+2015-06-24 21:47:47,144 - __parents_main__ - 7272 - INFO - Games: 1
+2015-06-24 21:47:47,832 - __parents_main__ - 7272 - INFO - Using game 2814587997
+2015-06-24 21:47:47,835 - __parents_main__ - 1876 - INFO - Using game 2864028733
+2015-06-24 21:47:47,851 - __parents_main__ - 1876 - INFO - Games: 1
+2015-06-24 21:47:47,854 - __parents_main__ - 7272 - INFO - Games: 2
+2015-06-24 21:47:48,318 - __parents_main__ - 5136 - INFO - Using game 2855905798
+2015-06-24 21:47:48,332 - __parents_main__ - 5136 - INFO - Games: 1
+2015-06-24 21:47:48,634 - __parents_main__ - 1876 - WARNING - Game 2864028733 already logged! Looking for another game!
+2015-06-24 21:47:48,634 - __parents_main__ - 1876 - INFO - Fetching 2 games
+2015-06-24 21:47:48,875 - __parents_main__ - 7272 - INFO - Using game 2814823050
+2015-06-24 21:47:48,891 - __parents_main__ - 7272 - INFO - Games: 3
+2015-06-24 21:47:49,387 - __parents_main__ - 5136 - WARNING - Game 2855905798 already logged! Looking for another game!
+2015-06-24 21:47:49,387 - __parents_main__ - 5136 - INFO - Fetching 2 games
+2015-06-24 21:47:49,444 - __parents_main__ - 7272 - INFO - Using game 2834034720
+2015-06-24 21:47:49,463 - __parents_main__ - 7272 - INFO - Games: 4
+2015-06-24 21:47:49,940 - __parents_main__ - 7272 - INFO - Using game 2864808301
+2015-06-24 21:47:49,956 - __parents_main__ - 7272 - INFO - Games: 5
+2015-06-24 21:47:50,055 - __parents_main__ - 5136 - INFO - Sucessfully retrieved 2 games
+2015-06-24 21:47:50,055 - __parents_main__ - 5136 - INFO - Using game 2838992085
+2015-06-24 21:47:50,075 - __parents_main__ - 5136 - INFO - Games: 2
+2015-06-24 21:47:50,440 - __parents_main__ - 7584 - INFO - Using game 2864764826
+2015-06-24 21:47:50,457 - __parents_main__ - 7584 - INFO - Games: 1
+2015-06-24 21:47:50,821 - __parents_main__ - 7272 - INFO - Using game 2851279300
+2015-06-24 21:47:50,828 - __parents_main__ - 1876 - INFO - Sucessfully retrieved 2 games
+2015-06-24 21:47:50,829 - __parents_main__ - 1876 - INFO - Using game 2863951545
+2015-06-24 21:47:50,839 - __parents_main__ - 7272 - INFO - Games: 6
+2015-06-24 21:47:50,848 - __parents_main__ - 1876 - INFO - Games: 2
+2015-06-24 21:47:51,003 - __parents_main__ - 7584 - INFO - Using game 2864795380
+2015-06-24 21:47:51,017 - __parents_main__ - 7584 - INFO - Games: 2
+2015-06-24 21:47:51,285 - __parents_main__ - 5136 - INFO - Using game 2766096836
+2015-06-24 21:47:51,301 - __parents_main__ - 5136 - INFO - Games: 3
+2015-06-24 21:47:51,788 - __parents_main__ - 7584 - WARNING - Game 2864795380 already logged! Looking for another game!
+2015-06-24 21:47:51,788 - __parents_main__ - 7584 - INFO - Fetching 2 games
+2015-06-24 21:47:52,743 - __parents_main__ - 1876 - INFO - Using game 2864107476
+2015-06-24 21:47:52,760 - __parents_main__ - 1876 - INFO - Games: 3
+2015-06-24 21:47:53,223 - __parents_main__ - 7272 - INFO - Using game 2864323544
+2015-06-24 21:47:53,240 - __parents_main__ - 7272 - INFO - Games: 7
+2015-06-24 21:47:53,403 - __parents_main__ - 7584 - INFO - Sucessfully retrieved 2 games
+2015-06-24 21:47:53,404 - __parents_main__ - 7584 - INFO - Using game 2864718037
+2015-06-24 21:47:53,424 - __parents_main__ - 7584 - INFO - Games: 3
+2015-06-24 21:47:53,470 - __parents_main__ - 5136 - INFO - Using game 2840939545
+2015-06-24 21:47:53,486 - __parents_main__ - 5136 - INFO - Games: 4
+2015-06-24 21:47:53,779 - __parents_main__ - 1876 - INFO - Using game 2864172214
+2015-06-24 21:47:53,793 - __parents_main__ - 1876 - INFO - Games: 4
+2015-06-24 21:47:54,134 - __parents_main__ - 7272 - INFO - Using game 2864484136
+2015-06-24 21:47:54,161 - __parents_main__ - 7272 - INFO - Games: 8
+2015-06-24 21:47:54,434 - __parents_main__ - 7584 - INFO - Using game 2811401712
+2015-06-24 21:47:54,448 - __parents_main__ - 7584 - INFO - Games: 4
+2015-06-24 21:47:54,506 - __parents_main__ - 5136 - INFO - Using game 2841020657
+2015-06-24 21:47:54,523 - __parents_main__ - 5136 - INFO - Games: 5
+2015-06-24 21:47:54,756 - __parents_main__ - 7272 - INFO - Using game 2766501280
+2015-06-24 21:47:54,776 - __parents_main__ - 7272 - INFO - Games: 9
+2015-06-24 21:47:54,868 - __parents_main__ - 1876 - INFO - Using game 2864622423
+2015-06-24 21:47:54,884 - __parents_main__ - 1876 - INFO - Games: 5
+2015-06-24 21:47:55,431 - __parents_main__ - 7272 - INFO - Using game 2864744288
+2015-06-24 21:47:55,447 - __parents_main__ - 7272 - INFO - Games: 10
+2015-06-24 21:47:55,460 - __parents_main__ - 5136 - WARNING - Game 2841020657 already logged! Looking for another game!
+2015-06-24 21:47:55,460 - __parents_main__ - 5136 - INFO - Fetching 2 games
+2015-06-24 21:47:55,493 - __parents_main__ - 1876 - INFO - Using game 2864775970
+2015-06-24 21:47:55,516 - __parents_main__ - 1876 - INFO - Games: 6
+2015-06-24 21:47:55,562 - __parents_main__ - 7584 - INFO - Using game 2754979880
+2015-06-24 21:47:55,588 - __parents_main__ - 7584 - INFO - Games: 5
+2015-06-24 21:47:56,346 - __parents_main__ - 5136 - INFO - Sucessfully retrieved 2 games
+2015-06-24 21:47:56,348 - __parents_main__ - 5136 - WARNING - Game 2840939545 already logged! Looking for another game!
+2015-06-24 21:47:56,348 - __parents_main__ - 5136 - INFO - Fetching 3 games
+2015-06-24 21:47:56,576 - __parents_main__ - 7584 - INFO - Using game 2773945946
+2015-06-24 21:47:56,592 - __parents_main__ - 7584 - INFO - Games: 6
+2015-06-24 21:47:57,354 - __parents_main__ - 5136 - INFO - Sucessfully retrieved 3 games
+2015-06-24 21:47:57,355 - __parents_main__ - 5136 - INFO - Using game 2840847737
+2015-06-24 21:47:57,372 - __parents_main__ - 5136 - INFO - Games: 6
+2015-06-24 21:47:57,742 - __parents_main__ - 7584 - INFO - Using game 2856163731
+2015-06-24 21:47:57,759 - __parents_main__ - 7584 - INFO - Games: 7
+2015-06-24 21:47:58,088 - __parents_main__ - 7272 - INFO - Using game 2864804083
+2015-06-24 21:47:58,105 - __parents_main__ - 7272 - INFO - Games: 11
+2015-06-24 21:47:58,358 - __parents_main__ - 7272 - ERROR - NoDataError
+Traceback (most recent call last):
+  File "C:\Users\Giovanni\Documents\DestinyProject\DestinyBlogProject.py", line 51, in getGame
+    most_recent = destiny.getMostRecentPvPGames(membershipId,character['characterBase']['characterId'],count = games_to_fetch, mode='Control')
+  File "C:\Users\Giovanni\Documents\DestinyProject\destinyPlatform.py", line 165, in getMostRecentPvPGames
+    raise NoDataError("Data not found in activity history for character {0}".format(characterID))
+NoDataError: Data not found in activity history for character 2305843009271066033
+2015-06-24 21:47:58,361 - __parents_main__ - 7272 - WARNING - Recieved no data error for 4611686018431655243.  Trying again with different player
+2015-06-24 21:47:58,362 - __parents_main__ - 7272 - INFO - Picking new random starting point from frame: 2
+2015-06-24 21:47:58,438 - __parents_main__ - 1876 - INFO - Using game 2843204975
+2015-06-24 21:47:58,454 - __parents_main__ - 1876 - INFO - Games: 7
+2015-06-24 21:47:58,770 - __parents_main__ - 5136 - INFO - Using game 2862912430
+2015-06-24 21:47:58,790 - __parents_main__ - 5136 - INFO - Games: 7
+2015-06-24 21:47:58,815 - __parents_main__ - 7584 - INFO - Using game 2864316061
+2015-06-24 21:47:58,832 - __parents_main__ - 7584 - INFO - Games: 8
+2015-06-24 21:47:59,111 - __parents_main__ - 1876 - INFO - Using game 2864814750
+2015-06-24 21:47:59,127 - __parents_main__ - 1876 - INFO - Games: 8
+2015-06-24 21:47:59,562 - __parents_main__ - 5136 - INFO - Using game 2862982831
+2015-06-24 21:47:59,578 - __parents_main__ - 5136 - INFO - Games: 8
+2015-06-24 21:47:59,832 - __parents_main__ - 1876 - WARNING - Game 2864814750 already logged! Looking for another game!
+2015-06-24 21:47:59,832 - __parents_main__ - 1876 - INFO - Fetching 2 games
+2015-06-24 21:47:59,845 - __parents_main__ - 7584 - INFO - Using game 2847880335
+2015-06-24 21:47:59,861 - __parents_main__ - 7584 - INFO - Games: 9
+2015-06-24 21:47:59,872 - __parents_main__ - 7272 - INFO - Using game 2791735709
+2015-06-24 21:47:59,888 - __parents_main__ - 7272 - INFO - Games: 12
+2015-06-24 21:48:00,437 - __parents_main__ - 7584 - INFO - Using game 2831390064
+2015-06-24 21:48:00,453 - __parents_main__ - 7584 - INFO - Games: 10
+2015-06-24 21:48:00,654 - __parents_main__ - 5136 - INFO - Using game 2731252970
+2015-06-24 21:48:00,661 - __parents_main__ - 1876 - INFO - Sucessfully retrieved 2 games
+2015-06-24 21:48:00,664 - __parents_main__ - 1876 - INFO - Using game 2864746172
+2015-06-24 21:48:00,677 - __parents_main__ - 5136 - INFO - Games: 9
+2015-06-24 21:48:00,686 - __parents_main__ - 1876 - INFO - Games: 9
+2015-06-24 21:48:02,459 - __parents_main__ - 4444 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:02,523 - __parents_main__ - 6672 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:02,619 - __parents_main__ - 3916 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:02,696 - __parents_main__ - 8108 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:06,177 - __parents_main__ - 5708 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:06,177 - __parents_main__ - 4984 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:06,200 - __parents_main__ - 5700 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:09,451 - __parents_main__ - 5504 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:09,480 - __parents_main__ - 5372 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:48:09,510 - __parents_main__ - 5136 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:57:02,299 - __main__ - 3540 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:57:06,263 - __parents_main__ - 4660 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:57:06,302 - __parents_main__ - 7276 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:57:06,368 - __parents_main__ - 2824 - INFO - LIBRARY LOADED---------------------------------
+2015-06-24 21:57:06,394 - __parents_main__ - 6524 - INFO - LIBRARY LOADED---------------------------------
