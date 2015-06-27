@@ -4,9 +4,10 @@ import json
 import os
 import numpy as np
 import jinja2
+import logging
+import sys
 
-
-FULL_PLOT_HTML_DIRECTORY = os.path.join("..","gh-pages","fullPlots")
+FULL_PLOT_HTML_DIRECTORY = os.path.join("gh-pages","fullPlots")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
 FULL_PLOT_JSON_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "datafiles")
 
@@ -276,6 +277,27 @@ def weaponsByClass(data):
 			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
 			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
+
+def orbsGeneratedVersusSuperKills(data):
+	logger.info("Graph to compare each class and their ability to produce orbs per super kill")
+
+	data = data[data['characterClass'] != 0]
+	groupByClass = data.groupby("characterClass")
+
+	orbsVsSuper = [{'key': 'Classes',
+					'values': [{
+							'x' : c,
+							'y' : (groupByClass.get_group(c)['orbsDropped']/(groupByClass.get_group(c)['weaponKillsSuper'] + groupByClass.get_group(c)['weaponKillsRelic'])).sum()
+						} for c in groupByClass.groups.keys()]
+					}]
+	graph = destinyPlot(orbsVsSuper, 
+						"Orb Generated per Super Kill for each Class",
+						"orbsVsSuper",
+						FULL_PLOT_HTML_DIRECTORY,
+						"A look at each class's ability to produce orbs",
+						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
+						jsFilePath = FULL_PLOT_JS_DIRECTORY,
+						)
 
 def scorePerKill(data):
 	logger.info("Building score per kill")
