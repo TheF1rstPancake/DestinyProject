@@ -9,11 +9,11 @@ import multiprocessing
 import time
 
 logging.getLogger("requests").setLevel(logging.WARNING)
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(process)d - %(levelname)s - %(message)s')
+
 
 if 'ch' not in logger.handlers:
     ch = logging.StreamHandler(sys.stdout)
@@ -28,7 +28,6 @@ if 'filehandler' not in logger.handlers:
     filehndlr.setLevel(logging.DEBUG)
     filehndlr.setFormatter(formatter)
     logger.addHandler(filehndlr)
-
 logger.info('LIBRARY LOADED---------------------------------\n')
 
 HOOLIGAN_COMMITTEE = ["Jalepeno112","lil spoon 219", 
@@ -388,8 +387,8 @@ def _addFeatureMultiProcess(game_data, func, **kwargs):
 
     #group the dataframe by map to make for nice chunks of data
     #then place each chunk in a list so we can iterate over it
-    groupByMap = game_data.groupby('refrencedId')
-    game_list = [game for name, game in groupByMap]
+    groupByClass = game_data.groupby('characterClass')
+    game_list = [game for _, game in groupByClass]
 
     update_games = p.map(func, game_list)
     
@@ -437,6 +436,32 @@ def _addMissingWeapons(game_data):
         count = count + 1
     game_data.to_csv("data_post_houseOfWolvesUpdate.csv", encoding='utf-8')
 
+def _addPrimarySecondaryHeavy(game_data):
+    game_data['PrimaryWeapon'] = 'None'
+    game_data['SecondaryWeapon'] = 'None'
+    game_data['HeavyWeapon'] = 'None'
+
+
+    primaryColumns = ['weaponKillsScoutRifle', 'weaponKillsAutoRifle', 'weaponKillsPulseRifle', 'weaponKillsHandCannon']
+    secondaryColumns = ['weaponKillsSideArm', 'weaponKillsShotgun', 'weaponKillsSniper', 'weaponKillsFusion']
+    heavyColumns = ['weaponKillsRocketLauncher', 'weaponKillsMachineGun']
+
+    rows = game_data.iterrows()
+    count = 0
+    total_games = len(game_data)
+    logger.info("Starting to analyze {0} games".format(total_games))
+    for i, row in rows:
+        logger.info("Analyzing {0:.2f}".format(float(count)/total_games))
+        if len(row[primaryColumns][row[primaryColumns] == 0]) != len(primaryColumns):
+            game_data.ix[i, 'PrimaryWeapon'] = row[primaryColumns].idxmax(1).replace('weaponKills','')
+
+        if len(row[secondaryColumns][row[secondaryColumns] == 0]) != len(secondaryColumns):
+            game_data.ix[i, 'SecondaryWeapon'] = row[secondaryColumns].idxmax(1).replace("weaponKills",'')
+
+        if len(row[heavyColumns][row[heavyColumns] == 0]) != len(heavyColumns):
+            game_data.ix[i, 'HeavyWeapon'] = row[heavyColumns].idxmax(1).replace("weaponKills",'')
+        count = count + 1
+    return game_data
 
 def _addZonesNeutralized(game_data):
     game_data['zonesNeutralized'] = 0

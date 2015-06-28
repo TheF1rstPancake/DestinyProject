@@ -7,7 +7,7 @@ import jinja2
 import logging
 import sys
 
-FULL_PLOT_HTML_DIRECTORY = os.path.join("gh-pages","fullPlots")
+FULL_PLOT_HTML_DIRECTORY = os.path.join("fullPlots")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
 FULL_PLOT_JSON_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "datafiles")
 
@@ -21,12 +21,7 @@ logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
 ch.setLevel(logging.INFO)
 
-filehndlr = logging.FileHandler("log.log")
-filehndlr.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter('%(asctime)s - %(module)s - %(process)d - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-filehndlr.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 class destinyPlot(object):
@@ -281,13 +276,13 @@ def weaponsByClass(data):
 def orbsGeneratedVersusSuperKills(data):
 	logger.info("Graph to compare each class and their ability to produce orbs per super kill")
 
-	data = data[data['characterClass'] != 0]
+	data = data[data['characterClass'] != '0']
 	groupByClass = data.groupby("characterClass")
 
 	orbsVsSuper = [{'key': 'Classes',
 					'values': [{
 							'x' : c,
-							'y' : (groupByClass.get_group(c)['orbsDropped']/(groupByClass.get_group(c)['weaponKillsSuper'] + groupByClass.get_group(c)['weaponKillsRelic'])).sum()
+							'y' : float(groupByClass.get_group(c)['orbsDropped'].sum()/(groupByClass.get_group(c)['weaponKillsSuper'] + groupByClass.get_group(c)['weaponKillsRelic']).sum())
 						} for c in groupByClass.groups.keys()]
 					}]
 	graph = destinyPlot(orbsVsSuper, 
@@ -298,6 +293,56 @@ def orbsGeneratedVersusSuperKills(data):
 						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
 						jsFilePath = FULL_PLOT_JS_DIRECTORY,
 						)
+
+def weaponPairings(data):
+	logger.info("Graph to show frequency of weapon pairings")
+
+	data = data[(data['PrimaryWeapon'] != 'None') & (data['SecondaryWeapon'] != 'None')]
+
+	groupByPrimary = data.groupby(["PrimaryWeapon",'SecondaryWeapon'])
+	secondaryColumns = ['FusionRifle', 'Sniper', 'SideArm', 'Shotgun']
+	primaryColumns = ['PulseRifle','HandCannon', 'ScoutRifle', 'AutoRifle']
+
+	total = len(data)
+
+	weaponPairingsGlobal = [{'key':s,
+						'values': [{
+							'x' : p,
+							'y': float(len(groupByPrimary.get_group((p,s))))/total
+						} for p in primaryColumns]
+					} for s in secondaryColumns]
+	graph = destinyPlot(weaponPairingsGlobal, 
+						"Frequency of Primary/Secondary Weapon Pairings",
+						"weaponPairings",
+						FULL_PLOT_HTML_DIRECTORY,
+						"A look at how primary and secondary weapons are paired together by weapon type",
+						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
+						jsFilePath = FULL_PLOT_JS_DIRECTORY,
+						plotText = 'This graph uses a subset of the data where players had registered kills with both primary and secondary weapons.'+
+									'Each colored bar represents the frequency of that pairing in the <strong>entire</strong> subset'
+						)
+
+	groupByPrimary = data.groupby("PrimaryWeapon")
+	weaponPairingsLocal = [{'key':s,
+						'values': [{
+							'x' : p,
+							'y': float(len(groupByPrimary.get_group(p)[groupByPrimary.get_group(p)['SecondaryWeapon'] == s]))/len(groupByPrimary.get_group(p))
+						} for p in primaryColumns]
+					} for s in secondaryColumns]
+	graph = destinyPlot(weaponPairingsLocal, 
+						"Frequency of Secondary Weapons with Primary Weapons",
+						"primarySecondary",
+						FULL_PLOT_HTML_DIRECTORY,
+						"A look at how secondary weapons are paired primary weapons",
+						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
+						jsFilePath = FULL_PLOT_JS_DIRECTORY,
+						plotText = 'This graph uses a subset of the data where players had registered kills with both primary and secondary weapons. '+
+										'Each colored bar represents the frequency that the given secondary is used with that primary. ' +
+										"It should be read as 'x percent of players who use this primary use this secondary.' "
+										'This makes each bar out of 100%. '
+						)
+
+
 
 def scorePerKill(data):
 	logger.info("Building score per kill")
@@ -459,6 +504,8 @@ if __name__ == "__main__":
 	victoryRateByWeapon(teamData)
 	neutralizedVersusCaptured(teamData)
 	dominationByMap(teamData)
+	weaponPairings(data)
+	orbsGeneratedVersusSuperKills(data)
 
 	#write to index html file
 	template = jinja2_env.get_template(os.path.join('index.html'))
