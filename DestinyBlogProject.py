@@ -34,7 +34,7 @@ HOOLIGAN_COMMITTEE = ["Jalepeno112","lil spoon 219",
                      "ArcticSupremecy", "sunnyD7768",
                      "BigBadCarp","InfernoMatrix","StangbroZ"]
 
-def getGame(membershipId, uniqueGameIds=[]):
+def getGame(membershipId, uniqueGameIds=[], mode='Control'):
     start_user_characters = destiny.getCharacterInfo(membershipId)
     character_info = start_user_characters['Response']['data']['characters']
     
@@ -90,7 +90,7 @@ def getGame(membershipId, uniqueGameIds=[]):
             logger.info("Fetching {0} games".format(games_to_fetch))
             more_games = destiny.getMostRecentPvPGames(membershipId,
                                                    character['characterBase']['characterId'],
-                                                   count = games_to_fetch, mode='Control')    
+                                                   count = games_to_fetch, mode=mode)    
         except destiny.BadRequestError as e:
             logger.exception('BadRequestError')
             raise e
