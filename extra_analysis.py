@@ -6,6 +6,7 @@ import numpy as np
 import jinja2
 import logging
 import sys
+from nvd3py import lineChart, multiBarChart, discreteBarChart
 
 FULL_PLOT_HTML_DIRECTORY = os.path.join("fullPlots")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
@@ -93,7 +94,7 @@ def objectivesByMap(data):
 	victoryToString ={0:"Winners",1:"Losers"}
 	mapDict = {h:destiny.getMapName(h) for h,_ in groupedByMapStanding.groups.keys()}
 
-	objectivesCompleted = [{'key':victoryToString[v], 
+	"""objectivesCompleted = [{'key':victoryToString[v], 
 						'values': [{
 							'x': mapDict[map],
 							'y': float(groupedByMapStanding.get_group((map, v))['objectivesCompleted'].mean())
@@ -108,6 +109,192 @@ def objectivesByMap(data):
 						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
 						jsFilePath = FULL_PLOT_JS_DIRECTORY,
 						)
+	"""
+	graph = lineChart(name="objectivesByMap", x_is_date=False)
+	x = mapDict.values()
+	ySeries = [{"name":victoryToString[v], "data": float(groupedByMapStanding.get_group((map, v))['objectivesCompleted'].mean())} for map,v in groupedByMapStanding.keys()]  
+
+	for series in ySeries:
+		graph.add_serie(y=series['data'], x=x, name=series['name'])
+
+	graph.buildContent()
+	with open(os.path.join(FULL_PLOT_JS_DIRECTORY, "objectivesComplete.js")) as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY,graph.name), 'w') as f:
+		f.write(output)
+
+	
+def averageKillsPerMinute(data):
+	"""
+	Build a graph showing the average kills per minute on each map.
+	"""
+	logger.info("Average Kills Per Minute")
+
+	groupedByMap = data.groupby("refrencedId")
+
+	mapDict = {h:destiny.getMapName(h) for h in groupedByMap.groups.keys()}
+
+	groupedByMap = data.groupby(("refrencedId","gameId"))
+
+	totalKillsOnEachMap = {}
+	totalTimeOnEachMap = {}
+
+	for map, game in groupedByMap.groups.keys():
+		totalKillsOnEachMap[mapDict[map]] = totalKillsOnEachMap.get(mapDict[map],0.0) + groupedByMap.get_group((map,game))['kills'].sum()
+		totalTimeOnEachMap[mapDict[map]] = totalTimeOnEachMap.get(mapDict[map],0.0) + groupedByMap.get_group((map,game))['activityDurationSeconds'].max()
+
+	print(totalKillsOnEachMap)
+	print(totalTimeOnEachMap)
+
+	"""averageKillsPerMinute = {"key":"averageKillsPerMinute",
+							"values": [{
+										"x":mapDict[map],
+										"y":float(((groupedByMap.get_group(map)['kills']/groupedByMap.get_group(map)['activityDurationSeconds']) *60).mean())
+									}for map in groupedByMap.groups.keys()]
+							}"""
+
+
+	graph = discreteBarChart(
+				name="KillsPerMinute",
+				key= 'KillsPerMinute',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				#use_interactive_guideline = True,
+				title="Kills Per Minute on Each Map",
+				resize=True,
+				margin_bottom = 100,
+				)
+
+	graph.width = "$('#"+graph.divTitle+"').width()"
+	y = [(float(totalKillsOnEachMap[map])/totalTimeOnEachMap[map]) *60.0 for map in sorted(list(mapDict.values()))]
+	x = sorted(list(mapDict.values()))
+
+	graph.add_serie(x=x, y=y, name="Kills Per Minute")
+	graph.create_y_axis("yAxis", "Kills Per Minute", format=".3f")
+	graph.create_x_axis("xAxis", "Map Name", extras={"rotateLabels":-25})
+	graph.buildcontent()
+
+	with open(graph.fullJS, 'w') as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+		f.write(output)
+
+
+	"""
+
+	#totalKillsOnEachMap = {map:groupedByMap.get_group(map)['kills'].sum() for map in groupedByMap.groups.keys()}
+	#totalTimeOnEachMap = {map:groupedByMap.get_group(map)['activityDurationSeconds'].sum() for map in groupedByMap.groups.keys()}
+	#y = [float(((groupedByMap.get_group(map)['kills']/groupedByMap.get_group(map)['activityDurationSeconds']) *60 * len(groupedByMap.get_group(map))).mean() )
+	#								for map in groupedByMap.groups.keys()]
+
+	averageKillsPerMinute = {"key":"averageKillsPerMinute",
+								"values":[{
+									"x":x,
+									"y":y,
+								}]
+							}
+	graph = destinyPlot(averageKillsPerMinute, 
+				"Average Kills Per Minute on Each Map", 
+				"mapAverageKillsPerMinute",
+				FULL_PLOT_HTML_DIRECTORY,
+				"A look at how many kills occur each minute on each map",
+				dataFilePath = FULL_PLOT_JSON_DIRECTORY,
+				jsFilePath = FULL_PLOT_JS_DIRECTORY,
+				plotText="This plot attempts to show that certain maps have a faster style of gameplay than others."
+				)
+	"""
+
+def quitRateByKillsPerMinute(data):
+	logger.info("Quit Rate By Kills Per Minute")
+	groupedByMap = data.groupby("refrencedId")
+
+	mapDict = {h:destiny.getMapName(h) for h in groupedByMap.groups.keys()}
+
+	groupedByMap = data.groupby(("refrencedId","gameId"))
+
+	totalKillsOnEachMap = {}
+	totalTimeOnEachMap = {}
+
+	for map, game in groupedByMap.groups.keys():
+		totalKillsOnEachMap[mapDict[map]] = totalKillsOnEachMap.get(mapDict[map],0.0) + groupedByMap.get_group((map,game))['kills'].sum()
+		totalTimeOnEachMap[mapDict[map]] = totalTimeOnEachMap.get(mapDict[map],0.0) + groupedByMap.get_group((map,game))['activityDurationSeconds'].max()
+
+	groupedByMap = data.groupby("refrencedId")
+
+	quitRateByMap = [{"map":mapDict[map], "quitRate":1.0 - (groupedByMap.get_group(map)['completed'].sum()/float(len(groupedByMap.get_group(map))))} for map in groupedByMap.groups.keys()]
+	killsPerMinute = [{"map":map,"kills":(float(totalKillsOnEachMap[map])/totalTimeOnEachMap[map]) *60.0} for map in list(mapDict.values())]
+
+	quitRateDF = pd.DataFrame.from_records(quitRateByMap)
+	quitRateDF['map'] = quitRateDF['map'].astype(str)
+	quitRateDF.index = quitRateDF['map']
+	del(quitRateDF['map'])
+	killsPerMinuteDF = pd.DataFrame.from_records(killsPerMinute)
+	killsPerMinuteDF['map'] = killsPerMinuteDF['map'].astype(str)
+	killsPerMinuteDF.index = killsPerMinuteDF['map']
+
+	quitRateByKillsPerMinute = pd.concat([quitRateDF, killsPerMinuteDF], axis=1)
+	quitRateByKillsPerMinute.sort(['kills'], ascending=[True], inplace=True)
+
+	killsAsIndex = pd.DataFrame(quitRateByKillsPerMinute)
+	killsAsIndex.index = killsAsIndex['kills']
+
+	graph = lineChart(
+				name="quitRateByKillsPerMinute",
+				key= 'quitRateByKillsPerMinute',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				#use_interactive_guideline = True,
+				title="Quit Rate By Kills Per Minute on Each Map",
+				subtitle = "A look at how kills per minute impacts quit rate",
+				resize=True,
+				height = 450,
+				margin_bottom=100,
+				xOrdinalValues = killsAsIndex['map'].to_dict(),
+				plotText = "The x-axis displays the map name but it is sorted by increasing kills per minute. \
+							The point of this graph is to show that as the kills per minute increases, the quit rate generally decreases."
+		)
+	graph.width = "$('#"+graph.divTitle+"').width()"
+
+	print(killsAsIndex['map'].to_dict())
+
+
+	graph.add_serie(x=quitRateByKillsPerMinute['kills'].values, y=quitRateByKillsPerMinute['quitRate'].values, name="Quit Rate")
+	graph.create_y_axis("yAxis", "Quit Rate", format=".3f")
+	graph.create_x_axis("xAxis", "Kills Per Minute", tickValues = list(quitRateByKillsPerMinute['kills'].values), 
+							format="function(d){return xOrdinal[d];}", custom_format = True, extras={"rotateLabels":-25})
+	graph.buildcontent()
+
+	with open(graph.fullJS, 'w') as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+		f.write(output)
+
+
+
 
 def getWeaponRatiosByMap(data):
 	"""
@@ -166,6 +353,7 @@ def quittingByMap(data):
 					"A look at how often players from each team quit on each map",
 					dataFilePath = FULL_PLOT_JSON_DIRECTORY,
 					jsFilePath = FULL_PLOT_JS_DIRECTORY,
+					plotText="NOTE: stacking this graph does not give an accurate overall quit rate.  The overall quit rates are likely closer to half of the stacked value."
 					)
 
 def neutralizedVersusCaptured(data):
@@ -493,7 +681,7 @@ def victoryRateByWeapon(teamData):
 if __name__ == "__main__":
 	teamData = pd.read_csv("datafiles/teamData.csv")
 	data = pd.read_csv("datafiles/data.csv")
-	getWeaponRatiosByMap(teamData)
+	"""getWeaponRatiosByMap(teamData)
 	objectivesByMap(teamData)
 	quittingByMap(data)
 	victoryByMapAndTeam(teamData)
@@ -505,7 +693,9 @@ if __name__ == "__main__":
 	neutralizedVersusCaptured(teamData)
 	dominationByMap(teamData)
 	weaponPairings(data)
-	orbsGeneratedVersusSuperKills(data)
+	orbsGeneratedVersusSuperKills(data)"""
+	averageKillsPerMinute(data)
+	quitRateByKillsPerMinute(data)
 
 	#write to index html file
 	template = jinja2_env.get_template(os.path.join('index.html'))

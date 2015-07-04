@@ -64,7 +64,7 @@ def groupByTeam(dataFileName):
 			teamDict['gameId'] = game
 			teamDict['team'] = t
 			teamDict['date'] = teamData['date']
-
+			
 			teamDict['standing'] = teamData['standing'].values[0]
 			teamDict['killsDeathsAssists'] = teamData['killsDeathsAssists'].mean()
 			teamDict['killsDeathsRatio'] = teamData['killsDeathsRatio'].mean()
