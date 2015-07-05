@@ -294,6 +294,10 @@ class NVD3Chart(object):
                         self.tooltip_condition_string += stab(0) + "if(key == '" + name + "'){\n" +\
                             stab(6) + "var y = " + _start + " String(e) " + _end + ";\n" +\
                             stab(5) + "}\n"
+                    elif self.model == "scatterChart":
+                         self.tooltip_condition_string += stab(0) + "if(key == '" + name + "'){\n" +\
+                            stab(6) + "var y = " + _start + " String(e) " + _end + ";\n" +\
+                            stab(5) + "}\n"
                     else:
                         self.tooltip_condition_string += stab(5) + "if(key == '" + name + "'){\n" +\
                             stab(6) + "var y = " + _start + " String(graph.point.y) " + _end + ";\n" +\

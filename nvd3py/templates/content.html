@@ -63,10 +63,20 @@
                 {% if chart.model == 'pieChart' %}
                     {% block pietooltip %}
                     {% endblock pietooltip %}
+                {% elif chart.model=='scatterChart' %}
+                    chart.tooltipContent(function(key, y, e, graph) {
+                        var x = String(y);
+                        var y = String(e);
+
+                        {{ chart.tooltip_condition_string }}
+                        tooltip_str = '<center><b>'+key+'</b></center>' + y + ' at ' + x;
+                        return tooltip_str;
+                    });
                 {% else %}
                     chart.tooltipContent(function(key, y, e, graph) {
                         var x = String(graph.point.x);
                         var y = String(graph.point.y);
+
                         {{ chart.tooltip_condition_string }}
                         tooltip_str = '<center><b>'+key+'</b></center>' + y + ' at ' + x;
                         return tooltip_str;
