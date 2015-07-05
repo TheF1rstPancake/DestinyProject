@@ -4,9 +4,9 @@
 
 
             nv.addGraph(function() {
-            var chart = nv.models.lineChart();
+            var chart = nv.models.scatterChart();
 
-            chart.margin({top: 30, right: 60, bottom: 100, left: 60});
+            chart.margin({top: 30, right: 60, bottom: 50, left: 60});
 
             var datum = data_quitRateByKillsPerMinute;
 
@@ -15,7 +15,7 @@
 
                 var width = $('#quitRateByKillsPerMinute').width() - 60 - 60;
                 chart.width(width);
-                var height = 450 - 30 - 100;
+                var height = 450 - 30 - 50;
                 chart.height(height);
 
 
@@ -24,7 +24,20 @@
                 chart.xAxis
                 .rotateLabels(-25)                .axisLabel('Kills Per Minute')                .tickValues([11.119063657797238, 11.613985026549194, 13.529674003900809, 14.268308231054295, 14.674723192997355, 15.341141402550811, 15.354244099526236, 16.445414284267418, 16.727286365080051, 17.513573875660313, 17.54350021513239, 17.665189122077127, 18.136910531510942, 18.309516006112609, 18.504227077516017, 18.945200055645326])                .tickFormat(function(d){return xOrdinal[d];});
             chart.yAxis
-                .axisLabel('Quit Rate')                .tickFormat(d3.format(',.3f'));
+                .axisLabel('Quit Rate')                .tickFormat(d3.format(',.2%'));
+
+
+                        chart.tooltipContent(function(key, y, e, graph) {
+                        var x = String(y);
+                        var y = String(e);
+
+                        if(key == 'Quit Rate'){
+                        var y = 'Quit Rate: ' +  String(e) ;
+                    }
+
+                        tooltip_str = '<center><b>'+key+'</b></center>' + y + ' at ' + x;
+                        return tooltip_str;
+                    });
 
 
 
@@ -38,11 +51,17 @@
 
 
 
+
+    chart
+        .showDistX(true)
+        .showDistY(true)
+        .color(d3.scale.category10().range());
+
             d3.select('#quitRateByKillsPerMinute svg')
             .datum(datum)
             .transition().duration(500)
             .attr('width', (width + 60 + 60) )
-            .attr('height', (height + 30 + 100))
+            .attr('height', (height + 30 + 50))
             .call(chart);
 
 
