@@ -6,7 +6,7 @@ import numpy as np
 import jinja2
 import logging
 import sys
-from nvd3py import lineChart, multiBarChart, discreteBarChart
+from nvd3py import lineChart, multiBarChart, discreteBarChart, scatterChart
 
 FULL_PLOT_HTML_DIRECTORY = os.path.join("fullPlots")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
@@ -254,7 +254,7 @@ def quitRateByKillsPerMinute(data):
 	killsAsIndex = pd.DataFrame(quitRateByKillsPerMinute)
 	killsAsIndex.index = killsAsIndex['kills']
 
-	graph = lineChart(
+	graph = scatterChart(
 				name="quitRateByKillsPerMinute",
 				key= 'quitRateByKillsPerMinute',
 				js_path = "javascripts",
@@ -264,21 +264,22 @@ def quitRateByKillsPerMinute(data):
 				subtitle = "A look at how kills per minute impacts quit rate",
 				resize=True,
 				height = 450,
-				margin_bottom=100,
+				margin_bottom=50,
 				xOrdinalValues = killsAsIndex['map'].to_dict(),
 				plotText = "The x-axis displays the map name but it is sorted by increasing kills per minute. \
 							The point of this graph is to show that as the kills per minute increases, the quit rate generally decreases."
 		)
 	graph.width = "$('#"+graph.divTitle+"').width()"
 
-	print(killsAsIndex['map'].to_dict())
-
-
-	graph.add_serie(x=quitRateByKillsPerMinute['kills'].values, y=quitRateByKillsPerMinute['quitRate'].values, name="Quit Rate")
-	graph.create_y_axis("yAxis", "Quit Rate", format=".3f")
+	extra_serie = {"tooltip":{"y_start":"Quit Rate: ", "y_end":""}}
+	graph.add_serie(x=quitRateByKillsPerMinute['kills'].values, y=quitRateByKillsPerMinute['quitRate'].values, name="Quit Rate", extra=extra_serie)
+	graph.create_y_axis("yAxis", "Quit Rate", format=".2%")
 	graph.create_x_axis("xAxis", "Kills Per Minute", tickValues = list(quitRateByKillsPerMinute['kills'].values), 
 							format="function(d){return xOrdinal[d];}", custom_format = True, extras={"rotateLabels":-25})
 	graph.buildcontent()
+
+	print('GRAPH: {0}'.format(graph.__dict__))
+
 
 	with open(graph.fullJS, 'w') as f:
 		f.write(graph.htmlcontent)
@@ -693,8 +694,8 @@ if __name__ == "__main__":
 	neutralizedVersusCaptured(teamData)
 	dominationByMap(teamData)
 	weaponPairings(data)
-	orbsGeneratedVersusSuperKills(data)"""
-	averageKillsPerMinute(data)
+	orbsGeneratedVersusSuperKills(data)
+	averageKillsPerMinute(data)"""
 	quitRateByKillsPerMinute(data)
 
 	#write to index html file
