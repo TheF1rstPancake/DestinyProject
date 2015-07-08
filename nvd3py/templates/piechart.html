@@ -11,12 +11,20 @@
         chart.margin({top: {{ chart.margin_top }}, right: {{ chart.margin_right }}, bottom: {{ chart.margin_bottom }}, left: {{ chart.margin_left }}});
         var datum = data_{{ chart.name }}[0].values;
 
-    chart.tooltipContent(function(key, y, e, graph) {
+    {% block size %}
+        {{super()}}
+    {% endblock size%}
+
+    {# chart.tooltipContent(function(key, y, e, graph) {
           var x = String(key);
               {{ chart.tooltip_condition_string }}
               tooltip_str = '<center><b>'+x+'</b></center>' + y;
               return tooltip_str;
-              });
+              }); #}
+    {# {% block tooltip %}
+        {{ super() }}
+    {% endblock tooltip %} #}
+    
     {# showLabels only supported in pieChart #}
         chart.showLabels({{chart.show_labels|lower}});
 

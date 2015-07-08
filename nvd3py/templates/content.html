@@ -125,10 +125,10 @@
             .datum(datum)
             .transition().duration(500)
             {% if chart.width %}
-            .attr('width', (width + {{chart.margin_left}} + {{chart.margin_right}}) )
+            .attr('width', {{chart.width}})
             {% endif %}
             {% if chart.height %}
-            .attr('height', (height + {{chart.margin_top}} + {{chart.margin_bottom}}))
+            .attr('height', {{chart.height}})
             {% endif %}
             .call(chart);
     {% endblock inject %}

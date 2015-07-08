@@ -6,7 +6,7 @@ import numpy as np
 import jinja2
 import logging
 import sys
-from nvd3py import lineChart, multiBarChart, discreteBarChart, scatterChart
+from nvd3py import *
 
 FULL_PLOT_HTML_DIRECTORY = os.path.join("fullPlots")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
@@ -80,6 +80,52 @@ class destinyPlot(object):
 
 		with open(self.htmlFileLocation, 'w') as f:
 			f.write(output)
+
+def classUsage(data):
+	"""
+	Create a graph that shows the usage of each class
+	"""
+
+	data = data[data['characterClass'] != '0']
+	groupByClass = data.groupby("characterClass")
+
+
+	graph = discreteBarChart(
+				name="ClassUsage",
+				key= 'ClassUsage',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Class Usage Breakdown",
+				subtitle="A look at how frequently each class is used in Control",
+				resize=True,
+				)	
+	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.height = '450'
+
+	x = groupByClass.groups.keys()
+	y = [len(groupByClass.get_group(key))/float(len(data)) for key in x]
+
+
+	graph.add_serie(y=y, x=x)
+	graph.create_y_axis("yAxis", "Frequency", format=".2%")
+	graph.create_x_axis("xAxis", "Class")
+	
+	graph.buildcontent()
+
+	with open(graph.fullJS, 'w') as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+		f.write(output)
+
+
 
 def objectivesByMap(data):
 	"""
@@ -695,8 +741,9 @@ if __name__ == "__main__":
 	dominationByMap(teamData)
 	weaponPairings(data)
 	orbsGeneratedVersusSuperKills(data)
-	averageKillsPerMinute(data)"""
-	quitRateByKillsPerMinute(data)
+	averageKillsPerMinute(data)
+	quitRateByKillsPerMinute(data)"""
+	classUsage(data)
 
 	#write to index html file
 	template = jinja2_env.get_template(os.path.join('index.html'))
