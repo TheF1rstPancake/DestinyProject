@@ -544,10 +544,10 @@ def weaponPairings(data):
 						FULL_PLOT_HTML_DIRECTORY,
 						"A look at how primary and secondary weapons are paired together",
 						plotText = 'This graph shows  how frenquently weapons are paired together over the <strong>entire</strong> set of data.  '+
-									'The x-axis is primary weapons, and the colors represent different secondary weapons. '+
-									'When hovering over a bar, you should read the frequency as: <em>y</em> percent of players use <em>x</em> and <em>color</em> combo. ' +
-									'For example, 16 percent of players use a Hand Cannon and Shotgun combo. ' +
-									'<strong>None</strong> is for players who go through an entire game without using a primary weapon, but do have registered secondary weapon kills. '
+									'The x-axis is primary weapons, and the colors represent different secondary weapons.  '+
+									'When hovering over a bar, you should read the frequency as: <em>y</em> percent of players use <em>x</em> and <em>color</em> combo.  ' +
+									'For example, 16 percent of players use a Hand Cannon and Shotgun combo.  ' +
+									'<strong>None</strong> is for players who go through an entire game without using a primary weapon, but do have registered secondary weapon kills.  '
 						)
 
 	groupByPrimary = data.groupby("PrimaryWeapon")
@@ -564,10 +564,10 @@ def weaponPairings(data):
 						"A look at the disctrubtion of secondary weapons amongs primary weapons",
 						dataFilePath = "datafiles",
 						jsFilePath = "javascripts",
-						plotText = 'This graph shows how often each secondary weapon is paired with a primary weapon. '+
-									'It is looking at the distribution within each primary weapon, not over the entire set of data. '+
-									'If you stack the bars on top of one another, each x-axis tick would go up to 1.00 (or 100%). '+
-									'When hovering over a bar, you should read the result as: <em>y</em> percent of players who use <em>x</em> pair it with <em>color</em>. ' +
+						plotText = 'This graph shows how often each secondary weapon is paired with a primary weapon.  '+
+									'It is looking at the distribution within each primary weapon, not over the entire set of data.  '+
+									'If you stack the bars on top of one another, each x-axis tick would go up to 1.00 (or 100%).  '+
+									'When hovering over a bar, you should read the result as: <em>y</em> percent of players who use <em>x</em> pair it with <em>color</em>.  ' +
 									'For example, 46 percent of players who use Hand Cannons pair it with Shotguns.'
 						)
 
