@@ -141,7 +141,7 @@ def getCharacterInfo(membershipId,network='XBL'):
 
 def getActivityHistory(membershipID, characterID, network="XBL",mode="None",count=25,page=0,definitions=False):
     network = NETWORKS[network]
-    response = requests.get("http://www.bungie.net/Platform/Destiny/Stats/ActivityHistory/{0}/{1}/{2}/?mode={3}&page={4}&count={5}&definitions={6}".format(network, membershipID,characterID,mode,page,count,definitions),
+    response = requests.get(r"http://www.bungie.net/Platform/Destiny/Stats/ActivityHistory/{0}/{1}/{2}/?mode={3}&page={4}&count={5}&definitions={6}".format(network, membershipID,characterID,mode,page,count,definitions),
                             headers= HEADERS)
     data = response.json()
     return data

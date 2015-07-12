@@ -58,7 +58,7 @@ class destinyPlot(object):
 		self.reduceXAxis = reduceXAxis
 		
 		#write data to json file
-		with open(self.jsonFileLocation, 'w') as f:
+		with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, dataFilePath, self.jsonFileName), 'w') as f:
 			json.dump(data, f)
 
 		#write to javascript file
@@ -68,7 +68,7 @@ class destinyPlot(object):
 		}
 		output = template.render(template_values)
 
-		with open(self.javascriptFileLocation, 'w') as f:
+		with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, jsFilePath, self.javascriptFileName), 'w') as f:
 			f.write(output)
 
 		#write to html file
@@ -158,7 +158,7 @@ def objectivesByMap(data):
 	"""
 	graph = lineChart(name="objectivesByMap", x_is_date=False)
 	x = mapDict.values()
-	ySeries = [{"name":victoryToString[v], "data": float(groupedByMapStanding.get_group((map, v))['objectivesCompleted'].mean())} for map,v in groupedByMapStanding.keys()]  
+	ySeries = [{"name":victoryToString[v], "data": float(groupedByMapStanding.get_group((map, v))['objectivesCompleted'].mean())} for map,v in groupedByMapStanding.groups.keys()]  
 
 	for series in ySeries:
 		graph.add_serie(y=series['data'], x=x, name=series['name'])
@@ -365,8 +365,6 @@ def getWeaponRatiosByMap(data):
 					"weaponBreakdown",
 					FULL_PLOT_HTML_DIRECTORY,
 					"A look at how frequently weapon types are used on each map",
-					dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-					jsFilePath = FULL_PLOT_JS_DIRECTORY,
 					)
 
 
@@ -398,8 +396,6 @@ def quittingByMap(data):
 					"quittingByMap",
 					FULL_PLOT_HTML_DIRECTORY,
 					"A look at how often players from each team quit on each map",
-					dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-					jsFilePath = FULL_PLOT_JS_DIRECTORY,
 					plotText="NOTE: stacking this graph does not give an accurate overall quit rate.  The overall quit rates are likely closer to half of the stacked value."
 					)
 
@@ -422,8 +418,6 @@ def neutralizedVersusCaptured(data):
 						"objectivesRatio",
 						FULL_PLOT_HTML_DIRECTORY,
 						"Look at how a team's ability to effeciently capture points impacts victory",
-						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-						jsFilePath = FULL_PLOT_JS_DIRECTORY,
 						)
 
 def dominationByMap(data):
@@ -447,9 +441,9 @@ def dominationByMap(data):
 				plotText = "This plot was created by grouping the dataframe by map and then by standing" +
 								"It then takes the average number of <strong>domination kills</strong> that all winning teams had on that map, and does the same for losing teams."+
 								"Domnination kills are obtained when a player gets a kill and their team controls all zones.",
-				dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-				jsFilePath = FULL_PLOT_JS_DIRECTORY,
 				)
+
+	print(graph.__dict__)
 
 	#with open(os.path.join('..','gh-pages', 'datafiles', 'dominationKills.json'), 'w') as f:
 	#	json.dump(dominationKills, f)
@@ -477,8 +471,6 @@ def victoryByMapAndTeam(data):
 			"victoryByMap",
 			FULL_PLOT_HTML_DIRECTORY,
 			"A look at how each team performs on a given map",
-			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
 
 
@@ -504,8 +496,6 @@ def weaponsByClass(data):
 			"weaponByClass",
 			FULL_PLOT_HTML_DIRECTORY,
 			"A breakdown of which weapon types each class uses",
-			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
 
 def orbsGeneratedVersusSuperKills(data):
@@ -525,18 +515,16 @@ def orbsGeneratedVersusSuperKills(data):
 						"orbsVsSuper",
 						FULL_PLOT_HTML_DIRECTORY,
 						"A look at each class's ability to produce orbs",
-						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-						jsFilePath = FULL_PLOT_JS_DIRECTORY,
 						)
 
 def weaponPairings(data):
 	logger.info("Graph to show frequency of weapon pairings")
 
-	data = data[(data['PrimaryWeapon'] != 'None') & (data['SecondaryWeapon'] != 'None')]
+	#data = data[(data['PrimaryWeapon'] != 'None') & (data['SecondaryWeapon'] != 'None')]
 
 	groupByPrimary = data.groupby(["PrimaryWeapon",'SecondaryWeapon'])
 	secondaryColumns = ['FusionRifle', 'Sniper', 'SideArm', 'Shotgun']
-	primaryColumns = ['PulseRifle','HandCannon', 'ScoutRifle', 'AutoRifle']
+	primaryColumns = ['PulseRifle','HandCannon', 'ScoutRifle', 'AutoRifle', 'None']
 
 	total = len(data)
 
@@ -544,17 +532,22 @@ def weaponPairings(data):
 						'values': [{
 							'x' : p,
 							'y': float(len(groupByPrimary.get_group((p,s))))/total
-						} for p in primaryColumns]
+						} for p in primaryColumns if (p,s) in groupByPrimary.groups.keys()]
 					} for s in secondaryColumns]
+
+	#figure out which key combo was not present and give it a series too
+	#weaponPairingsGlobal
+
 	graph = destinyPlot(weaponPairingsGlobal, 
 						"Frequency of Primary/Secondary Weapon Pairings",
 						"weaponPairings",
 						FULL_PLOT_HTML_DIRECTORY,
-						"A look at how primary and secondary weapons are paired together by weapon type",
-						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-						jsFilePath = FULL_PLOT_JS_DIRECTORY,
-						plotText = 'This graph uses a subset of the data where players had registered kills with both primary and secondary weapons.'+
-									'Each colored bar represents the frequency of that pairing in the <strong>entire</strong> subset'
+						"A look at how primary and secondary weapons are paired together",
+						plotText = 'This graph shows  how frenquently weapons are paired together over the <strong>entire</strong> set of data.  '+
+									'The x-axis is primary weapons, and the colors represent different secondary weapons. '+
+									'When hovering over a bar, you should read the frequency as: <em>y</em> percent of players use <em>x</em> and <em>color</em> combo. ' +
+									'For example, 16 percent of players use a Hand Cannon and Shotgun combo. ' +
+									'<strong>None</strong> is for players who go through an entire game without using a primary weapon, but do have registered secondary weapon kills. '
 						)
 
 	groupByPrimary = data.groupby("PrimaryWeapon")
@@ -562,19 +555,20 @@ def weaponPairings(data):
 						'values': [{
 							'x' : p,
 							'y': float(len(groupByPrimary.get_group(p)[groupByPrimary.get_group(p)['SecondaryWeapon'] == s]))/len(groupByPrimary.get_group(p))
-						} for p in primaryColumns]
+						} for p in primaryColumns if p in groupByPrimary.groups.keys()]
 					} for s in secondaryColumns]
 	graph = destinyPlot(weaponPairingsLocal, 
-						"Frequency of Secondary Weapons with Primary Weapons",
+						"Frequency of Secondary Weapons with each Primary Weapons",
 						"primarySecondary",
 						FULL_PLOT_HTML_DIRECTORY,
-						"A look at how secondary weapons are paired primary weapons",
-						dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-						jsFilePath = FULL_PLOT_JS_DIRECTORY,
-						plotText = 'This graph uses a subset of the data where players had registered kills with both primary and secondary weapons. '+
-										'Each colored bar represents the frequency that the given secondary is used with that primary. ' +
-										"It should be read as 'x percent of players who use this primary use this secondary.' "
-										'This makes each bar out of 100%. '
+						"A look at the disctrubtion of secondary weapons amongs primary weapons",
+						dataFilePath = "datafiles",
+						jsFilePath = "javascripts",
+						plotText = 'This graph shows how often each secondary weapon is paired with a primary weapon. '+
+									'It is looking at the distribution within each primary weapon, not over the entire set of data. '+
+									'If you stack the bars on top of one another, each x-axis tick would go up to 1.00 (or 100%). '+
+									'When hovering over a bar, you should read the result as: <em>y</em> percent of players who use <em>x</em> pair it with <em>color</em>. ' +
+									'For example, 46 percent of players who use Hand Cannons pair it with Shotguns.'
 						)
 
 
@@ -597,8 +591,6 @@ def scorePerKill(data):
 			"averageScorePerKill",
 			FULL_PLOT_HTML_DIRECTORY,
 			"A look at how average score per kill affects victory",
-			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
 
 
@@ -622,8 +614,6 @@ def getSniperRatiosByVictory(data):
 			"sniperRatioRate",
 			FULL_PLOT_HTML_DIRECTORY,
 			"A look at how using sniper rifles affects victory on a given map",
-			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			)
 def classLevelVictory(data):
 	"""
@@ -653,8 +643,6 @@ def classLevelVictory(data):
 			"victoryByClassLevel",
 			FULL_PLOT_HTML_DIRECTORY,
 			"A look at how characterLevel affects victory rate for each class",
-			dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-			jsFilePath = FULL_PLOT_JS_DIRECTORY,
 			jsTemplateName = "javascriptLineTemplate.js",
 			)
 
@@ -720,16 +708,20 @@ def victoryRateByWeapon(teamData):
 					"weaponAndVictoryBreakdown",
 					FULL_PLOT_HTML_DIRECTORY,
 					"A look at how winning and losing teams use weapons differently",
-					dataFilePath = FULL_PLOT_JSON_DIRECTORY,
-					jsFilePath = FULL_PLOT_JS_DIRECTORY,
 					jsTemplateName= "javascriptScatterTemplate.js"
 					)
 
 if __name__ == "__main__":
-	teamData = pd.read_csv("datafiles/teamData.csv")
+	#teamData = pd.read_csv("datafiles/teamData.csv")
 	data = pd.read_csv("datafiles/data.csv")
-	"""getWeaponRatiosByMap(teamData)
-	objectivesByMap(teamData)
+
+	weaponPairings(data)
+
+	"""
+	getWeaponRatiosByMap(teamData)
+	
+	#objectivesByMap(teamData)
+	
 	quittingByMap(data)
 	victoryByMapAndTeam(teamData)
 	weaponsByClass(data)
@@ -739,11 +731,12 @@ if __name__ == "__main__":
 	victoryRateByWeapon(teamData)
 	neutralizedVersusCaptured(teamData)
 	dominationByMap(teamData)
-	weaponPairings(data)
 	orbsGeneratedVersusSuperKills(data)
 	averageKillsPerMinute(data)
-	quitRateByKillsPerMinute(data)"""
+	quitRateByKillsPerMinute(data)
 	classUsage(data)
+	"""
+
 
 	#write to index html file
 	template = jinja2_env.get_template(os.path.join('index.html'))
