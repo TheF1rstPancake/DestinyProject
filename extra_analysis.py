@@ -523,7 +523,7 @@ def weaponPairings(data):
 	#data = data[(data['PrimaryWeapon'] != 'None') & (data['SecondaryWeapon'] != 'None')]
 
 	groupByPrimary = data.groupby(["PrimaryWeapon",'SecondaryWeapon'])
-	secondaryColumns = ['FusionRifle', 'Sniper', 'SideArm', 'Shotgun']
+	secondaryColumns = ['FusionRifle', 'Sniper', 'SideArm', 'Shotgun', 'None']
 	primaryColumns = ['PulseRifle','HandCannon', 'ScoutRifle', 'AutoRifle', 'None']
 
 	total = len(data)
