@@ -7,6 +7,7 @@ import jinja2
 import logging
 import sys
 from nvd3py import *
+import extra_analysis
 
 FULL_PLOT_HTML_DIRECTORY = os.path.join("fullPlots","IronBanner")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
@@ -81,6 +82,7 @@ if __name__ == "__main__":
 	data = pd.read_csv("datafiles/IronBanner.csv")
 
 	mostUsedWeapons(data)
+	extra_analysis.weaponPairings(data, FULL_PLOT_HTML_DIRECTORY)
 
 	#write to index html file
 	template = jinja2_env.get_template(os.path.join('index.html'))

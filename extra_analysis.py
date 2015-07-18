@@ -58,7 +58,7 @@ class destinyPlot(object):
 		self.reduceXAxis = reduceXAxis
 		
 		#write data to json file
-		with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, dataFilePath, self.jsonFileName), 'w') as f:
+		with open(os.path.join(htmlFilePath, dataFilePath, self.jsonFileName), 'w') as f:
 			json.dump(data, f)
 
 		#write to javascript file
@@ -68,7 +68,7 @@ class destinyPlot(object):
 		}
 		output = template.render(template_values)
 
-		with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, jsFilePath, self.javascriptFileName), 'w') as f:
+		with open(os.path.join(htmlFilePath, jsFilePath, self.javascriptFileName), 'w') as f:
 			f.write(output)
 
 		#write to html file
@@ -517,7 +517,7 @@ def orbsGeneratedVersusSuperKills(data):
 						"A look at each class's ability to produce orbs",
 						)
 
-def weaponPairings(data):
+def weaponPairings(data, location=FULL_PLOT_HTML_DIRECTORY):
 	logger.info("Graph to show frequency of weapon pairings")
 
 	#data = data[(data['PrimaryWeapon'] != 'None') & (data['SecondaryWeapon'] != 'None')]
@@ -541,7 +541,7 @@ def weaponPairings(data):
 	graph = destinyPlot(weaponPairingsGlobal, 
 						"Frequency of Primary/Secondary Weapon Pairings",
 						"weaponPairings",
-						FULL_PLOT_HTML_DIRECTORY,
+						location,
 						"A look at how primary and secondary weapons are paired together",
 						plotText = 'This graph shows  how frenquently weapons are paired together over the <strong>entire</strong> set of data.  '+
 									'The x-axis is primary weapons, and the colors represent different secondary weapons.  '+
@@ -560,7 +560,7 @@ def weaponPairings(data):
 	graph = destinyPlot(weaponPairingsLocal, 
 						"Frequency of Secondary Weapons with each Primary Weapons",
 						"primarySecondary",
-						FULL_PLOT_HTML_DIRECTORY,
+						location,
 						"A look at the disctrubtion of secondary weapons amongs primary weapons",
 						dataFilePath = "datafiles",
 						jsFilePath = "javascripts",
