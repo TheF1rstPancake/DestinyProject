@@ -43,6 +43,17 @@ CLASS_HASH = {                                              #the hash for class 
 	            3655393761: 'Titan'
              }
 
+RACE_HASH = {
+        2803282938: "Awoken",
+        3887404748: "Human",
+        898834093: "Exo"
+}
+
+GENDER_HASH = {
+    2204441813: "Female",
+    3111576190: "Male"
+}
+
 class NoDataError(Exception):
     pass
 
@@ -199,10 +210,70 @@ def getItemFromManifest(table, hash):
     :param hash:        hash id value
     """
     c = MANIFEST_CONN.cursor()
-    c.execute("select * from {0} where id = {1}".format(table, hash))
+    request = "SELECT json FROM {0} WHERE id = {1}".format(table,hash)
+    c.execute(request)
     response = c.fetchone()
 
-    return respose
+    return response
+
+def getBucketTypeName(hash, buckets=None):
+    """
+    Get the item from the DestinyInventoryItemDefinition table.
+
+    :param hash:    the item hash
+    :param buckets:   the table already loaded from the manifest.  If you are going to be calling this function in a loop, you'll want to include the table for efficiency.
+
+    .. note::
+        To use a loaded table do:
+            >>> buckets = c.execute("SELECT json FROM DestinyInventoryBucketDefinition").fetchall()
+            >>> getItemByItemHash(HASH, buckets)
+
+        where c is a cursor object connected to the manifest
+    """
+
+    if buckets is None:
+        c = MANIFEST_CONN.cursor()
+
+        #get all items from the manifest
+        buckets = c.execute("select json from DestinyInventoryBucketDefinition").fetchall()
+    
+        #this will be a list of tuples each containing one string representing an JSON object
+        #convert this into a list of dicts
+        buckets = [json.loads(i[0]) for i in buckets]
+
+    #search items
+    for i in buckets:
+        if i['bucketHash'] == hash:
+            return i
+
+def getItemByItemHash(hash, items=None):
+    """
+    Get the item from the DestinyInventoryItemDefinition table.
+
+    :param hash:    the item hash
+    :param items:   the table already loaded from the manifest.  If you are going to be calling this function in a loop, you'll want to include the table for efficiency.
+
+    .. note::
+        To use a loaded table do:
+            >>> items = c.execute("SELECT json FROM DestinyInventoryItemDefinition").fetchall()
+            >>> getItemByItemHash(HASH, table)
+
+        where c is a cursor object connected to the manifest
+    """
+    if items is None:
+        c = MANIFEST_CONN.cursor()
+
+        #get all items from the manifest
+        items = c.execute("select json from DestinyInventoryItemDefinition").fetchall()
+    
+    #this will be a list of tuples each containing one string representing an JSON object
+    #convert this into a list of dicts
+    items = [json.loads(i[0]) for i in items]
+
+    #search items
+    for i in items:
+        if i['itemHash'] == hash:
+            return i
 
 def fetchFile(url, local_filename):
     """
