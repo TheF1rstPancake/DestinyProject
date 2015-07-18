@@ -140,9 +140,12 @@ def killsPerPlayer(data):
 				key= 'Top20KillsPerPlayer',
 				js_path = "javascripts",
 				html_path = FULL_PLOT_HTML_DIRECTORY,
-				title="Weapons with the Highest Kills Per Player",
-				subtitle="A look at the weapons with the most kills per player in Iron Banner",
+				title="Kills per Player for the top 20 Weapons Used",
+				subtitle="A different way to look at the most used weapons in Iron Banner",
 				resize=True,
+				plotText= "Each bar is the kills per player for that weapon.  " +
+							"Kills Per Player is caluclated by taking the total number of kills for that weapon divided by the numer of people who use it. " +
+							"Looking at this graph and comparing it to the top 20 weapons in Iron Banner, we can see that the most used weapon isn't necessarily the most effective. "
 				)	
 	graph.width = "$('#"+graph.divTitle+"').width()"
 
