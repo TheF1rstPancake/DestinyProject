@@ -20,14 +20,14 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Frequency of Secondary Weapons with each Primary Weapons</title>
+    <title>Kills per Player for the top 20 Weapons Used</title>
   </head>
 
   <body>
     <header>
       <div class="title container-fluid">
-        <h1>Frequency of Secondary Weapons with each Primary Weapons</h1>
-        <h2>A look at the disctrubtion of secondary weapons amongs primary weapons</h2>
+        <h1>Kills per Player for the top 20 Weapons Used</h1>
+        <h2>A different way to look at the most used weapons in Iron Banner</h2>
         <a href="https://github.com/Jalepeno112/DestinyProject/" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -35,12 +35,12 @@
     <div id="content-wrapper">
     	<div class="container-fluid">
                 <div class = "container-fluid">
-    				<div id="primarySecondary">
+    				<div id="Top20KillsPerPlayer">
     			    	<svg></svg>
-    			    	<script src='javascripts\primarySecondary.js'></script>
+    			    	<script src='javascripts\Top20KillsPerPlayer.js'></script>
     				</div>
                     <p>
-                        This graph shows how often each secondary weapon is paired with a primary weapon.  It is looking at the distribution within each primary weapon, not over the entire set of data.  If you stack the bars on top of one another, each x-axis tick would go up to 1.00 (or 100%).  When hovering over a bar, you should read the result as: <em>y</em> percent of players who use <em>x</em> pair it with <em>color</em>.  For example, 46 percent of players who use Hand Cannons pair it with Shotguns.
+                        Each bar is the kills per player for that weapon.  Kills Per Player is caluclated by taking the total number of kills for that weapon divided by the numer of people who use it. Looking at this graph and comparing it to the top 20 weapons in Iron Banner, we can see that the most used weapon isn't necessarily the most effective. 
                     </p>
                 </div>
 	     </div>
