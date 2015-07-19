@@ -12,8 +12,8 @@
 
 
 
-                var width = $('#Top20WeaponsV2').width() - 60 - 60;
-                chart.width(width);
+                //var width = $('#Top20WeaponsV2').width() - 60 - 60;
+                //chart.width(width);
                 var height = 450 - 30 - 20;
                 chart.height(height);
 
@@ -24,11 +24,6 @@
                 .rotateLabels(-25)                .axisLabel('Weapon Name');
             chart.yAxis
                 .axisLabel('Frequency')                .tickFormat(d3.format(',.2%'));
-
-    
-    
-            nv.utils.windowResize(function(){ chart.update(); });
-
         
 
 
@@ -40,6 +35,7 @@
             .attr('height', 450)
             .call(chart);
 
+            nv.utils.windowResize(function(){ chart.update(); });
     
         });
 
