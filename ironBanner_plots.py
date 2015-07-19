@@ -77,6 +77,52 @@ def mostUsedWeapons(data):
 	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
 		f.write(output)
 
+
+def mostUsedVictory(data):
+	non_weapon_columns = ['Unnamed: 0', 'characterClass', 'characterId', 'characterLevel', 'completed', 
+							'date', 'gameId', 'killDeathRatio', 'kills','membershipId','mode','refrencedId','score','standing','team']
+
+	weapon_columns = list(set(data.columns.values) - set(non_weapon_columns))
+	total_kills = data[weapon_columns].sum(1).sum()
+	weaponFreq = pd.DataFrame({k:data[k].sum()/total_kills for k in weapon_columns}, index=['Name']).T
+	weaponFreq.sort('Name', ascending=False, inplace=True)
+
+	graph = discreteBarChart(
+				name="Top20Victory",
+				key= 'Top20Victory',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Victory Rate by Weapons",
+				subtitle="A look at how weapons affect victory",
+				resize=True,
+				plotText="Each bar is the victory rate with the given weapon out of all weapon kills. " +
+						"It should be read as <em>y</em> percent of players who use <em>x</em> win.  "
+				)	
+	graph.width = "$('#"+graph.divTitle+"').width()"
+	
+
+	top = weaponFreq.head(20).index.values
+	y =[1.0 - (data.ix[data[c] > 0, 'standing'].sum()/float(len(data[data[c] > 0]))) for c in top]
+
+	graph.add_serie(y=y, x=top, name="Weapons")
+	graph.create_y_axis("yAxis", "Victory Rate", format=".2%")
+	graph.create_x_axis("xAxis", "Weapon Name", extras={"rotateLabels":-25})
+	
+	graph.buildcontent()
+
+	with open(graph.fullJS, 'w') as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+		f.write(output)
+
 def mostUsedWeaponsV2(data):
 	non_weapon_columns = ['Unnamed: 0', 'characterClass', 'characterId', 'characterLevel', 'completed', 
 							'date', 'gameId', 'killDeathRatio', 'kills','membershipId','mode','refrencedId','score','standing','team']
@@ -128,12 +174,13 @@ def killsPerPlayer(data):
 	players = {k: len(data[data[k] > 0]) for k in data.columns}
 	totalKills = data.sum(1).sum()
 
-	weaponUsage = pd.DataFrame({"Sum":weaponSums, "Players":players})
-	weaponUsage['Frequency'] = weaponUsage['Sum']/totalKills
-	weaponUsage['KillsPerPlayer'] = weaponUsage['Sum']/weaponUsage['Players']
+	weaponUsage = pd.DataFrame({"Total Kills":weaponSums, "Players Using":players})
+	weaponUsage['Frequency'] = weaponUsage['Total Kills']/totalKills
+	weaponUsage['KillsPerPlayer'] = weaponUsage['Total Kills']/weaponUsage['Players Using']
 
 	weaponUsage.sort("Frequency", ascending = False, inplace = True)
 	top20Weapons = weaponUsage.head(20).sort("KillsPerPlayer", ascending=False)
+	weaponUsage.to_csv("weaponUsageTabular.csv", encoding="utf-8")
 
 	graph = discreteBarChart(
 				name="Top20KillsPerPlayer",
@@ -178,10 +225,12 @@ def killsPerPlayer(data):
 if __name__ == "__main__":
 	data = pd.read_csv("datafiles/IronBanner.csv")
 	weapon_data = pd.read_csv("datafiles/IronBanner_WeaponUsage.csv", index_col=0)
-
+	extras = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
 	mostUsedWeapons(data)
 	mostUsedWeaponsV2(weapon_data)
 	killsPerPlayer(weapon_data)
+	mostUsedVictory(extras)
+
 	extra_analysis.weaponPairings(data, FULL_PLOT_HTML_DIRECTORY)
 
 	#write to index html file
