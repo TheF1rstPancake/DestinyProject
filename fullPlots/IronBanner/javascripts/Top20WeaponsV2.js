@@ -12,7 +12,8 @@
 
 
 
-                var width = $('#Top20WeaponsV2').width() - 60 - 60;
+                //var width = $('#Top20WeaponsV2').width() - 60 - 60;
+                //width = "100%"
                 chart.width(width);
                 var height = 450 - 30 - 20;
                 chart.height(height);
