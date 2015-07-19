@@ -12,9 +12,8 @@
 
 
 
-                //var width = $('#Top20WeaponsV2').width() - 60 - 60;
-                //var width = "100%"
-                //chart.width(width);
+                var width = $('#Top20WeaponsV2').width() - 60 - 60;
+                chart.width(width);
                 var height = 450 - 30 - 20;
                 chart.height(height);
 
@@ -37,7 +36,7 @@
             d3.select('#Top20WeaponsV2 svg')
             .datum(datum)
             .transition().duration(500)
-            //.attr('width', "90%")
+            .attr('width', $('#Top20WeaponsV2').width())
             .attr('height', 450)
             .call(chart);
 
