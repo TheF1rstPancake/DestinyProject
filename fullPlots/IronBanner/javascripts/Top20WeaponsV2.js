@@ -37,7 +37,7 @@
             d3.select('#Top20WeaponsV2 svg')
             .datum(datum)
             .transition().duration(500)
-            .attr('width', "90%")
+            //.attr('width', "90%")
             .attr('height', 450)
             .call(chart);
 
