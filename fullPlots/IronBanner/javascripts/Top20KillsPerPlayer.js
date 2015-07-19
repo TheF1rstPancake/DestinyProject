@@ -12,8 +12,8 @@
 
 
 
-                var width = $('#Top20KillsPerPlayer').width() - 60 - 60;
-                chart.width(width);
+                //var width = $('#Top20KillsPerPlayer').width() - 60 - 60;
+                //chart.width(width);
                 var height = 450 - 30 - 20;
                 chart.height(height);
 
@@ -36,7 +36,7 @@
             d3.select('#Top20KillsPerPlayer svg')
             .datum(datum)
             .transition().duration(500)
-            .attr('width', $('#Top20KillsPerPlayer').width())
+            //.attr('width', $('#Top20KillsPerPlayer').width())
             .attr('height', 450)
             .call(chart);
 
