@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np 
 import multiprocessing 
 import logging
+import time
 import sys
 
 logging.getLogger("requests").setLevel(logging.WARNING)
@@ -109,6 +110,69 @@ def GetWeaponData(game_ids):
     return game_details
 
 
+def _addCombatRating(data):
+    #go through each game in this chunk of data and find the player's combat rating
+    data['combatRating'] = 0
+
+    #get a list of unique game ids in this chunk
+    
+    game_ids = data['gameId'].unique()
+    logger.info("Getting data for {0} games".format(len(game_ids)))
+
+    count = 0
+    #fetch each game
+    for k in game_ids:
+        count = count + 1
+        logger.info("Fetching game {0}\t{1:.2f}".format(k, (float(count)*100)/len(game_ids)))
+        try:
+            r = destiny.getPvPGame(k)
+        except requests.exceptions.ConnectionError as e:
+            logger.exception("ConnectionError! Resting and trying request again!")
+            time.sleep(120)
+            r = destiny.getPvPGame(k)
+            pass
+        #for each player, set their combat rating
+        for player in r['Response']['data']['entries']:
+            charId = player['characterId']
+            data.ix[(data['gameId'] == int(k)) & (data['characterId'] == int(charId)), 'combatRating'] = player['extended']['values'].get("combatRating",0)
+    return data
+
+def _addFeatureMultiProcess(game_data, func, **kwargs):
+    """
+    Add a new feature to a dataframe by chunking the dataframe and then applying a function over the chunks.
+    Each chunk will then have the new feature, and these chunks can be joined back together in order to create an update dataframe.
+
+    .. note::
+        The function you pass must modify the dataframe **and** return it.
+        See the functions below for examples.
+
+    :param game_data:   pandas dataframe containing all of the data
+    :param func:        name of the function we want to use to modify the dataframe
+    """
+    start = time.time()
+    p = multiprocessing.Pool(4)
+
+    #group the dataframe by map to make for nice chunks of data
+    #then place each chunk in a list so we can iterate over it
+    chunks = [d for d in weaponData.chunks(df, len(df)/4)]
+    update_games = p.map(func, chunks)
+    
+    #mapped_list is a list of tuples. The first item in the tuple is a 1 or 0 indicate successful completion
+    #second is the dataframe
+    #concat the dataframes together and then drop duplicates
+    #p.join()
+
+    duration = time.time() - start
+    logger.info("Data fetched in {0} seconds".format(duration))
+
+    logger.info("Building dataframe from chunks and writing to file")
+    game_data = pd.concat([g for g in update_games], ignore_index=True)
+    game_data = game_data.drop_duplicates()
+    game_data.to_csv("data_updated_multi.csv", encoding="utf-8")
+
+    return game_data
+
+
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in xrange(0, len(l), n):
@@ -116,7 +180,7 @@ def chunks(l, n):
 
 
 if __name__ == "__main__":
-    data = pd.read_csv("datafiles/IronBanner.csv")
+    """data = pd.read_csv("datafiles/IronBanner.csv")
 
     #groupedByMap = data.groupby("refrencedId")
     #df_chunks = [game for _, game in groupedByMap]
@@ -133,5 +197,15 @@ if __name__ == "__main__":
 
     data = pd.concat(weaponData, ignore_index=True)
     data.to_csv("datafiles/IB_WeaponData.csv", encoding='utf-8')
+    """
+    data = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
+    p = multiprocessing.Pool(4)
 
+    #group the dataframe by map to make for nice chunks of data
+    #then place each chunk in a list so we can iterate over it
+    chunk = [d for d in chunks(data, len(data)/5)]
+    updated_games = p.map(_addCombatRating, chunk)
+    updated = pd.concat(updated_games)
+
+    updated.to_csv("IB_WeaponsUpdated.csv", encoding="utf-8")
 

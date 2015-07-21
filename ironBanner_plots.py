@@ -1,4 +1,5 @@
 import pandas as pd 
+import scipy.stats
 import destinyPlatform as destiny 
 import json
 import os
@@ -169,6 +170,121 @@ def mostUsedWeaponsV2(data):
 	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
 		f.write(output)	
 
+
+
+
+def averageCombatRating(data):
+	non_weapon_columns = ['combatRating', 'Unnamed: 0', 'Unnamed: 0.1', 'characterClass', 'characterId', 'characterLevel', 'completed', 
+							'date', 'gameId', 'killDeathRatio', 'kills','membershipId','mode','refrencedId','score','standing','team']
+
+	weapon_columns = list(set(data.columns.values) - set(non_weapon_columns))
+	data = data[data['combatRating'] != -1]
+	weaponFreq = pd.DataFrame({k:data[k].sum() for k in weapon_columns}, index=['Name']).T
+	weaponFreq.sort('Name', ascending=False, inplace=True)
+
+	top20Weapons = weaponFreq.head(20)
+
+	combatRatings = pd.DataFrame({k:data[data[k] > 0]['combatRating'].mean() for k in top20Weapons.index.values}, index=["CR"]).T
+	combatRatings.sort("CR", ascending=False,inplace=True)
+
+	graph = discreteBarChart(
+			name="Top20WeaponsCR",
+			key= 'Top20WeaponsCR',
+			js_path = "javascripts",
+			html_path = FULL_PLOT_HTML_DIRECTORY,
+			title="The Average Combat Rating of Players who Use the Top 20 Most Used Weapons",
+			subtitle="A look at the weapons with the relative combat ratings of players who use these weapons",
+			resize=True,
+			)	
+	graph.width = "$('#"+graph.divTitle+"').width()"
+	
+
+	x = combatRatings.head(20).index.values
+	y = combatRatings.head(20)['CR'].values
+
+	graph.add_serie(y=y, x=x, name="Weapons")
+	graph.create_y_axis("yAxis", "Frequency", format=".2f")
+	graph.create_x_axis("xAxis", "Weapon Name", extras={"rotateLabels":-25})
+
+	graph.buildcontent()
+
+	with open(graph.fullJS, 'w') as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+		f.write(output)	
+
+
+
+def killDeathRatio(data):
+	non_weapon_columns = ['Unnamed: 0', 'characterClass', 'characterId', 'characterLevel', 'completed', 
+							'date', 'gameId', 'killDeathRatio', 'kills','membershipId','mode','refrencedId','score','standing','team']
+
+	weapon_columns = list(set(data.columns.values) - set(non_weapon_columns))
+	
+	weaponFreq = pd.DataFrame({k:data[k].sum() for k in weapon_columns}, index=['Name']).T
+	weaponFreq.sort('Name', ascending=False, inplace=True)
+
+	top20Weapons = weaponFreq.head(20)
+
+	averageKD = pd.DataFrame({k:data[data[k] > 0]['killDeathRatio'].mean() for k in top20Weapons.index.values}, index=["KDR"]).T
+	averageKD.sort("KDR", ascending=False, inplace=True)
+
+	graph = discreteBarChart(
+			name="Top20WeaponsKDR",
+			key= 'Top20WeaponsKDR',
+			js_path = "javascripts",
+			html_path = FULL_PLOT_HTML_DIRECTORY,
+			title="The Average KDR of Players who Use the Top 20 Most Used Weapons",
+			subtitle="A look at the Kill Death Ratio of players who use the top 20 most used weapons",
+			resize=True,
+			)	
+	graph.width = "$('#"+graph.divTitle+"').width()"
+	
+
+	x = averageKD.head(20).index.values
+	y = averageKD.head(20)['KDR'].values
+
+	graph.add_serie(y=y, x=x, name="Weapons")
+	graph.create_y_axis("yAxis", "KDR", format=".2f")
+	graph.create_x_axis("xAxis", "Weapon Name", extras={"rotateLabels":-25})
+
+	graph.buildcontent()
+
+	with open(graph.fullJS, 'w') as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+		f.write(output)	
+
+def _writeToFile(graph):
+	with open(graph.fullJS, 'w') as f:
+		f.write(graph.htmlcontent)
+
+	#write to html file
+	template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+	template_values = {
+		'destinyGraph': graph.__dict__,
+	}
+	output = template.render(template_values)
+
+	with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+		f.write(output)		
+
 def killsPerPlayer(data):
 	weaponSums = {k:data[k].sum() for k in data.columns}
 	players = {k: len(data[data[k] > 0]) for k in data.columns}
@@ -219,19 +335,112 @@ def killsPerPlayer(data):
 		f.write(output)	
 
 
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
 
+def combatRatingDist(data):
+	data = pd.DataFrame(data[(data['combatRating'] > 0)])
+	CR = data['combatRating']
 
+	#build a histogram of 20 bins from (0,300)
+	#The range is set because of a first glance look at the data
+	num_bins = 15
+	hist = scipy.stats.histogram(CR,numbins=num_bins, defaultlimits=(0,300))
+
+	#add the extra points to the last bin.
+	#this will cause there to be a slight increase in the last bin in comparison to the bin before it.
+	hist[0][-1] = hist[0][-1]+hist[3]
+
+	#some of the bins barely contain any data.  Add these all to one extended bin
+
+	bins = [c*hist[2] for c in xrange(0,num_bins)]
+	bin_strings = ["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(0,num_bins-1)]
+	bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))
+
+	print(len(bin_strings))
+	print(len(hist[0]))
+
+	graph = discreteBarChart(
+				name="combatRatingDist",
+				key= 'combatRatingDist',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Distribution of Combat Ratings in Iron Banner",
+				subtitle="A look at the distribution of combat ratings for players in IB",
+				resize=True,
+				plotText="Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)"
+				)	
+	graph.width = "$('#"+graph.divTitle+"').width()"
+
+	graph.add_serie(x=bin_strings, y = hist[0]/len(CR), name='Distribution')
+	graph.create_y_axis("yAxis", "Frequency", format=".2%")
+	graph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
+	
+	graph.buildcontent()
+	_writeToFile(graph)
+
+	#get the names of the top 20 weapons
+	non_weapon_columns = ['Unnamed: 0', 'characterClass', 'combatRating', 'characterId', 'characterLevel', 'completed', 
+							'date', 'gameId', 'killDeathRatio', 'kills','membershipId','mode','refrencedId','score','standing','team']
+
+	weapon_columns = list(set(data.columns.values) - set(non_weapon_columns))
+	
+	top20Weapons = pd.DataFrame({k:data[k].sum() for k in weapon_columns}, index=['Name']).T
+	top20Weapons.sort('Name', ascending=False, inplace=True)
+
+	top20Weapons = top20Weapons.head(20).index.values
+
+	#create a quantile for the combat rating so we can do crazy pandas stuff
+	#need to add np.inf to bins for this to work
+	bins = np.append(bins, np.inf)
+	data['quantile'] = pd.cut(data['combatRating'], bins, right=False)
+	groupByQuantile = data.groupby("quantile")
+
+	quantiles = data.sort("quantile")['quantile'].unique()
+	print(quantiles)
+	weaponUsageByCR = [{
+							"name":weapon,
+							"x": quantiles,
+							"y":[groupByQuantile.get_group(q)[weapon].sum()/groupByQuantile.get_group(q)[top20Weapons].sum(1).sum() for q in quantiles]
+						} for weapon in top20Weapons]
+
+	weaponGraph = multiBarChart(
+				name="combatRatingWeaponBreakdown",
+				key= 'combatRatingWeaponBreakdown',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Distribution of Weapons in Each Combat Ratings ",
+				subtitle="A look at the distribution of weapons within each combat rating group",
+				resize=True,
+				)	
+	weaponGraph.width = "$('#"+weaponGraph.divTitle+"').width()"
+
+	for s in weaponUsageByCR:
+		weaponGraph.add_serie(**s)
+
+	weaponGraph.create_y_axis("yAxis", "Frequency", format=".2%")
+	weaponGraph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
+	
+	weaponGraph.buildcontent()
+	_writeToFile(weaponGraph)
 
 if __name__ == "__main__":
-	data = pd.read_csv("datafiles/IronBanner.csv")
-	weapon_data = pd.read_csv("datafiles/IronBanner_WeaponUsage.csv", index_col=0)
-	extras = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
-	mostUsedWeapons(data)
-	mostUsedWeaponsV2(weapon_data)
-	killsPerPlayer(weapon_data)
-	mostUsedVictory(extras)
+	#data = pd.read_csv("datafiles/IronBanner.csv")
+	#weapon_data = pd.read_csv("datafiles/IronBanner_WeaponUsage.csv", index_col=0)
+	#extras = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
+	combatRatings = pd.read_csv("datafiles/IB_WeaponsUpdated.csv")
+	#mostUsedWeapons(data)
+	#mostUsedWeaponsV2(weapon_data)
+	#killsPerPlayer(weapon_data)
+	#mostUsedVictory(extras)
+	#killDeathRatio(extras)
+	#averageCombatRating(combatRatings)
+	combatRatingDist(combatRatings)
 
-	extra_analysis.weaponPairings(data, FULL_PLOT_HTML_DIRECTORY)
+
+	#extra_analysis.weaponPairings(data, FULL_PLOT_HTML_DIRECTORY)
 
 	#write to index html file
 	template = jinja2_env.get_template(os.path.join('index.html'))
