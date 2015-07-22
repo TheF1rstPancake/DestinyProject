@@ -400,10 +400,11 @@ def combatRatingDist(data):
 
 	quantiles = data.sort("quantile")['quantile'].unique()
 	print(quantiles)
+	"""
 	weaponUsageByCR = [{
 							"name":weapon,
 							"x": quantiles,
-							"y":[groupByQuantile.get_group(q)[weapon].sum()/groupByQuantile.get_group(q)[top20Weapons].sum(1).sum() for q in quantiles]
+							"y":[g[weapon].sum()/g[weapon_columns].sum(1).sum() for q, g in groupByQuantile]
 						} for weapon in top20Weapons]
 
 	weaponGraph = multiBarChart(
@@ -425,6 +426,68 @@ def combatRatingDist(data):
 	
 	weaponGraph.buildcontent()
 	_writeToFile(weaponGraph)
+	"""
+	killsPerPlayerPerBin = [{
+								"name":weapon,
+								"x": quantiles,
+								"y": [g[weapon].sum()/len(g[g[weapon] > 0]) for q,g in groupByQuantile if g[weapon].sum() > 0]
+							}for weapon in top20Weapons]
+
+	kppGraph = multiBarChart(
+				name="combatRatingKPP",
+				key= 'combatRatingKPP',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Kills per Player for the top 20 weapons by combat rating ",
+				subtitle="A look at the effectiveness of each group with the top 20 weapons",
+				resize=True,
+				)	
+	kppGraph.width = "$('#"+kppGraph.divTitle+"').width()"
+
+	for s in killsPerPlayerPerBin:
+		kppGraph.add_serie(**s)
+
+	kppGraph.create_y_axis("yAxis", "Kills per Player", format=".2f")
+	kppGraph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
+	
+	kppGraph.buildcontent()
+	_writeToFile(kppGraph)
+
+
+	killsPerPlayerPerBin =[]
+	for weapon in top20Weapons:
+		series = {"name":weapon, "x":quantiles, "y":[]}
+		for q,g in groupByQuantile:
+			if g[weapon].sum() == 0:
+				series['y'].append(0)
+			else:
+				percentKills = g[weapon].sum()/g[weapon_columns].sum(1).sum()
+				percentUsed = float(len(g[g[weapon] > 0]))/len(g)
+				series['y'].append(percentKills/percentUsed)
+
+		killsPerPlayerPerBin.append(series)
+
+
+
+	percentKillsUsedGraph = multiBarChart(
+				name="combatRatingPercentKilledUsed",
+				key= 'combatRatingPercentKilledUsed',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Percent Killed divided by Percent Used for Each Combat Rating ",
+				subtitle="A different look at the effectiveness of each weapon",
+				resize=True,
+				)	
+	percentKillsUsedGraph.width = "$('#"+percentKillsUsedGraph.divTitle+"').width()"
+
+	for s in killsPerPlayerPerBin:
+		percentKillsUsedGraph.add_serie(**s)
+
+	percentKillsUsedGraph.create_y_axis("yAxis", format=".2f")
+	percentKillsUsedGraph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
+	
+	percentKillsUsedGraph.buildcontent()
+	_writeToFile(percentKillsUsedGraph)
 
 if __name__ == "__main__":
 	#data = pd.read_csv("datafiles/IronBanner.csv")
