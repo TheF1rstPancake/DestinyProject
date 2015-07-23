@@ -20,14 +20,14 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Distribution of Weapon Kills in Each Combat Ratings </title>
+    <title>Percent of Weapons Used for Each Combat Rating </title>
   </head>
 
   <body>
     <header>
       <div class="title container-fluid">
-        <h1>Distribution of Weapon Kills in Each Combat Ratings </h1>
-        <h2>A look at the frequency of weapon kills within each combat rating group</h2>
+        <h1>Percent of Weapons Used for Each Combat Rating </h1>
+        <h2>A look at the frequency of use of the top 20 weapons in each combat rating group</h2>
         <a href="https://github.com/Jalepeno112/DestinyProject/" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -35,12 +35,12 @@
     <div id="content-wrapper" class="container-fluid">
     	<div class="container-fluid">
                 <div class = "container-fluid">
-    				<div id="combatRatingWeaponBreakdown" class="container-fluid">
+    				<div id="combatRatingPercentUsed" class="container-fluid">
     			    	<svg width="100%"></svg>
-    			    	<script src='javascripts\combatRatingWeaponBreakdown.js'></script>
+    			    	<script src='javascripts\combatRatingPercentUsed.js'></script>
     				</div>
                     <p>
-                        Each bar is the number of kills with a particular weapon in a bin divided by the total number of kills in the bin. This is going to show us how each group uses the top 20 weapons used overall.  The difference in bar height when all bars are stacked is because each group does not use these top 20 equally. A big difference in a percentage would indicate that a certain combat rating group does not get as many kills with a weapon as others. Consistent percentages for a give weapon contributes to the total number of kills for that group equally compared to others. The emphasis here is on <strong>kills</strong> not on use.
+                        This graph should be read as <em>y</em> percent of players with a combat rating of <em>x</em> use <em>color</em> weapon. It is imporant to note that these percentages do not add up to 100.  In fact, stacking these bins will actually show many of them exceed 100. That is because players can be counted twice if they use multiple weapons in a game.  It is still correct to say that <em>y</em> percent of players with a combat rating of <em>x</em> use <em>color</em> weapon. It is <strong>incorrect</strong> to say that <em>y</em> percent of players with a combat rating of <em>x</em> use <strong>only</strong> <em>color</em> weapon.
                     </p>
                 </div>
 	     </div>

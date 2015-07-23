@@ -137,6 +137,34 @@ def _addCombatRating(data):
             data.ix[(data['gameId'] == int(k)) & (data['characterId'] == int(charId)), 'combatRating'] = player['extended']['values'].get("combatRating",0)
     return data
 
+def _addKADR(data):
+    #go through each game in this chunk of data and find the player's combat rating
+    data['killDeathAssist'] = 0
+
+    #get a list of unique game ids in this chunk
+    
+    game_ids = data['gameId'].unique()
+    logger.info("Getting data for {0} games".format(len(game_ids)))
+
+    count = 0
+    #fetch each game
+    for k in game_ids:
+        count = count + 1
+        logger.info("Fetching game {0}\t{1:.2f}".format(k, (float(count)*100)/len(game_ids)))
+        try:
+            r = destiny.getPvPGame(k)
+        except requests.exceptions.ConnectionError as e:
+            logger.exception("ConnectionError! Resting and trying request again!")
+            time.sleep(120)
+            r = destiny.getPvPGame(k)
+            pass
+        #for each player, set their combat rating
+        for player in r['Response']['data']['entries']:
+            charId = player['characterId']
+            data.ix[(data['gameId'] == int(k)) & (data['characterId'] == int(charId)), 'killDeathAssist'] = player['extended']['values'].get("killsDeathsAssists",0)
+    return data
+
+
 def _addFeatureMultiProcess(game_data, func, **kwargs):
     """
     Add a new feature to a dataframe by chunking the dataframe and then applying a function over the chunks.
@@ -198,13 +226,14 @@ if __name__ == "__main__":
     data = pd.concat(weaponData, ignore_index=True)
     data.to_csv("datafiles/IB_WeaponData.csv", encoding='utf-8')
     """
-    data = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
+    data = pd.read_csv("datafiles/IB_WeaponsUpdated.csv")
     p = multiprocessing.Pool(4)
 
     #group the dataframe by map to make for nice chunks of data
     #then place each chunk in a list so we can iterate over it
     chunk = [d for d in chunks(data, len(data)/5)]
-    updated_games = p.map(_addCombatRating, chunk)
+    update_games = p.map(_addKADR,chunk)
+    #updated_games = p.map(_addCombatRating, chunk)
     updated = pd.concat(updated_games)
 
     updated.to_csv("IB_WeaponsUpdated.csv", encoding="utf-8")
