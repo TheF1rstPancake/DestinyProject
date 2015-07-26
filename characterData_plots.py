@@ -64,13 +64,71 @@ def mostUsedShader(data):
         f.write(output)
 
 
+def shadersByLevel(data):
+    data = data[data['level'] >= 20]
+    
+    groupByMostUsed = data.groupby("Shaders")
+    mostUsed = pd.DataFrame([(d, len(groupByMostUsed.get_group(d))) for d in groupByMostUsed.groups.keys() if d != 'None'])
+    mostUsed.columns = ['Name', 'Length']
+
+    totalUsers = len(data[data['Shaders'] != 'None'])
+    mostUsed['Frequency'] = mostUsed['Length']/totalUsers
+
+    mostUsed.sort("Frequency",ascending=False,inplace=True)
+
+    topShaders = sorted(mostUsed['Name'][0:10].values)
+    print(topShaders)
+
+    groupByLevel = data.groupby("level")
+
+    x = sorted([str(g) for g in list(groupByLevel.groups.keys())])
+
+    shadersByLevel = [{
+                        "name":shader,
+                        "x":x,
+                        "y": [ float(len(g[g["Shaders"]==shader]))/len(g) for l, g in groupByLevel]
+                    } for shader in topShaders]
+    
+    graph = multiBarChart(
+                name="Top10ShadersByLevel",
+                key= 'Top10ShadersByLevel',
+                js_path = "javascripts",
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title="Top 10 Equipped Shaders by Level",
+                subtitle="A look at the top 10 most frequently equipped shaders across each level group",
+                resize=True,
+                plotText="This is a snapshot look at the top 10 shaders broken down by character level" +
+                            "Since player's can't equip shaders before level 20, this is a subset of the data looking only at players above level 20."
+                )   
+    graph.width = "$('#"+graph.divTitle+"').width()"
+
+
+    for s in shadersByLevel:
+        graph.add_serie(**s)
+
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Shaders", extras={"rotateLabels":-25})
+    
+    graph.buildcontent()
+
+    with open(graph.fullJS, 'w') as f:
+        f.write(graph.htmlcontent)
+
+    #write to html file
+    template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+    template_values = {
+        'destinyGraph': graph.__dict__,
+    }
+    output = template.render(template_values)
+    with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+        f.write(output)
 
 if __name__ == "__main__":
     #teamData = pd.read_csv("datafiles/teamData.csv")
     data = pd.read_csv("datafiles/character_data.csv")
 
-    mostUsedShader(data)
-
+    #mostUsedShader(data)
+    shadersByLevel(data)
     #write to index html file
     template = jinja2_env.get_template(os.path.join('index.html'))
     template_values = {
