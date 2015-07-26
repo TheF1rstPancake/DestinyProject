@@ -13,7 +13,7 @@
 
 
                 var width = $('#Top10ShadersByLevel').width() - 60 - 60;
-                //chart.width(width);
+                chart.width(width);
                 var height = 450 - 30 - 20;
                 chart.height(height);
 
@@ -40,7 +40,7 @@
         d3.select('#Top10ShadersByLevel svg')
             .datum(datum)
             .transition().duration(500)
-            //.attr('width', $('#Top10ShadersByLevel').width())
+            .attr('width', $('#Top10ShadersByLevel').width())
             .attr('height', 450)
             .call(chart);
 
