@@ -19,7 +19,8 @@
 
         {% block size %}
             {% if chart.width %}
-                var width = {{ chart.width}} - {{chart.margin_left}} - {{chart.margin_right}};
+                <!--var width = {{ chart.width}} - {{chart.margin_left}} - {{chart.margin_right}};-->
+                var width = {{chart.width}}
                 chart.width(width);
             {% endif %}
             {% if chart.height %}
@@ -111,7 +112,7 @@
         {% endfor %}
 
         {% if chart.resize %}
-            nv.utils.windowResize(function(){ chart.update(); });
+            nv.utils.windowResize(function(){chart.update();});
         {% endif %}
 
         {# include specific subchart #}

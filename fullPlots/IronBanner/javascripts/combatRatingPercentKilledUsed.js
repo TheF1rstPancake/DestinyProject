@@ -12,9 +12,11 @@
 
 
 
-                var width = $('#combatRatingPercentKilledUsed').width() - 60 - 60;
+                <!--var width = $('#combatRatingPercentKilledUsed').width() - 60 - 60;-->
+                var width = $('#combatRatingPercentKilledUsed').width();
                 chart.width(width);
-                var height = 450 - 30 - 20;
+                <!-- var height = 450 - 30 - 20; %} -->
+                var height = 450;
                 chart.height(height);
 
 
@@ -24,7 +26,7 @@
             chart.xAxis
                 .rotateLabels(-25)                .axisLabel('Combat Rating');
             chart.yAxis
-                .tickFormat(d3.format(',.2f'));
+                .axisLabel('Percent Killed/Percent Used')                .tickFormat(d3.format(',.2f'));
 
 
 
@@ -32,7 +34,7 @@
       chart.showLegend(true);
 
 
-            nv.utils.windowResize(function(){ chart.update(); });
+            nv.utils.windowResize(chart.update);
 
         
 

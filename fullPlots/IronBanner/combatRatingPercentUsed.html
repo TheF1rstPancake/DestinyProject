@@ -3,22 +3,17 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <!--<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">-->
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css" rel="stylesheet">
-    <!--<link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">-->
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css" rel="stylesheet">        
+    <link href="/static/css/plots.css" rel='stylesheet' type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet" type="text/css"/>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.css" rel="stylesheet" media="screen" type="text/css"/>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.7.0/nv.d3.js"></script>
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 
     <title>Percent of Weapons Used for Each Combat Rating </title>
   </head>
@@ -32,18 +27,17 @@
       </div>
     </header>
 
+
     <div id="content-wrapper" class="container-fluid">
-    	<div class="container-fluid">
-                <div class = "container-fluid">
-    				<div id="combatRatingPercentUsed" class="container-fluid">
-    			    	<svg width="100%"></svg>
-    			    	<script src='javascripts\combatRatingPercentUsed.js'></script>
-    				</div>
-                    <p>
-                        This graph should be read as <em>y</em> percent of players with a combat rating of <em>x</em> use <em>color</em> weapon. It is imporant to note that these percentages do not add up to 100.  In fact, stacking these bins will actually show many of them exceed 100. That is because players can be counted twice if they use multiple weapons in a game.  It is still correct to say that <em>y</em> percent of players with a combat rating of <em>x</em> use <em>color</em> weapon. It is <strong>incorrect</strong> to say that <em>y</em> percent of players with a combat rating of <em>x</em> use <strong>only</strong> <em>color</em> weapon.
-                    </p>
-                </div>
-	     </div>
+    	<div id="combatRatingPercentUsed" class="plot">
+            <script src='javascripts\combatRatingPercentUsed.js'></script>
+	    	<svg></svg>
+		</div>
+        <div class = "container-fluid">
+            <p>
+               This graph should be read as <em>y</em> percent of players with a combat rating of <em>x</em> use <em>color</em> weapon. It is imporant to note that these percentages do not add up to 100.  In fact, stacking these bins will actually show many of them exceed 100. That is because players can be counted twice if they use multiple weapons in a game.  It is still correct to say that <em>y</em> percent of players with a combat rating of <em>x</em> use <em>color</em> weapon. It is <strong>incorrect</strong> to say that <em>y</em> percent of players with a combat rating of <em>x</em> use <strong>only</strong> <em>color</em> weapon.
+            </p>
+        </div>
     </div>
   </body>
 </html>

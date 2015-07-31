@@ -12,9 +12,11 @@
 
 
 
-                var width = $('#combatRatingKillsPerPlayerAll').width() - 60 - 60;
+                <!--var width = $('#combatRatingKillsPerPlayerAll').width() - 60 - 60;-->
+                var width = $('#combatRatingKillsPerPlayerAll').width();
                 chart.width(width);
-                var height = 450 - 30 - 20;
+                <!-- var height = 450 - 30 - 20; %} -->
+                var height = 450;
                 chart.height(height);
 
 
@@ -27,7 +29,7 @@
 
     
     
-            nv.utils.windowResize(function(){ chart.update(); });
+            nv.utils.windowResize(chart.update);
 
         
 

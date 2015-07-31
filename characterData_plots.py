@@ -41,8 +41,8 @@ def mostUsedShader(data):
                 plotText="This is a snapshot look at the top 10 shaders.  It is not to say these are the most used over life, they are the most currently equipped.</br>"+
                         "The top 10 shaders account for <strong>{0:.2f}<strong> percent of use".format(float(sum(y))*100)
                 )   
-    graph.width = "$('#"+graph.divTitle+"').width()"
-
+    graph.width = "$({0}).width()".format(graph.divTitle)
+    graph.height = "$({0}).height()".format(graph.divTitle)
 
     graph.add_serie(y=y, x=x, name="Shaders")
     graph.create_y_axis("yAxis", "Frequency", format=".2%")
@@ -100,7 +100,9 @@ def shadersByLevel(data):
                 plotText="This is a snapshot look at the top 10 shaders broken down by character level" +
                             "Since player's can't equip shaders before level 20, this is a subset of the data looking only at players above level 20."
                 )   
-    graph.width = "$('#"+graph.divTitle+"').width()"
+    #graph.width = "$('#"+graph.divTitle+"').width()"
+    graph.width = None
+    graph.height = None
 
 
     for s in shadersByLevel:
@@ -127,7 +129,7 @@ if __name__ == "__main__":
     #teamData = pd.read_csv("datafiles/teamData.csv")
     data = pd.read_csv("datafiles/character_data.csv")
 
-    #mostUsedShader(data)
+    mostUsedShader(data)
     shadersByLevel(data)
     #write to index html file
     template = jinja2_env.get_template(os.path.join('index.html'))

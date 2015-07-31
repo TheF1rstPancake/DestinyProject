@@ -10,7 +10,7 @@ import sys
 from nvd3py import *
 import extra_analysis
 
-FULL_PLOT_HTML_DIRECTORY = os.path.join("fullPlots","IronBanner")
+FULL_PLOT_HTML_DIRECTORY = os.path.join("content", "fullPlots","IronBanner")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
 FULL_PLOT_JSON_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "datafiles")
 
@@ -355,61 +355,12 @@ def getTopWeapons(data, top=20):
 
 	return top20Weapons
 
-def combatRatingDist(data):
-	data = pd.DataFrame(data[(data['combatRating'] > 0)])
-	top20Weapons = getTopWeapons(data,20)
-	CR = data['combatRating']
 
-	non_weapon_columns = ['Unnamed: 0', 'characterClass', 'combatRating', 'characterId', 'characterLevel', 'completed', 
-							'date', 'gameId', 'killDeathRatio', 'kills','membershipId','mode','refrencedId','score','standing','team']
+def weaponUsageByCR(data, top20Weapons, weapon_columns):
 
-	weapon_columns = list(set(data.columns.values) - set(non_weapon_columns))
-
-
-	#build a histogram of 20 bins from (0,300)
-	#The range is set because of a first glance look at the data
-	num_bins = 12
-	hist = scipy.stats.histogram(CR,numbins=num_bins, defaultlimits=(0,240))
-
-	#add the extra points to the last bin.
-	#this will cause there to be a slight increase in the last bin in comparison to the bin before it.
-	hist[0][-1] = hist[0][-1]+hist[3]
-
-	#some of the bins barely contain any data.  Add these all to one extended bin
-
-	bins = [c*hist[2] for c in xrange(0,num_bins)]
-	bin_strings = ["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(0,num_bins-1)]
-	bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))
-
-
-	graph = discreteBarChart(
-				name="combatRatingDist",
-				key= 'combatRatingDist',
-				js_path = "javascripts",
-				html_path = FULL_PLOT_HTML_DIRECTORY,
-				title="Distribution of Combat Ratings in Iron Banner",
-				subtitle="A look at the distribution of combat ratings for players in IB",
-				resize=True,
-				plotText="Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)"
-				)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
-
-	graph.add_serie(x=bin_strings, y = hist[0]/len(CR), name='Distribution')
-	graph.create_y_axis("yAxis", "Frequency", format=".2%")
-	graph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
-	
-	graph.buildcontent()
-	_writeToFile(graph)
-
-
-	#create a quantile for the combat rating so we can do crazy pandas stuff
-	#need to add np.inf to bins for this to work
-	bins = np.append(bins, np.inf)
-	data['quantile'] = pd.cut(data['combatRating'], bins, right=False)
-
-	groupByQuantile = data.groupby("quantile")
 
 	quantiles = data.sort("quantile")['quantile'].unique()
+	groupByQuantile = data.groupby("quantile")
 
 	weaponUsageByCR = [{
 							"name":weapon,
@@ -442,7 +393,14 @@ def combatRatingDist(data):
 	
 	weaponGraph.buildcontent()
 	_writeToFile(weaponGraph)
-	
+
+	return weaponGraph
+
+def KillsPerPlayerPerWeaponPerBin(data, top20Weapons, weapon_columns):
+
+	quantiles = data.sort("quantile")['quantile'].unique()
+	groupByQuantile = data.groupby("quantile")
+
 	killsPerPlayerPerBin = [{
 								"name":weapon,
 								"x": quantiles,
@@ -471,8 +429,14 @@ def combatRatingDist(data):
 	kppGraph.buildcontent()
 	_writeToFile(kppGraph)
 
+	return kppGraph
+
+def PercentKilledUsedPerBin(data, top20Weapons,weapon_columns):
 
 	percentKilledUsedSeries =[]
+	quantiles = data.sort("quantile")['quantile'].unique()
+	groupByQuantile = data.groupby("quantile")
+
 	for weapon in top20Weapons:
 		series = {"name":weapon, "x":quantiles, "y":[]}
 		for q,g in groupByQuantile:
@@ -510,13 +474,15 @@ def combatRatingDist(data):
 	for s in percentKilledUsedSeries:
 		percentKillsUsedGraph.add_serie(**s)
 
-	percentKillsUsedGraph.create_y_axis("yAxis", format=".2f")
+	percentKillsUsedGraph.create_y_axis("yAxis", "Percent Killed/Percent Used", format=".2f")
 	percentKillsUsedGraph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
 	
 	percentKillsUsedGraph.buildcontent()
 	_writeToFile(percentKillsUsedGraph)
-	
 
+def PercentUsedPerBin(data, top20Weapons, weapon_columns):
+	quantiles = data.sort("quantile")['quantile'].unique()
+	groupByQuantile = data.groupby("quantile")
 	percentUsedSeries = [{
 							"name":weapon,
 							"x":quantiles,
@@ -542,12 +508,82 @@ def combatRatingDist(data):
 	for s in percentUsedSeries:
 		percentUsedGraph.add_serie(**s)
 
-	percentUsedGraph.create_y_axis("yAxis", "Percent Kills/Percent Used", format=".2%")
+	percentUsedGraph.create_y_axis("yAxis", "Percent Used", format=".2%")
 	percentUsedGraph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
 	
 	percentUsedGraph.buildcontent()
 	_writeToFile(percentUsedGraph)
 
+
+
+def combatRatingDist(data):
+	data = pd.DataFrame(data[(data['combatRating'] > 0)])
+	top20Weapons = getTopWeapons(data,20)
+	CR = data['combatRating']
+
+	non_weapon_columns = ['Unnamed: 0', 'characterClass', 'combatRating', 'characterId', 'characterLevel', 'completed', 
+							'date', 'gameId', 'killDeathRatio', 'kills','membershipId','mode','refrencedId','score','standing','team']
+
+	weapon_columns = list(set(data.columns.values) - set(non_weapon_columns))
+
+
+	#build a histogram of 20 bins from (0,300)
+	#The range is set because of a first glance look at the data
+	num_bins = 12
+	hist = scipy.stats.histogram(CR,numbins=num_bins, defaultlimits=(0,240))
+
+	#add the extra points to the last bin.
+	#this will cause there to be a slight increase in the last bin in comparison to the bin before it.
+	hist[0][-1] = hist[0][-1]+hist[3]
+
+	#some of the bins barely contain any data.  Add these all to one extended bin
+
+	bins = [c*hist[2] for c in xrange(0,num_bins)]
+	bin_strings = ["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(0,num_bins-1)]
+	bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))
+
+
+	logger.info("Combat Rating Dist")
+	graph = multiBarChart(
+				name="combatRatingDist",
+				key= 'combatRatingDist',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Distribution of Combat Ratings in Iron Banner",
+				subtitle="A look at the distribution of combat ratings for players in IB",
+				resize=True,
+				plotText="Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)"
+				)	
+	graph.width = "$('#"+graph.divTitle+"').width()"
+
+	graph.add_serie(x=bin_strings, y = hist[0]/len(CR), name='Distribution')
+	graph.create_y_axis("yAxis", "Frequency", format=".2%")
+	graph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
+	
+	graph.buildcontent()
+	_writeToFile(graph)
+
+
+	#create a quantile for the combat rating so we can do crazy pandas stuff
+	#need to add np.inf to bins for this to work
+	bins = np.append(bins, np.inf)
+	data['quantile'] = pd.cut(data['combatRating'], bins, right=False)
+
+	groupByQuantile = data.groupby("quantile")
+	quantiles = data.sort("quantile")['quantile'].unique()
+
+	logger.info("Weapon Usage by CR Graph")
+	weaponGraph = weaponUsageByCR(data,top20Weapons,weapon_columns)
+	
+	logger.info("KPP Per Weapon Per Bin")
+	killsPerPlayerPerWeaponPerBin = KillsPerPlayerPerWeaponPerBin(data,top20Weapons,weapon_columns)
+
+	logger.info("Percent Killed/ Percent Used")
+	PercentKilledUsedPerBin(data,top20Weapons, weapon_columns)
+
+	logger.info("Percent Used")
+	PercentUsedPerBin(data, top20Weapons, weapon_columns)
+	
 	killsPerCombatRating = discreteBarChart(
 				name="combatRatingKills",
 				key= 'combatRatingKills',
@@ -571,10 +607,6 @@ def combatRatingDist(data):
 
 	killsPerCombatRating.buildcontent()
 	_writeToFile(killsPerCombatRating)
-
-
-	print("NORMAL TEST ON COMBAT RATING KILLS\n{0}".format(scipy.stats.normaltest(killsPerBin)))
-
 
 
 	killsPerPlayerPerCombatRating = discreteBarChart(

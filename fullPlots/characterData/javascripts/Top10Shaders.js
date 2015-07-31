@@ -12,9 +12,9 @@
 
 
 
-                var width = $('#Top10Shaders').width() - 60 - 60;
+                var width = $(Top10Shaders).width() - 60 - 60;
                 chart.width(width);
-                var height = 450 - 30 - 20;
+                var height = $(Top10Shaders).height() - 50 - 50;
                 chart.height(height);
 
 
@@ -27,7 +27,7 @@
 
     
     
-            nv.utils.windowResize(function(){ chart.update(); });
+            nv.utils.windowResize(chart.update);
 
         
 
@@ -36,8 +36,8 @@
             d3.select('#Top10Shaders svg')
             .datum(datum)
             .transition().duration(500)
-            .attr('width', $('#Top10Shaders').width())
-            .attr('height', 450)
+            .attr('width', $(Top10Shaders).width())
+            .attr('height', $(Top10Shaders).height())
             .call(chart);
 
     
