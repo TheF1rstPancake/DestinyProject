@@ -78,7 +78,7 @@ While creating the dataset, I looked at the two weapons that a player had the mo
 Some of the top 15 most used weapons also appear in the top 15 second most used weapons. 
 For example, Felwinter's Lie for some people is their most used weapon at the end of a game, but is other player’s second most used weapon at the end of a game.
 
-.. image:: http://jalepeno112.github.io/DestinyProject/output/images/graphs/top15WeaponsUsed.png
+.. image:: ../images/graphs/top15WeaponsUsed.png
 
 I then wanted to see how weapon usage is connected to victory. 
 As you can see in the plot below, while these weapons are used very often, they don’t necessarily increase a player’s chance for victory. 
@@ -87,15 +87,17 @@ The Stranger's Rifle is interesting to see here because it is a lower-tiered wea
 The Stranger's Rifle could also be considered an outlier as it is arguably the best rare-tierd weapon in the game.  
 The main point here is that while people prefer to use Legendary and Exoctic weapons, they seem to make no difference in a player's chance for winning.
 
-.. image:: http://jalepeno112.github.io/DestinyProject/output/images/graphs/top15WeaponVictoryRate.png
+.. image:: ../images/graphs/top15WeaponVictoryRate.png
 
 Another interesting set of factors to look at is map. It is often argued that certain teams on certain maps always win.  This leads to people sometimes leaving a match because they believe that the odds are stacked against them.
 
 .. html::
-  <div id="victoryByMap" class="plot">
-  <h2 style="text-align:center">Victory Rate for each Team by Map</h2>
-  <svg></svg>
-  <script src='http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/victoryByMap.js'></script>
+  <div class="plotContainer">
+    <div id="victoryByMap" class="plot">
+    <h4 style="text-align:center">Victory Rate for each Team by Map</h4>
+    <svg></svg>
+    <script src='../crucibleDataAnalysisJS/victoryByMap.js'></script>
+    </div>
   </div>
 
 All things being equal, we would expect the victory rate for each team on any give map to be about 50%. 
@@ -106,22 +108,24 @@ It's also neat to look at the frequency that maps are played on.
 This really has no impact on the conclusions I reached about victory on certain maps but it does show that some of the more heavily played maps actually have some of the worst bias.  
 Shores of Time is one of the more frequently played maps, and it is also one of the more heavily biased maps.
 
-.. image:: http://jalepeno112.github.io/DestinyProject/output/images/graphs/mapFrequency.png
+.. image:: ../images/graphs/mapFrequency.png
 
 We can also look at which maps have the worst quit rate.  
 Losing a team member can definitely set a team back, and as we can see, certain teams tend to quit more on maps than others.  
 This also seems to be corelated to victory rate of a team on a given map.
 
 .. html::
-  <div id="quittingByMap" class="plot">
-    <h2 style="text-align:center">Quitting Rate for each Team by Map</h2>
-    <svg></svg>
-    <script src='http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/quittingByMap.js'></script>
+  <div class="plotCotainer">
+      <div id="quittingByMap" class="plot">
+        <h4 style="text-align:center">Quitting Rate for each Team by Map</h4>
+        <svg></svg>
+        <script src='../crucibleDataAnalysisJS/quittingByMap.js'></script>
+      </div>
   </div>
 
 We can also look at  a player’s Combat Rating. Combat Rating is a metric that Bungie created to effectively rank player’s along a scale.
 
-.. image:: http://jalepeno112.github.io/DestinyProject/output/images/graphs/combatRating_Victory.png
+.. image:: ../images/graphs/combatRating_Victory.png
 
 Combat Rating appears to be directly tied to a player’s victory rate with the only anomaly being when a player has a combat rating of 0. 
 Since Bungie keeps track of the combat rating in their system, I am assuming that it is a time dependent variable.  
@@ -157,21 +161,21 @@ MVP
 
 For starters, always shoot to be the best player in the game. Seem simple and intuitive, but teams with the highest scoring player on them win over 80% of the time. This value deviates only slightly even if the team with the highest scoring player also has the lowest scoring player.  So either be the best yourself or be friends with someone who is.
 
-.. image:: http://jalepeno112.github.io/DestinyProject/output/images/graphs/highLowVictory.png
+.. image:: ../images/graphs/highLowVictory.png
 
 Play with Friends
 ~~~~~~~~~~~~~~~~~~
 
 Being on a team with friends also increases chances for winning. The less fireteams on a team, thereby the more friends you being into a match with you, the more likely you are to win.
 
-.. image:: http://jalepeno112.github.io/DestinyProject/output/images/graphs/fireteamVictory.png
+.. image:: ../images/graphs/fireteamVictory.png
 
 With a Bang
 ~~~~~~~~~~~~
 
 This one goes two ways.  Being able to effectively use your heavy weapons increases the likelihood of victory, but also preventing the other team from being able to use theirs ends in their defeat. If you can't use your own heavy, you would be just as well off trying to steal theirs.
 
-.. image:: http://jalepeno112.github.io/DestinyProject/output/images/graphs/heavyWeaponVictory.png
+.. image:: ../images/graphs/heavyWeaponVictory.png
 
 This is my Rifle; This is my Gun
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,10 +184,12 @@ Be careful how heavily you rely on sniper rifles on certain maps.
 While setting up shop and camping usually results in less deaths, teams who rely on snipers more heavily during a game tend to lose.
 
 .. html::
-  <div id="sniperRatioVictoryPlot" class="plot">
-    <h2 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h2>
-    <svg></svg>
-    <script src="/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/sniperRatioVictory.js"></script>
+  <div class ="plotContainer">
+    <div id="sniperRatioVictoryPlot" class="plot">
+      <h4 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h4>
+      <svg></svg>
+      <script src="../crucibleDataAnalysisJS/sniperRatioVictory.js"></script>
+    </div>
   </div>
 
 PTFO
@@ -197,10 +203,12 @@ Across the board, the team with the higher average score per kill wins more.
 Since holding the majority of the objectives is directly related to getting more points per kill, teams should push to play to the objective.
 
 .. html::
-  <div id="averageScorePerKill" class="plot">
-  <h2 style="text-align:center">Average Score per Kill</h2>
-  <svg></svg>
-  <script src='/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/averageScorePerKill.js'></script>
+  <div class="plotContainer">
+    <div id="averageScorePerKill" class="plot">
+      <h4 style="text-align:center">Average Score per Kill</h4>
+      <svg></svg>
+      <script src='../crucibleDataAnalysisJS/averageScorePerKill.js'></script>
+    </div>
   </div>
 
 Furthermore, teams often question whether or not to go for domination.
@@ -208,10 +216,12 @@ The benefit is the max multiplier, but the cost is that you might cause the game
 As we've seen, starting spawn location on a map is important, and so a team that pushes for domination may end up swaping spawns and actually place themselves in a bad place.
 
 .. html::
-  <div id="dominationKills" class="plot">
-  <h2 style="text-align: center">Domination Kills by Map</h2>
-  <svg></svg>
-  <script src='/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/dominationKills.js'></script>
+  <div class="plotContainer">
+    <div id="dominationKills" class="plot">
+      <h4 style="text-align: center">Domination Kills by Map</h4>
+      <svg></svg>
+      <script src='../crucibleDataAnalysisJS/dominationKills.js'></script>
+    </div>
   </div>
 
 From this plot though, we can clearly see that domination is helpful in winning.
@@ -238,8 +248,8 @@ For example, auto rifles were nerfed hard early in the game, while hand cannons 
 I would expcet to see that auto rifle usage decreased heavily, while hand cannon and pulse rifle usage rose to fill in the gap.
 
 To see what the current weapon breakdown situation is check out these two plots:
-  - `Weapon Usage By Map <http://jalepeno112.github.io/DestinyProjecthttp://jalepeno112.github.io/DestinyProject/output/fullPlots/weaponBreakdown.html>`_
-  - `Weapon Usage by Class <http://jalepeno112.github.io/DestinyProjecthttp://jalepeno112.github.io/DestinyProject/output/fullPlots/weaponByClass.html>`_
+  - `Weapon Usage By Map <http://jalepeno112.github.io/DestinyProject/blog/output/fullPlots/weaponBreakdown.html>`_
+  - `Weapon Usage by Class <http://jalepeno112.github.io/DestinyProject/blog/output/fullPlots/weaponByClass.html>`_
 
 The last thing that I would like to be able to do is to only use features that are known before the game starts (i.e. character level, class, combat rating, etc.) to see if we can predict a winning team before the game even starts.
 This would allow players to see what their chances of winning are before entering a game, and potentially to be able to figure out how to adjust themselves so that their team has a higher chance of victory.

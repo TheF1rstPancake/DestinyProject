@@ -1,6 +1,6 @@
 //#var plotDiv = "#testPlot svg"
 
-var data = $.getJSON('datafiles/weapon_sums.json', function(test_data){
+var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/weapon_sums.json', function(test_data){
     var plotDiv = "#plot";
     var plotSvg = plotDiv + " svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};

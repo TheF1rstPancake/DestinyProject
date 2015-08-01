@@ -15,9 +15,9 @@
 
     <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css" type="text/css">
 
-    <link rel="stylesheet" href="output/theme/css/main.css">
+    <link rel="stylesheet" href="/blog/output/theme/css/main.css">
 
-    <link rel="stylesheet" href="output/theme/css/solarized-light.css">
+    <link rel="stylesheet" href="/blog/output/theme/css/solarized-light.css">
 
 
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -29,7 +29,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
-    <link href="/static/css/plots.css" rel="stylesheet" type="text/css"/>
+    <link href="../static/css/plots.css" rel="stylesheet" type="text/css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css" rel="stylesheet" type="text/css"/>
 
 </head>
@@ -47,7 +47,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="output">Destiny Project</a>
+        <a class="navbar-brand" href="/blog/output/blog/output">Destiny Project</a>
       </div> <!--navbar-header-->
 
       <!-- Search Box -->
@@ -69,7 +69,7 @@
       <div class="col-md-10">
         <div class="row">
               <div class="page-header">
-        <h1><a href="output/misc/optimizing-crucible-returns-in-bungies-destiny.html">Optimizing Crucible Returns in Bungie's Destiny</a></h1>
+        <h1><a href="/blog/output/misc/optimizing-crucible-returns-in-bungies-destiny.html">Optimizing Crucible Returns in Bungie's Destiny</a></h1>
     </div>
 
         </div>
@@ -78,23 +78,23 @@
 
     <span id="article_info">
     <a class="label label-primary" 
-      href="output/category/misc.html">misc</a>
+      href="/blog/output/category/misc.html">misc</a>
       <b> · </b>
         <a class="label label-primary" 
-          href="output/tag/Crucible.html">Crucible</a>
+          href="/blog/output/tag/Crucible.html">Crucible</a>
         <a class="label label-primary" 
-          href="output/tag/Control.html">Control</a>
+          href="/blog/output/tag/Control.html">Control</a>
         <a class="label label-primary" 
-          href="output/tag/trends.html">trends</a>
+          href="/blog/output/tag/trends.html">trends</a>
         <a class="label label-primary" 
-          href="output/tag/Destiny.html">Destiny</a>
+          href="/blog/output/tag/Destiny.html">Destiny</a>
     <!--<span class="glyphicon glyphicon-calendar"></span>-->
       <b> · </b>
-      <a href="output/archives.html#Year2015">2015</a>-<a href="output/archives.html#Year2015Month06">06</a>-<a href="output/archives.html#Year2015Month06">12</a>
+      <a href="/blog/output/archives.html#Year2015">2015</a>-<a href="/blog/output/archives.html#Year2015Month06">06</a>-<a href="/blog/output/archives.html#Year2015Month06">12</a>
 
     <!--<span class="glyphicon glyphicon-user"></span>-->
       <b> · </b>
-    <a href="output/author/Giovanni Briggs.html">Giovanni Briggs</a>
+    <a href="/blog/output/author/Giovanni Briggs.html">Giovanni Briggs</a>
   </span>
 
   <hr/>
@@ -161,27 +161,27 @@ It turns out, that the top 15 weapons account for just over 50% of all usage.
 While creating the dataset, I looked at the two weapons that a player had the most kills with that game.
 Some of the top 15 most used weapons also appear in the top 15 second most used weapons.
 For example, Felwinter's Lie for some people is their most used weapon at the end of a game, but is other player’s second most used weapon at the end of a game.</p>
-<img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/top15WeaponsUsed.png" />
+<img alt="" src="../images/graphs/top15WeaponsUsed.png" />
 <p>I then wanted to see how weapon usage is connected to victory.
 As you can see in the plot below, while these weapons are used very often, they don’t necessarily increase a player’s chance for victory.
 All of the weapons have a victory rate of about 50%.
 The Stranger's Rifle is interesting to see here because it is a lower-tiered weapon than everything else.
 The Stranger's Rifle could also be considered an outlier as it is arguably the best rare-tierd weapon in the game.
 The main point here is that while people prefer to use Legendary and Exoctic weapons, they seem to make no difference in a player's chance for winning.</p>
-<img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/top15WeaponVictoryRate.png" />
+<img alt="" src="../images/graphs/top15WeaponVictoryRate.png" />
 <p>Another interesting set of factors to look at is map. It is often argued that certain teams on certain maps always win.  This leads to people sometimes leaving a match because they believe that the odds are stacked against them.</p>
-<div id="victoryByMap" class="plot"> <h2 style="text-align:center">Victory Rate for each Team by Map</h2> <svg></svg> <script src='http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/victoryByMap.js'></script> </div><p>All things being equal, we would expect the victory rate for each team on any give map to be about 50%.
+<div class="plotContainer">   <div id="victoryByMap" class="plot">   <h4 style="text-align:center">Victory Rate for each Team by Map</h4>   <svg></svg>   <script src='../crucibleDataAnalysisJS/victoryByMap.js'></script>   </div> </div><p>All things being equal, we would expect the victory rate for each team on any give map to be about 50%.
 According to this plot, that is not the case. Firebase Delphi has the most significant gap where <strong>Alpha Team</strong> wins almost <strong>56%</strong> games.
 Anomaly has a similar problem except this time it is Bravo team that tends to dominate.</p>
 <p>It's also neat to look at the frequency that maps are played on.
 This really has no impact on the conclusions I reached about victory on certain maps but it does show that some of the more heavily played maps actually have some of the worst bias.
 Shores of Time is one of the more frequently played maps, and it is also one of the more heavily biased maps.</p>
-<img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/mapFrequency.png" />
+<img alt="" src="../images/graphs/mapFrequency.png" />
 <p>We can also look at which maps have the worst quit rate.
 Losing a team member can definitely set a team back, and as we can see, certain teams tend to quit more on maps than others.
 This also seems to be corelated to victory rate of a team on a given map.</p>
-<div id="quittingByMap" class="plot">   <h2 style="text-align:center">Quitting Rate for each Team by Map</h2>   <svg></svg>   <script src='http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/quittingByMap.js'></script> </div><p>We can also look at  a player’s Combat Rating. Combat Rating is a metric that Bungie created to effectively rank player’s along a scale.</p>
-<img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/combatRating_Victory.png" />
+<div class="plotCotainer">     <div id="quittingByMap" class="plot">       <h4 style="text-align:center">Quitting Rate for each Team by Map</h4>       <svg></svg>       <script src='../crucibleDataAnalysisJS/quittingByMap.js'></script>     </div> </div><p>We can also look at  a player’s Combat Rating. Combat Rating is a metric that Bungie created to effectively rank player’s along a scale.</p>
+<img alt="" src="../images/graphs/combatRating_Victory.png" />
 <p>Combat Rating appears to be directly tied to a player’s victory rate with the only anomaly being when a player has a combat rating of 0.
 Since Bungie keeps track of the combat rating in their system, I am assuming that it is a time dependent variable.
 As player's win and lose over time, I would expect their combat rating to change.
@@ -209,23 +209,23 @@ These are all things that players should look to do before or during a game.</p>
 <div class="section" id="mvp">
 <h3>MVP</h3>
 <p>For starters, always shoot to be the best player in the game. Seem simple and intuitive, but teams with the highest scoring player on them win over 80% of the time. This value deviates only slightly even if the team with the highest scoring player also has the lowest scoring player.  So either be the best yourself or be friends with someone who is.</p>
-<img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/highLowVictory.png" />
+<img alt="" src="../images/graphs/highLowVictory.png" />
 </div>
 <div class="section" id="play-with-friends">
 <h3>Play with Friends</h3>
 <p>Being on a team with friends also increases chances for winning. The less fireteams on a team, thereby the more friends you being into a match with you, the more likely you are to win.</p>
-<img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/fireteamVictory.png" />
+<img alt="" src="../images/graphs/fireteamVictory.png" />
 </div>
 <div class="section" id="with-a-bang">
 <h3>With a Bang</h3>
 <p>This one goes two ways.  Being able to effectively use your heavy weapons increases the likelihood of victory, but also preventing the other team from being able to use theirs ends in their defeat. If you can't use your own heavy, you would be just as well off trying to steal theirs.</p>
-<img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/heavyWeaponVictory.png" />
+<img alt="" src="../images/graphs/heavyWeaponVictory.png" />
 </div>
 <div class="section" id="this-is-my-rifle-this-is-my-gun">
 <h3>This is my Rifle; This is my Gun</h3>
 <p>Be careful how heavily you rely on sniper rifles on certain maps.
 While setting up shop and camping usually results in less deaths, teams who rely on snipers more heavily during a game tend to lose.</p>
-<div id="sniperRatioVictoryPlot" class="plot">   <h2 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h2>   <svg></svg>   <script src="/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/sniperRatioVictory.js"></script> </div></div>
+<div class ="plotContainer">   <div id="sniperRatioVictoryPlot" class="plot">     <h4 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h4>     <svg></svg>     <script src="../crucibleDataAnalysisJS/sniperRatioVictory.js"></script>   </div> </div></div>
 <div class="section" id="ptfo">
 <h3>PTFO</h3>
 <p>Playing the objective is sometimes debated during games.
@@ -234,10 +234,10 @@ I would argue, that teams should  <strong>always</strong> try to play the object
 The graph below shows the average score per kill for winning and losing teams on each map.
 Across the board, the team with the higher average score per kill wins more.
 Since holding the majority of the objectives is directly related to getting more points per kill, teams should push to play to the objective.</p>
-<div id="averageScorePerKill" class="plot"> <h2 style="text-align:center">Average Score per Kill</h2> <svg></svg> <script src='/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/averageScorePerKill.js'></script> </div><p>Furthermore, teams often question whether or not to go for domination.
+<div class="plotContainer">   <div id="averageScorePerKill" class="plot">     <h4 style="text-align:center">Average Score per Kill</h4>     <svg></svg>     <script src='../crucibleDataAnalysisJS/averageScorePerKill.js'></script>   </div> </div><p>Furthermore, teams often question whether or not to go for domination.
 The benefit is the max multiplier, but the cost is that you might cause the game to switch the spawn points, and place the enemy team behind you.
 As we've seen, starting spawn location on a map is important, and so a team that pushes for domination may end up swaping spawns and actually place themselves in a bad place.</p>
-<div id="dominationKills" class="plot"> <h2 style="text-align: center">Domination Kills by Map</h2> <svg></svg> <script src='/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/dominationKills.js'></script> </div><p>From this plot though, we can clearly see that domination is helpful in winning.
+<div class="plotContainer">   <div id="dominationKills" class="plot">     <h4 style="text-align: center">Domination Kills by Map</h4>     <svg></svg>     <script src='../crucibleDataAnalysisJS/dominationKills.js'></script>   </div> </div><p>From this plot though, we can clearly see that domination is helpful in winning.
 Players are awarded a &quot;Domination&quot; medal when they kill an enemy player while their team holds all three points.
 On average, it looks like winning teams get anywhere from 1-3 domination kill a match, while losing teams on average get one every other match.
 The fact that domination kills stay so low is an indication that domination generally doesn't last for long.
@@ -261,8 +261,8 @@ I would expcet to see that auto rifle usage decreased heavily, while hand cannon
 <dl class="docutils">
 <dt>To see what the current weapon breakdown situation is check out these two plots:</dt>
 <dd><ul class="first last simple">
-<li><a class="reference external" href="http://jalepeno112.github.io/DestinyProjecthttp://jalepeno112.github.io/DestinyProject/output/fullPlots/weaponBreakdown.html">Weapon Usage By Map</a></li>
-<li><a class="reference external" href="http://jalepeno112.github.io/DestinyProjecthttp://jalepeno112.github.io/DestinyProject/output/fullPlots/weaponByClass.html">Weapon Usage by Class</a></li>
+<li><a class="reference external" href="http://jalepeno112.github.io/DestinyProject/blog/output/fullPlots/weaponBreakdown.html">Weapon Usage By Map</a></li>
+<li><a class="reference external" href="http://jalepeno112.github.io/DestinyProject/blog/output/fullPlots/weaponByClass.html">Weapon Usage by Class</a></li>
 </ul>
 </dd>
 </dl>
@@ -279,11 +279,11 @@ Feel free to fork my repo and run with it.  Happy coding.</p>
 
       <ul class="pager">
         <li class="previous">
-          <a href="output/stat-porn-sunday/we-have-a-perception-issue.html">
+          <a href="/blog/output/stat-porn-sunday/we-have-a-perception-issue.html">
           &laquo; Newer</a>
         </li>
         <li class="next">
-          <a href="output/iron-banner/percent-killed-divded-by-percent-used-within-each-combat-rating-bin.html">
+          <a href="/blog/output/iron-banner/percent-killed-divded-by-percent-used-within-each-combat-rating-bin.html">
           Older &raquo;</a>
         </li>
       </ul>

@@ -1,6 +1,6 @@
 var plotDiv = "#testPlot svg"
 //var plotDiv = "#sniperRatioVictoryPlot svg";
-var data = $.getJSON('datafiles/characterClassVictory.json', function(test_data){
+var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/characterClassVictory.json', function(test_data){
     nv.addGraph({
         generate: function() {
             var width = ($(plotDiv).width() + 300) - margin.right - margin.left,

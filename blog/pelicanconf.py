@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = u'Giovanni Briggs'
 AUTHORS =[AUTHOR]
 SITENAME = u'Destiny Project'
-SITEURL = 'output/'
+SITEURL = '/blog/output/'
 
 PATH = 'content'
 

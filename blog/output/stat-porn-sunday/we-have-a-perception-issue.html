@@ -15,9 +15,9 @@
 
     <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css" type="text/css">
 
-    <link rel="stylesheet" href="output/theme/css/main.css">
+    <link rel="stylesheet" href="/blog/output/theme/css/main.css">
 
-    <link rel="stylesheet" href="output/theme/css/solarized-light.css">
+    <link rel="stylesheet" href="/blog/output/theme/css/solarized-light.css">
 
 
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -29,7 +29,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
     <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
-    <link href="/static/css/plots.css" rel="stylesheet" type="text/css"/>
+    <link href="../static/css/plots.css" rel="stylesheet" type="text/css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css" rel="stylesheet" type="text/css"/>
 
 </head>
@@ -47,7 +47,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="output">Destiny Project</a>
+        <a class="navbar-brand" href="/blog/output/blog/output">Destiny Project</a>
       </div> <!--navbar-header-->
 
       <!-- Search Box -->
@@ -69,7 +69,7 @@
       <div class="col-md-10">
         <div class="row">
               <div class="page-header">
-        <h1><a href="output/stat-porn-sunday/we-have-a-perception-issue.html">We Have a Perception Issue</a></h1>
+        <h1><a href="/blog/output/stat-porn-sunday/we-have-a-perception-issue.html">We Have a Perception Issue</a></h1>
     </div>
 
         </div>
@@ -78,23 +78,23 @@
 
     <span id="article_info">
     <a class="label label-primary" 
-      href="output/category/Stat Porn Sunday.html">Stat Porn Sunday</a>
+      href="/blog/output/category/Stat Porn Sunday.html">Stat Porn Sunday</a>
       <b> · </b>
         <a class="label label-primary" 
-          href="output/tag/Crucible.html">Crucible</a>
+          href="/blog/output/tag/Crucible.html">Crucible</a>
         <a class="label label-primary" 
-          href="output/tag/Iron Banner.html">Iron Banner</a>
+          href="/blog/output/tag/Iron Banner.html">Iron Banner</a>
         <a class="label label-primary" 
-          href="output/tag/weapon.html">weapon</a>
+          href="/blog/output/tag/weapon.html">weapon</a>
         <a class="label label-primary" 
-          href="output/tag/balancing.html">balancing</a>
+          href="/blog/output/tag/balancing.html">balancing</a>
     <!--<span class="glyphicon glyphicon-calendar"></span>-->
       <b> · </b>
-      <a href="output/archives.html#Year2015">2015</a>-<a href="output/archives.html#Year2015Month07">07</a>-<a href="output/archives.html#Year2015Month07">24</a>
+      <a href="/blog/output/archives.html#Year2015">2015</a>-<a href="/blog/output/archives.html#Year2015Month07">07</a>-<a href="/blog/output/archives.html#Year2015Month07">24</a>
 
     <!--<span class="glyphicon glyphicon-user"></span>-->
       <b> · </b>
-    <a href="output/author/Giovanni Briggs.html">Giovanni Briggs</a>
+    <a href="/blog/output/author/Giovanni Briggs.html">Giovanni Briggs</a>
   </span>
 
   <hr/>
@@ -147,7 +147,7 @@ In every PostGameCarnageReport, player's are given a <em>Combat Rating</em>.
 From what I can tell, the higher the combat rating, the &quot;better&quot; the player.
 So let's use this metric to divide the player base into tiers so that we can better evaluate weapon usage.
 This first graph shows the frequency of each combat rating within my dataset.</p>
-<div class="plotContainer"> <h4 class="text-center">Combat Rating Distribution Curve</h4> <div id="combatRatingDist">     <svg></svg>     <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingDist.js'></script> </div> </div><p>As we can see fom that graph, the distribution of combat ratings looks pretty normally distributed, which is what we would expect from a metric like this.
+<div class="plotContainer"> <h4 class="text-center">Combat Rating Distribution Curve</h4> <div id="combatRatingDist" class="plot">     <svg></svg>     <script src='../fullPlots/IronBanner/javascripts/combatRatingDist.js'></script> </div> </div><p>As we can see fom that graph, the distribution of combat ratings looks pretty normally distributed, which is what we would expect from a metric like this.
 I did remove all players who had a combat rating of -1 or 0 since these seemed to be anomalous cases and I wasn't really sure what causes them to occur (it seems to be realted to qutting, but not always).
 Removing this group took out 5% of players from the original dataset, but still left us with around 100,000 players to work with.
 One of the reasons that this graph does not perfectly fit a normal curve is that it has a very long tail to the right.
@@ -166,7 +166,7 @@ If SUROS is a higher number of kills than Thorn in the <em>lowest</em> bin, then
 However, this could be because more players are using SUROS than Thorn.
 This plot says nothing about the number of players <em>using</em> the weapon.
 Second, if you stack all of the bars, you get what percentage of weapon kills in each bin is with the top 20 weapons overall.</p>
-<div class="plotContainer"> <h4 class="text-center">Weapon Kills Breakdown in each Combat Rating Group</h4> <div id="combatRatingWeaponBreakdown" class="plot">     <svg></svg>     <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingWeaponBreakdown.js'></script> </div> </div><p>We can see from the graph that overall, the top 20 weapons account for about 70% of all weapon kills in each group (some are above and some below this line).
+<div class="plotContainer"> <h4 class="text-center">Weapon Kills Breakdown in each Combat Rating Group</h4> <div id="combatRatingWeaponBreakdown" class="plot">     <svg></svg>     <script src='../fullPlots/IronBanner/javascripts/combatRatingWeaponBreakdown.js'></script> </div> </div><p>We can see from the graph that overall, the top 20 weapons account for about 70% of all weapon kills in each group (some are above and some below this line).
 We also get to see some weapon specific trends.
 The Messenger, for example,  makes up for .6% of kills in the lowest tier and grows as the tier increases.
 Pradeyth's Revenge shows an almost opposite trend.  It makes up for less percent of kills as combat rating increases.
@@ -176,7 +176,7 @@ Thorn makes up for an almost uniform percentage of kills across combat ratings, 
 If we look at the number of kills a weapon has and then look at how many people used it, we can measure how effective it is.
 If a weapon has 1000 kills, but it took 1000 players to get it there, that's not terribly effective when compared to a weapon that had 1000 kills but only 200 users (1 versus 5).
 Before we calculate that metric though, lets look at the percentage of <em>use</em> in each combat rating group.</p>
-<div class="plotContainer"> <h4 class="text-center">Weapon Usage Breakdown in each Combat Rating Group</h4> <div id="combatRatingPercentUsed" class="plot">     <svg></svg>     <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingPercentUsed.js'></script> </div> </div><p>This graph also contains some neat trends.
+<div class="plotContainer"> <h4 class="text-center">Weapon Usage Breakdown in each Combat Rating Group</h4> <div id="combatRatingPercentUsed" class="plot">     <svg></svg>     <script src='../fullPlots/IronBanner/javascripts/combatRatingPercentUsed.js'></script> </div> </div><p>This graph also contains some neat trends.
 Most primary weapons show a general upward trend in use.
 As your combat rating increases, it is more likely that you will use one of these exotic primaries.
 Players still clearly favor Thorn over other weapons though hitting 35.53% at its peak.
@@ -193,7 +193,7 @@ I did not fully understand KPP and its impact when I first used it, so let me tr
 <p>Kills Per Player may not indicate a <em>weapon's</em> effectiveness like I stated last week (although I still think that's up for debate).
 It instead indicates a <em>player's</em> effectiveness.
 This becomes more apparent when you seperate player's into combat rating bins.</p>
-<div class='plotContainer'> <h4 class="text-center">Kills Per Player in each Combat Rating Group</h4> <div id="combatRatingKillsPerPlayerAll" class="plot">     <svg></svg>     <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingKillsPerPlayerAll.js'></script> </div> </div><p>Unlike the graph from Sunday, this graph did not attempt to determine the KPP of a weapon, but instead looks at the KPP for a particular combat rating group.
+<div class='plotContainer'> <h4 class="text-center">Kills Per Player in each Combat Rating Group</h4> <div id="combatRatingKillsPerPlayerAll" class="plot">     <svg></svg>     <script src='../fullPlots/IronBanner/javascripts/combatRatingKillsPerPlayerAll.js'></script> </div> </div><p>Unlike the graph from Sunday, this graph did not attempt to determine the KPP of a weapon, but instead looks at the KPP for a particular combat rating group.
 KPP increases with combat rating, as it should.  Higher tier players are more <em>effective</em>.
 While their contribution to the total number of kills is small, there is a very,very smaller number of them, so their KPP is very high.
 This is in contrast to the lower tier players.
@@ -201,7 +201,7 @@ There are more lower tiered players, but the contribute much less kills to the t
 What I am trying to say here is that KPP is still a useful metric, just not for what I was trying to show on Sunday.
 You can do KPP per weapon per bin but I think the trend means something different than what I originally thought.
 I leave the plot here though so that you can at least see it and determine whether you buy it or not.</p>
-<div class="plotContainer"> <h4 class="text-center">Kills Per Player for each Weapon by Combat Rating</h4> <div id="combatRatingKPP" class="plot">     <svg></svg>     <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingKPP.js'></script> </div> </div></div>
+<div class="plotContainer"> <h4 class="text-center">Kills Per Player for each Weapon by Combat Rating</h4> <div id="combatRatingKPP" class="plot">     <svg></svg>     <script src='../fullPlots/IronBanner/javascripts/combatRatingKPP.js'></script> </div> </div></div>
 <div class="section" id="another-look-at-effectiveness">
 <h2>Another Look at Effectiveness</h2>
 <p>One way to measure actually weapon efficiency that was suggested in the comments <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3e2udr/guardiangg_new_site_first_only_place_for/">another post</a> is to take the percent kills divided by the percent used.
@@ -215,7 +215,7 @@ The weapon needed to be in less hands to achieve the percent of kills it reached
 &quot;Shit&quot; players could potentially be bringing down a weapon's stats.
 The assumption is that &quot;shit&quot; players are less likely to get kills, so they inflate the player's used part of the ratio without equally contributing to the percent kills part of the ratio.</p>
 <p>Finally, let's look at this graph.</p>
-<div class="plotContainer">     <h4 class="text-center">Percent Killed divided by Percent Used for each Combat Rating </h4>     <div id="combatRatingPercentKilledUsed" class="plot">         <svg></svg>         <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingPercentKilledUsed.js'></script>     </div> </div><p>None of this should be a surprise.  After all, we already looked at the numerator and denominator values for this graph.
+<div class="plotContainer">     <h4 class="text-center">Percent Killed divided by Percent Used for each Combat Rating </h4>     <div id="combatRatingPercentKilledUsed" class="plot">         <svg></svg>         <script src='../fullPlots/IronBanner/javascripts/combatRatingPercentKilledUsed.js'></script>     </div> </div><p>None of this should be a surprise.  After all, we already looked at the numerator and denominator values for this graph.
 We've seen that the percentage of kills with the top 20 weapons is pretty much equal across all combat rating bins, but the percentage of use generally increases as the combat rating increases.
 However, if you weren't expecting this result than this can be quite the surprise.
 If we accept <em>Percent Kills/Percent Used</em> as a measurement of <em>effectiveness</em> then this graph at a glance seems to say that the lowest combat rating group is the most effective.
@@ -270,7 +270,7 @@ It's not broken weapon balancing.  It's just good game desgin.</p>
           &laquo; Newer</a>
         </li>
         <li class="next">
-          <a href="output/misc/optimizing-crucible-returns-in-bungies-destiny.html">
+          <a href="/blog/output/misc/optimizing-crucible-returns-in-bungies-destiny.html">
           Older &raquo;</a>
         </li>
       </ul>

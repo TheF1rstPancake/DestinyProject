@@ -3,7 +3,7 @@ var False = false;
 var None = null;
 
 
-var data = $.getJSON('datafiles/dominationKills.json', function(test_data){
+var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/dominationKills.json', function(test_data){
     var plotDiv = "#dominationKills";
     var plotSvg = plotDiv + " svg";
     var margin = {top: 20, right: 50, bottom: 10, left: 50};
