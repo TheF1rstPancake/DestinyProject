@@ -28,7 +28,7 @@
       chart.showLegend(true);
 
 
-            nv.utils.windowResize(chart.update);
+            nv.utils.windowResize(function(){chart.update();});
 
         
 
