@@ -10,7 +10,7 @@ import sys
 from nvd3py import *
 import extra_analysis
 
-FULL_PLOT_HTML_DIRECTORY = os.path.join("content", "fullPlots","IronBanner")
+FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content", "fullPlots","IronBanner")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
 FULL_PLOT_JSON_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "datafiles")
 

@@ -8,7 +8,7 @@ import logging
 import sys
 from nvd3py import *
 
-FULL_PLOT_HTML_DIRECTORY = os.path.join("fullPlots","characterData")
+FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content","fullPlots","characterData")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
 FULL_PLOT_JSON_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "datafiles")
 
