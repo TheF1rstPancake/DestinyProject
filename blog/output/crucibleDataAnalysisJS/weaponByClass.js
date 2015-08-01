@@ -1,4 +1,4 @@
-var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/weaponsByClass.json', function(test_data){
+var data = $.getJSON('datafiles/weaponsByClass.json', function(test_data){
     //var plotDiv = "#testPlot svg"
     var plotDiv = "#weaponByClass svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};

@@ -1,4 +1,4 @@
-var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/sniperRatioVictory.json', function(test_data){
+var data = $.getJSON('datafiles/sniperRatioVictory.json', function(test_data){
     //var plotDiv = "#testPlot svg"
     var plotDiv = "#sniperRatioVictoryPlot svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
