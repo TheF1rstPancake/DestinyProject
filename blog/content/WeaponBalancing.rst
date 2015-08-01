@@ -6,6 +6,7 @@ We Have a Perception Issue
 :authors: Giovanni Briggs
 :summary: Examining weapon balance in PvP.
 :category: Stat Porn Sunday
+
 A look at trends within Destiny's competitive multiplayer and what players can do to increase their chances for victory
 
 View project on `Github <https://github.com/Jalepeno112/DestinyProject/>`_

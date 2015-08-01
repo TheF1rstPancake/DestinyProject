@@ -170,7 +170,7 @@ The Stranger's Rifle could also be considered an outlier as it is arguably the b
 The main point here is that while people prefer to use Legendary and Exoctic weapons, they seem to make no difference in a player's chance for winning.</p>
 <img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/top15WeaponVictoryRate.png" />
 <p>Another interesting set of factors to look at is map. It is often argued that certain teams on certain maps always win.  This leads to people sometimes leaving a match because they believe that the odds are stacked against them.</p>
-<div id="victoryByMap" class="plot"> <h2 style="text-align:center">Victory Rate for each Team by Map</h2> <svg></svg> <script src='crucibleDataAnalysisJS/victoryByMap.js'></script> </div><p>All things being equal, we would expect the victory rate for each team on any give map to be about 50%.
+<div id="victoryByMap" class="plot"> <h2 style="text-align:center">Victory Rate for each Team by Map</h2> <svg></svg> <script src='http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/victoryByMap.js'></script> </div><p>All things being equal, we would expect the victory rate for each team on any give map to be about 50%.
 According to this plot, that is not the case. Firebase Delphi has the most significant gap where <strong>Alpha Team</strong> wins almost <strong>56%</strong> games.
 Anomaly has a similar problem except this time it is Bravo team that tends to dominate.</p>
 <p>It's also neat to look at the frequency that maps are played on.
@@ -180,7 +180,7 @@ Shores of Time is one of the more frequently played maps, and it is also one of 
 <p>We can also look at which maps have the worst quit rate.
 Losing a team member can definitely set a team back, and as we can see, certain teams tend to quit more on maps than others.
 This also seems to be corelated to victory rate of a team on a given map.</p>
-<div id="quittingByMap" class="plot">   <h2 style="text-align:center">Quitting Rate for each Team by Map</h2>   <svg></svg>   <script src='crucibleDataAnalysisJS/quittingByMap.js'></script> </div><p>We can also look at  a player’s Combat Rating. Combat Rating is a metric that Bungie created to effectively rank player’s along a scale.</p>
+<div id="quittingByMap" class="plot">   <h2 style="text-align:center">Quitting Rate for each Team by Map</h2>   <svg></svg>   <script src='http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/quittingByMap.js'></script> </div><p>We can also look at  a player’s Combat Rating. Combat Rating is a metric that Bungie created to effectively rank player’s along a scale.</p>
 <img alt="" src="http://jalepeno112.github.io/DestinyProject/output/images/graphs/combatRating_Victory.png" />
 <p>Combat Rating appears to be directly tied to a player’s victory rate with the only anomaly being when a player has a combat rating of 0.
 Since Bungie keeps track of the combat rating in their system, I am assuming that it is a time dependent variable.
@@ -225,7 +225,7 @@ These are all things that players should look to do before or during a game.</p>
 <h3>This is my Rifle; This is my Gun</h3>
 <p>Be careful how heavily you rely on sniper rifles on certain maps.
 While setting up shop and camping usually results in less deaths, teams who rely on snipers more heavily during a game tend to lose.</p>
-<div id="sniperRatioVictoryPlot" class="plot">   <h2 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h2>   <svg></svg>   <script src="/crucibleDataAnalysisJS/sniperRatioVictory.js"></script> </div></div>
+<div id="sniperRatioVictoryPlot" class="plot">   <h2 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h2>   <svg></svg>   <script src="/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/sniperRatioVictory.js"></script> </div></div>
 <div class="section" id="ptfo">
 <h3>PTFO</h3>
 <p>Playing the objective is sometimes debated during games.
@@ -234,10 +234,10 @@ I would argue, that teams should  <strong>always</strong> try to play the object
 The graph below shows the average score per kill for winning and losing teams on each map.
 Across the board, the team with the higher average score per kill wins more.
 Since holding the majority of the objectives is directly related to getting more points per kill, teams should push to play to the objective.</p>
-<div id="averageScorePerKill" class="plot"> <h2 style="text-align:center">Average Score per Kill</h2> <svg></svg> <script src='/crucibleDataAnalysisJS/averageScorePerKill.js'></script> </div><p>Furthermore, teams often question whether or not to go for domination.
+<div id="averageScorePerKill" class="plot"> <h2 style="text-align:center">Average Score per Kill</h2> <svg></svg> <script src='/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/averageScorePerKill.js'></script> </div><p>Furthermore, teams often question whether or not to go for domination.
 The benefit is the max multiplier, but the cost is that you might cause the game to switch the spawn points, and place the enemy team behind you.
 As we've seen, starting spawn location on a map is important, and so a team that pushes for domination may end up swaping spawns and actually place themselves in a bad place.</p>
-<div id="dominationKills" class="plot"> <h2 style="text-align: center">Domination Kills by Map</h2> <svg></svg> <script src='/crucibleDataAnalysisJS/dominationKills.js'></script> </div><p>From this plot though, we can clearly see that domination is helpful in winning.
+<div id="dominationKills" class="plot"> <h2 style="text-align: center">Domination Kills by Map</h2> <svg></svg> <script src='/http://jalepeno112.github.io/DestinyProject/output/crucibleDataAnalysisJS/dominationKills.js'></script> </div><p>From this plot though, we can clearly see that domination is helpful in winning.
 Players are awarded a &quot;Domination&quot; medal when they kill an enemy player while their team holds all three points.
 On average, it looks like winning teams get anywhere from 1-3 domination kill a match, while losing teams on average get one every other match.
 The fact that domination kills stay so low is an indication that domination generally doesn't last for long.
@@ -279,7 +279,7 @@ Feel free to fork my repo and run with it.  Happy coding.</p>
 
       <ul class="pager">
         <li class="previous">
-          <a href="output/misc/we-have-a-perception-issue.html">
+          <a href="output/stat-porn-sunday/we-have-a-perception-issue.html">
           &laquo; Newer</a>
         </li>
         <li class="next">
