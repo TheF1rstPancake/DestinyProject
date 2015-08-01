@@ -1,0 +1,13 @@
+{% set name = ["Tag: ",tag]|join %}
+{% set link = ["tag/",tag,".html"]|join %}
+{% extends "base.html" %}
+
+{% block content %}
+  {% from 'macro.html' import article_panel_list with context %}
+  {% set parent = '' %}
+  {% set id = tag %}
+  {% set title_left = tag %}
+  {% set title_right = articles|count %}
+  {% set entry_list = articles %}
+  {{ article_panel_list(parent,id,title_left,title_right,entry_list) }}
+{% endblock %}

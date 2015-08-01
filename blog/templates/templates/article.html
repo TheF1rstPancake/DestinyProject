@@ -1,0 +1,60 @@
+{% set name = article.title %}
+{% set link = article.url %}
+{% extends "base.html" %}
+
+{% block left_sidebar %}
+{% endblock %}
+
+{% block right_sidebar %}
+{% endblock %}
+
+{% block content %}
+  {% from 'macro.html' import article_info with context %}
+  {% from 'macro.html' import genurl with context %}
+
+  {{ article_info(article) }}
+  <hr/>
+
+  <div id="article_content">
+    {{ article.content }}
+  </div>
+
+  <hr/>
+  {% if article.related_posts %}
+    {% from 'macro.html' import article_panel_list with context %}
+    {% set articles = article.related_posts %}
+    {% set parent = '' %}
+    {% set id = "collapseRelated" %}
+    {% set title_left = "Related Posts" %}
+    {% set title_right = articles|count %}
+    {% set entry_list = articles %}
+    {{ article_panel_list(parent,id,title_left,title_right,entry_list) }}
+  {% endif %}
+
+  {% for temp in dates %}
+    {% if temp.url == article.url %}
+      {% if not loop.first %}
+        {% set prev = dates[loop.index0-1] %}
+      {% endif %}
+      {% if not loop.last %}
+        {% set next = dates[loop.index0+1] %}
+      {% endif %}
+      <ul class="pager">
+        <li class="previous{% if not prev %} disabled{% endif %}">
+          <a {% if prev %}href="{{ genurl( prev.url, force=True ) }}"{% endif %}>
+          &laquo; Newer</a>
+        </li>
+        <li class="next{% if not next %} disabled{% endif %}">
+          <a {% if next %}href="{{ genurl( next.url, force=True ) }}"{% endif %}>
+          Older &raquo;</a>
+        </li>
+      </ul>
+    {% endif %}
+  {% endfor %}
+
+  {% if DISQUS_SITENAME %}
+    <hr/>
+    {% include 'disqus_script.html' %}
+  {% endif %}
+
+{% endblock %}

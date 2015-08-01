@@ -1,0 +1,12 @@
+{% set name = 'Tag List' %}
+{% set link = 'taglist.html' %}
+{% extends "base.html" %}
+
+{% block content %}
+{% if tags %}
+
+  {% from 'macro.html' import taglist %}
+  {{ taglist('tag',tags) }}
+
+{% endif %}
+{% endblock %}
