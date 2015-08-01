@@ -1,5 +1,5 @@
 //var plotDiv = "#sniperRatioVictoryPlot svg";
-var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/objectivesCompleted.json', function(test_data){
+var data = $.getJSON('datafiles/objectivesCompleted.json', function(test_data){
     var plotDiv = "#testPlot svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};
     nv.addGraph({

@@ -72,9 +72,9 @@ This first graph shows the frequency of each combat rating within my dataset.
 .. html::
     <div class="plotContainer">
     <h4 class="text-center">Combat Rating Distribution Curve</h4>
-    <div id="combatRatingDist" class="plot">
+    <div id="combatRatingDist">
         <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingDist.js'></script>
+        <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingDist.js'></script>
     </div>
     </div>
 
@@ -106,7 +106,7 @@ Second, if you stack all of the bars, you get what percentage of weapon kills in
     <h4 class="text-center">Weapon Kills Breakdown in each Combat Rating Group</h4>
     <div id="combatRatingWeaponBreakdown" class="plot">
         <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingWeaponBreakdown.js'></script>
+        <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingWeaponBreakdown.js'></script>
     </div>    
     </div>
 
@@ -127,7 +127,7 @@ Before we calculate that metric though, lets look at the percentage of *use* in 
     <h4 class="text-center">Weapon Usage Breakdown in each Combat Rating Group</h4>
     <div id="combatRatingPercentUsed" class="plot">
         <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingPercentUsed.js'></script>
+        <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingPercentUsed.js'></script>
     </div>
     </div>
 
@@ -156,7 +156,7 @@ This becomes more apparent when you seperate player's into combat rating bins.
     <h4 class="text-center">Kills Per Player in each Combat Rating Group</h4>
     <div id="combatRatingKillsPerPlayerAll" class="plot">
         <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingKillsPerPlayerAll.js'></script>
+        <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingKillsPerPlayerAll.js'></script>
     </div>
     </div>
 
@@ -174,7 +174,7 @@ I leave the plot here though so that you can at least see it and determine wheth
     <h4 class="text-center">Kills Per Player for each Weapon by Combat Rating</h4>
     <div id="combatRatingKPP" class="plot">
         <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingKPP.js'></script>
+        <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingKPP.js'></script>
     </div>
     </div>
 
@@ -202,7 +202,7 @@ Finally, let's look at this graph.
         <h4 class="text-center">Percent Killed divided by Percent Used for each Combat Rating </h4>
         <div id="combatRatingPercentKilledUsed" class="plot">
             <svg></svg>
-            <script src='../fullPlots/IronBanner/javascripts/combatRatingPercentKilledUsed.js'></script>
+            <script src='http://jalepeno112.github.io/DestinyProject/output/fullPlots/IronBanner/javascripts/combatRatingPercentKilledUsed.js'></script>
         </div>
     </div>
 

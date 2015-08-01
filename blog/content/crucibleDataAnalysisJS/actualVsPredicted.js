@@ -1,6 +1,6 @@
 var plotDiv = "#testPlot svg"
 //var plotDiv = "#sniperRatioVictoryPlot svg";
-var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/actualVsPredicted.json', function(test_data){
+var data = $.getJSON('datafiles/actualVsPredicted.json', function(test_data){
     nv.addGraph({
         generate: function() {
 
