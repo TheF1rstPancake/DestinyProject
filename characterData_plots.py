@@ -17,6 +17,78 @@ PLOT_TEMPLATES = "plotTemplates"
 jinja2_env = jinja2.Environment(loader=jinja2.FileSystemLoader('plotTemplates'))
 
 
+def _writeGraph(graph):
+    graph.buildcontent()
+
+    with open(graph.fullJS, 'w') as f:
+        f.write(graph.htmlcontent)
+
+    #write to html file
+    template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+    template_values = {
+        'destinyGraph': graph.__dict__,
+    }
+    output = template.render(template_values)
+
+    with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+        f.write(output)
+
+
+def shipBreakdown(data):
+    groupByShip = data.groupby("Ships")
+    shipFreq = pd.DataFrame({s:{"Frequency":len(g)/float(len(data)), "Tier":data[data['Ships'] == s]['Ships Tier'].values[0]} for s, g in groupByShip}).T
+
+    #first, make 2 plots.  One detailing the most used ships, the second looking at the least used.
+    shipFreq.sort("Frequency", inplace=True)
+    mostUsedSeries = [{
+            "name":"Most Used Ships",
+            "x":shipFreq.tail(10).index.values,
+            "y": shipFreq.tail(10)['Frequency'].values
+    }]    
+
+    graph = discreteBarChart(
+                name="MostUsedShips",
+                key= 'MostUsedShips',
+                js_path = "javascripts",
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title="Top 10 Equipped Ships",
+                subtitle="A look the top 10 most equipped ships",
+                resize=True,
+                )   
+    graph.width = None
+
+    for s in mostUsedSeries:
+        graph.add_serie(**s)
+    graph.create_y_axis("yAxis", "Frequency", format=".1f")
+    graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
+    _writeGraph(graph)
+
+    leastUsed = [{
+            "name":"Most Used Ships",
+            "x":shipFreq.head(10).index.values,
+            "y": shipFreq.head(10)['Frequency'].values
+    }]
+
+    graph = discreteBarChart(
+                name="LeastUsedShips",
+                key= 'LeastUsedShips',
+                js_path = "javascripts",
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title= "10 Least Equipped Ships",
+                subtitle="A look the 10 least equipped ships",
+                resize=True,
+                )   
+    graph.width = None
+
+    for s in leastUsedSeries:
+        graph.add_serie(**s)
+    graph.create_y_axis("yAxis", "Frequency", format=".1f")
+    graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
+    _writeGraph(graph)
+
+
+
+
 def statBreakdownByClass(data):
     data = data[data['level'] >= 20]
     groupByClass = data.groupby("Subclass")
@@ -282,12 +354,14 @@ def shadersByLevel(data):
 if __name__ == "__main__":
     #teamData = pd.read_csv("datafiles/teamData.csv")
     data = pd.read_csv("datafiles/character_data.csv")
-
+    """
     mostUsedShader(data)
     shadersByLevel(data)
     mostUsedShaderByClass(data)
     exoticSelectionByClass(data)
     statBreakdownByClass(data)
+    """
+    shipBreakdown(data)
     #write to index html file
     template = jinja2_env.get_template(os.path.join('index.html'))
     template_values = {
