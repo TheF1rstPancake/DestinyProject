@@ -46,7 +46,7 @@ This week we are going to take a closer look at class armor.
 There has been **a lot** of analysis done on player weapon preferences, but not very much about their armor selection.
 I'm more interested in which slot players use for their exotic piece of armor rather than the exact pieces that they are using.
 It's also important to note that this isn't limited to Crucible like the other Stat Porn Sunday posts.
-These characters could be playing either Curcible or PvE.  There's no way for me to differentiate in this set.
+These characters could be playing either Crucible or PvE.  There's no way for me to differentiate in this set.
 
 I hate choices!
 ~~~~~~~~~~~~~~~~
