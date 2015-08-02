@@ -68,7 +68,8 @@ Note that not all of the tick marks are showing us this graph.  You will have to
 
 Helmets are by far the prefered slot to use for exotic armor except for Sunsingers who seem to value their exotic chest pieces more.
 This is probably because helmets seem to be more tailored towards each super, which means you are more likely to select pieces that boost your characters super abilities.
-This hypothesis is further backed by the fact that **all** exotic chestpieces for the Warlock have Sunsinger specific perks.
+This hypothesis is further backed by the fact that **all but one** exotic chestpieces for the Warlock have Sunsinger specific perks.
+Voidfang Vestements are the only exception here, which are tailored towards Axion Bolts, but come with a perk that gives you full grenade energy on respawn. This makes it a viable choice for Sunsingers too.
 Legs are the least used overall, and its probably because there are no legs (to my knoweldge) that offer subclass specific perks.
 Maybe we will see a change in The Taken King where subclass specific perks are more evenly distributed between helmets and the other slots.
 
