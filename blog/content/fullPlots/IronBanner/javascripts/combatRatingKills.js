@@ -12,7 +12,7 @@
 
 
 
-                <!--var width = $('#combatRatingKills').width() - 60 - 60;-->
+                //var width = $('#combatRatingKills').width() - 60 - 60;
                 var width = $('#combatRatingKills').width()
                 chart.width(width);
                 var height = 450 - 30 - 20;
@@ -28,7 +28,7 @@
 
     
     
-            nv.utils.windowResize(chart.update);
+            nv.utils.windowResize(function(){chart.update();});
 
         
 

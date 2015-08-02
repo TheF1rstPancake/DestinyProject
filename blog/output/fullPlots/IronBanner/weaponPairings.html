@@ -15,27 +15,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 
-    <title>Distribution of Combat Ratings in Iron Banner</title>
+    <title>Frequency of Primary/Secondary Weapon Pairings</title>
   </head>
 
   <body>
     <header>
       <div class="title container-fluid">
-        <h1>Distribution of Combat Ratings in Iron Banner</h1>
-        <h2>A look at the distribution of combat ratings for players in IB</h2>
+        <h1>Frequency of Primary/Secondary Weapon Pairings</h1>
+        <h2>A look at how primary and secondary weapons are paired together</h2>
         <a href="https://github.com/Jalepeno112/DestinyProject/" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
 
 
     <div id="content-wrapper" class="container-fluid">
-    	<div id="combatRatingDist" class="plot">
-            <script src='javascripts\combatRatingDist.js'></script>
+    	<div id="weaponPairings" class="plot">
+            <script src='javascripts\weaponPairings.js'></script>
 	    	<svg></svg>
 		</div>
         <div class = "container-fluid">
             <p>
-               Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)
+               This graph shows  how frenquently weapons are paired together over the <strong>entire</strong> set of data.  The x-axis is primary weapons, and the colors represent different secondary weapons.  When hovering over a bar, you should read the frequency as: <em>y</em> percent of players use <em>x</em> and <em>color</em> combo.  For example, 16 percent of players use a Hand Cannon and Shotgun combo.  <strong>None</strong> is for players who go through an entire game without using a primary weapon, but do have registered secondary weapon kills.  
             </p>
         </div>
     </div>

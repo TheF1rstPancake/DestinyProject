@@ -15,27 +15,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 
-    <title>Distribution of Combat Ratings in Iron Banner</title>
+    <title>Top 20 Killing Machines in Iron Banner</title>
   </head>
 
   <body>
     <header>
       <div class="title container-fluid">
-        <h1>Distribution of Combat Ratings in Iron Banner</h1>
-        <h2>A look at the distribution of combat ratings for players in IB</h2>
+        <h1>Top 20 Killing Machines in Iron Banner</h1>
+        <h2>A look at the weapons with the most kills in Iron Banner</h2>
         <a href="https://github.com/Jalepeno112/DestinyProject/" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
 
 
     <div id="content-wrapper" class="container-fluid">
-    	<div id="combatRatingDist" class="plot">
-            <script src='javascripts\combatRatingDist.js'></script>
+    	<div id="Top20WeaponsV2" class="plot">
+            <script src='javascripts\Top20WeaponsV2.js'></script>
 	    	<svg></svg>
 		</div>
         <div class = "container-fluid">
             <p>
-               Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)
+               Each bar is the number of kills with the given weapon out of all weapon kills. It should be read as <em>y</em> percent of weapon kills are with <em>x</em>.  Note that these percentages do not include super, grenade, melee, or other kills.  It is only out of weapon kills.
             </p>
         </div>
     </div>

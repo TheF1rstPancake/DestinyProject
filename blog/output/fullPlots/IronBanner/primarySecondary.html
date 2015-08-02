@@ -15,27 +15,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 
-    <title>Distribution of Combat Ratings in Iron Banner</title>
+    <title>Frequency of Secondary Weapons with each Primary Weapons</title>
   </head>
 
   <body>
     <header>
       <div class="title container-fluid">
-        <h1>Distribution of Combat Ratings in Iron Banner</h1>
-        <h2>A look at the distribution of combat ratings for players in IB</h2>
+        <h1>Frequency of Secondary Weapons with each Primary Weapons</h1>
+        <h2>A look at the disctrubtion of secondary weapons amongs primary weapons</h2>
         <a href="https://github.com/Jalepeno112/DestinyProject/" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
 
 
     <div id="content-wrapper" class="container-fluid">
-    	<div id="combatRatingDist" class="plot">
-            <script src='javascripts\combatRatingDist.js'></script>
+    	<div id="primarySecondary" class="plot">
+            <script src='javascripts\primarySecondary.js'></script>
 	    	<svg></svg>
 		</div>
         <div class = "container-fluid">
             <p>
-               Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)
+               This graph shows how often each secondary weapon is paired with a primary weapon.  It is looking at the distribution within each primary weapon, not over the entire set of data.  If you stack the bars on top of one another, each x-axis tick would go up to 1.00 (or 100%).  When hovering over a bar, you should read the result as: <em>y</em> percent of players who use <em>x</em> pair it with <em>color</em>.  For example, 46 percent of players who use Hand Cannons pair it with Shotguns.
             </p>
         </div>
     </div>

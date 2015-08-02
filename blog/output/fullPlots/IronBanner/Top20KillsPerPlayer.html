@@ -15,27 +15,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
 
-    <title>Distribution of Combat Ratings in Iron Banner</title>
+    <title>Kills per Player for the top 20 Weapons Used</title>
   </head>
 
   <body>
     <header>
       <div class="title container-fluid">
-        <h1>Distribution of Combat Ratings in Iron Banner</h1>
-        <h2>A look at the distribution of combat ratings for players in IB</h2>
+        <h1>Kills per Player for the top 20 Weapons Used</h1>
+        <h2>A different way to look at the most used weapons in Iron Banner</h2>
         <a href="https://github.com/Jalepeno112/DestinyProject/" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
 
 
     <div id="content-wrapper" class="container-fluid">
-    	<div id="combatRatingDist" class="plot">
-            <script src='javascripts\combatRatingDist.js'></script>
+    	<div id="Top20KillsPerPlayer" class="plot">
+            <script src='javascripts\Top20KillsPerPlayer.js'></script>
 	    	<svg></svg>
 		</div>
         <div class = "container-fluid">
             <p>
-               Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)
+               Each bar is the kills per player for that weapon.  Kills Per Player is caluclated by taking the total number of kills for that weapon divided by the numer of people who use it. Looking at this graph and comparing it to the top 20 weapons in Iron Banner, we can see that the most used weapon isn't necessarily the most effective. 
             </p>
         </div>
     </div>
