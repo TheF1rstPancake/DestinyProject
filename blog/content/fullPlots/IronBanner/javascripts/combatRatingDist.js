@@ -12,7 +12,7 @@
 
 
 
-                <!--var width = $('#combatRatingDist').width() - 60 - 60;-->
+                //var width = $('#combatRatingDist').width() - 60 - 60;
                 var width = $('#combatRatingDist').width()
                 chart.width(width);
                 var height = 450 - 30 - 20;
@@ -33,7 +33,7 @@
       chart.showLegend(true);
 
 
-            nv.utils.windowResize(chart.update);
+            nv.utils.windowResize(function(){chart.update();});
 
         
 
