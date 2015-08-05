@@ -1,12 +1,11 @@
 We Have a Perception Issue
 ===============================================
-:date: 2015-07-24
-:modified: 2010-07-24
+:date: 2015-08-05
+:modified: 2015-08-05
 :tags: Crucible, Iron Banner, weapon, balancing
 :authors: Giovanni Briggs
 :summary: Examining weapon balance in PvP.
 :category: Stat Porn Sunday
-:status: draft
 
 A look at trends within Destiny's competitive multiplayer and what players can do to increase their chances for victory
 
@@ -30,7 +29,7 @@ I was wrong.
 The Kills-per-Player metric I created did not sit well with a lot of people.  
 For this post, I want to try and re-engange the conversation except this time, I want to be as clear as possible about what I intend to show and the process I went through in gathering and analyzing the data.
 
-The point of this post is to show that **weapon balancing in PvP is not nearly as broken as it is made out to be** and as a smaller note, that weapon balancing is about changing the perspective of players on certain weapons.
+The point of this post is to show that **weapon balancing in PvP is not nearly as broken as it is made out to be** and as a smaller note, that weapon balancing is about changing the perspective players have on certain weapons.
 
 In the original post players said, "Thorn is overpowered!  I'm feel like I'm dying by it all the time."  
 I said the numbers don't add up.
@@ -264,7 +263,7 @@ Rather than just saying, "Nerf x", I think it's better to try and explain what t
 
 Just by usage and kills, Thorn appears to be the most overpowered weapon in the game.
 But finding a way to normalize the data and looking at weapon efficiency shows us that these top 20 weapons are actually fairly even.
-There is a nice balance here.  The issue is that people don't see it.  
+There is a nice balance here.  The issue is that people don't see it.  There is this shared perception that there is one gun that is mindblowingly overpowered.
 Weapon tunning isn't so much about applying nerfs to create more balance as it is to change the perception that people have about certain weapons in order to force them to try new ones.
 Reshifting the game like this can help make the game feel new again.  
 It reinvigorates the population as we hunger after the new "most powerful" weapons.
