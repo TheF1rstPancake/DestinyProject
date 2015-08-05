@@ -59,11 +59,11 @@ def shipBreakdown(data):
 
     for s in mostUsedSeries:
         graph.add_serie(**s)
-    graph.create_y_axis("yAxis", "Frequency", format=".1f")
+    graph.create_y_axis("yAxis", "Frequency", format=".3f")
     graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
     _writeGraph(graph)
 
-    leastUsed = [{
+    leastUsedSeries = [{
             "name":"Most Used Ships",
             "x":shipFreq.head(10).index.values,
             "y": shipFreq.head(10)['Frequency'].values
@@ -82,10 +82,140 @@ def shipBreakdown(data):
 
     for s in leastUsedSeries:
         graph.add_serie(**s)
-    graph.create_y_axis("yAxis", "Frequency", format=".1f")
+    graph.create_y_axis("yAxis", "Frequency", format="s")
     graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
     _writeGraph(graph)
 
+
+def factionsByClass(data):
+    #first we need a list of all faction items
+    factionItems = {'Hunter':{
+                        "Future War Cult":['Astrolord Cloak', 'Choas Cloak', 'Cloak of Immanent War', 'Cloak of No Tomorrow', 'Cloak of Repair'],
+                        "Dead Orbit": ['Cloak of Oblivion', ' Cloak of the Exodus', 'Cloak of the Sojourn','Dead Light Cloak'], 
+                        "New Monarchy": ['Cloak of Order', 'Cloak of the Justicars', 'Cloak of the Rising'],
+                },
+    'Warlock':{
+                "Future War Cult":['Circle of War', 'Immanent War', 'No Tomorrow', 'The Chaos Constant'],
+                "Dead Orbit": ['Death of Fate', 'Light Beyond', 'Ritual Expansion', 'Willful Exodus'], 
+                "New Monarchy": ['Faceless Demise', 'The Age to Come', 'The Order','The Risen Ones'],
+            },
+    'Titan':{
+                "Future War Cult":['Immanent War Mark', 'Mark of Chaos', 'Mark or No Tomorrow','Mark of the Circle'],
+                "Dead Orbit": ['Dead Light Mark', 'Mark of Oblivion', 'Mark of the Exodus', 'Mark of the Sojourn'], 
+                "New Monarchy": ['Mark of the Executor','Mark of the Initiative','Mark of the Order','Mark of the Rising'],
+            }
+    }
+
+    data = data[data['level'] >= 20]
+    groupByClass = data.groupby("class")
+
+    factions = ['Future War Cult', 'Dead Orbit', 'New Monarchy']
+    factionBreakdown = pd.DataFrame({c:{f:len(g[g['Class Armor'].isin(factionItems[c][f])])/float(len(g)) for f in factions} for c,g in groupByClass}).T
+
+    #now we have to add the "other" category.
+    for c,_ in groupByClass:
+        for f in factions:
+            factionBreakdown.ix[c,'Other'] = 1.0- factionBreakdown.ix[c].sum()
+
+    #rotate it back so that factions are the x axis, and classes are colors
+    factionBreakdown = factionBreakdown.T
+
+    print "BY CLASS:\n", factionBreakdown.T, '\n',factionBreakdown.T.sum(),"\n------------------------"
+
+    series = [{
+            "name": c,
+            "x":factionBreakdown[c].index.values,
+            'y':factionBreakdown[c].values
+    }for c in factionBreakdown.columns[0:3]]
+
+    graph = multiBarChart(
+                name="FactionBreakdownByClass",
+                key= 'FactionBreakdownByClass',
+                js_path = "javascripts",
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title="Faction Breakdown By Class",
+                subtitle="A look at how each class joins factions",
+                resize=True,
+                )   
+    graph.width = None
+
+    for s in series:
+        graph.add_serie(**s)
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Class", extras={"rotateLabels":-25})
+    
+    _writeGraph(graph)
+
+    #now to factions by level
+    #it follows the same structure as groupby class
+    groupByLevel = data.groupby("level")
+    #factionItemsNotClass = {f: [i for i in factionItems[c][f] for c in factionItems.keys()] for f in factions}
+    factionItemsNotClass = {f:[] for f in factions}
+    for f in factions:
+        for c in factionItems.keys():
+            factionItemsNotClass[f] = factionItemsNotClass[f].append([i for i in factionItems[c][f]])
+
+    factionBreakdown = pd.DataFrame({c:{f:len(g[g['Class Armor'].isin(factionItemsNotClass[f])])/float(len(g)) for f in factions} for c,g in groupByLevel}).T
+
+    #now we have to add the "other" category.
+    for c,_ in groupByLevel:
+        for f in factions:
+            factionBreakdown.ix[c,'Other'] = 1.0- factionBreakdown.ix[c].sum()
+    print "BY LEVEL: \n", factionBreakdown
+    print(factionBreakdown.sum())
+
+    series = [{
+            "name": c,
+            "x":factionBreakdown[c].index.values.astype(str),
+            'y':factionBreakdown[c].values
+    }for c in factionBreakdown.columns[0:3]]
+
+    graph = lineChart(
+                name="FactionBreakdownByLevel",
+                key= 'FactionBreakdownByLevel',
+                js_path = "javascripts",
+                use_interactive_guideline = True,
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title="Faction Breakdown By Level",
+                subtitle="A look to see if rank affects faction participation",
+                resize=True,
+                )   
+    graph.width = None
+
+    for s in series:
+        graph.add_serie(**s)
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Class", extras={"rotateLabels":-25})
+    
+    _writeGraph(graph)
+
+    #now we can look at it without grouping at all
+    factionBreakdown = pd.DataFrame({f:len(data[data['Class Armor'].isin(factionItemsNotClass[f])])/float(len(data)) for f in factions}, index=["Freq"]).T
+    print(factionBreakdown)
+    factionBreakdown.ix['Other'] = 1.0 - factionBreakdown["Freq"].sum()
+    series = [{
+            "name": "Distribution",
+            "x":factionBreakdown.index.values[0:3],
+            'y':factionBreakdown['Freq'].values[0:3]
+    }]
+
+    graph = discreteBarChart(
+                name="FactionBreakdown",
+                key= 'FactionBreakdown',
+                js_path = "javascripts",
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title="Faction Breakdown By Level",
+                subtitle="A look at how each players join factions",
+                resize=True,
+                )   
+    graph.width = None
+
+    for s in series:
+        graph.add_serie(**s)
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Class", extras={"rotateLabels":-25})
+    
+    _writeGraph(graph)
 
 
 
@@ -361,7 +491,8 @@ if __name__ == "__main__":
     exoticSelectionByClass(data)
     statBreakdownByClass(data)
     """
-    shipBreakdown(data)
+    #shipBreakdown(data)
+    factionsByClass(data)
     #write to index html file
     template = jinja2_env.get_template(os.path.join('index.html'))
     template_values = {
