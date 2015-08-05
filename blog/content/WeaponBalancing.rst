@@ -12,6 +12,7 @@ A look at trends within Destiny's competitive multiplayer and what players can d
 
 View project on `Github <https://github.com/Jalepeno112/DestinyProject/>`_
 
+Get the data file used for these plots on my `Google Drive <https://drive.google.com/open?id=0B4f7JIyE52tbbVlxNTNONEQyNm8>`_
 
 Overview
 --------
@@ -29,7 +30,7 @@ I was wrong.
 The Kills-per-Player metric I created did not sit well with a lot of people.  
 For this post, I want to try and re-engange the conversation except this time, I want to be as clear as possible about what I intend to show and the process I went through in gathering and analyzing the data.
 
-The point of this post is to show that weapon balancing in PvP is not nearly as broken as it is made out to be and that weapon balancing is about changing the perspective of players on certain weapons.
+The point of this post is to show that **weapon balancing in PvP is not nearly as broken as it is made out to be** and as a smaller note, that weapon balancing is about changing the perspective of players on certain weapons.
 
 In the original post players said, "Thorn is overpowered!  I'm feel like I'm dying by it all the time."  
 I said the numbers don't add up.
@@ -52,18 +53,19 @@ That means that about 36 percent of kills come from something other than a weapo
 So Thorn is really only **10.79%** of all kills overall.  
 If the average player dies 12 times (which they do) then in a given game you are going to die by Thorn **1.1 times**.
 
-If I had to take a bet on whether or not you died by Thorn, I would pick no every time.  90% of the time, I would be right.
+If I had to take a bet on whether or not you died by Thorn, I would pick no every time.  89.21% of the time, I would be right.
 If I had to bet on the exact weapon you were killed by, I would actually pick Thorn every time because it has the highest kill (and use) frequency of any weapon.
-That doesn't mean its overpowered.
+That doesn't mean its overpowered.  You're right that this doesn't take into account *assists* cause by Thorn.  
+The number of times that you get hit by Thorn and then nailed by a grenade while in cover, but there is no way for me to calculate that in this dataset.
+I can see number of assists, but I can tell what those assists are from like I can with kills.  Any attempt to do so would be some serious guestimation.  
 
 I think it's important to get away from the idea of "Everyone" and "always" as these over-generalizations don't help us.
 *Feeling* like Thorn kills you all the time is different than it *actually* killing you all the time.  Let's keep this in mind as we continue.
 
-
 Shit Players
 -------------------
-
-But how do we detect "shit" players?  
+But let's go back to this idea of the "shit" player.  
+How do we detect "shit" players?  
 Bungie actually does that for us.  
 In every PostGameCarnageReport, player's are given a *Combat Rating*.  
 From what I can tell, the higher the combat rating, the "better" the player.  
@@ -88,12 +90,10 @@ In order to deal with this, I increased the range of the last bin from 220 onwar
 Otherwise, the last bins don't have enough people in them to make meaningful trends.
 The average combat rating is a **96**.
 
-
 Combat Rating Breakdown
 -------------------------
-
 With the pleasentries out of the way we can now start looking at weapon trends within each bin.  
-This next plot will show how much each of the top 20 weapons contribute to the overall *weapon kills* of each bin.  
+This next plot will show how much each of the top 20 weapons contributes to the overall *weapon kills* of each bin.  
 
 I divded the dataset into combat rating bins, and then for each of the top 20 weapons, I divided that weapon's kills in *that bin* by the total number of weapon kills in *that bin*.  
 This can show us a few things.  First, it shows us how prominent each weapon is in a given tier.  
@@ -125,21 +125,21 @@ Before we calculate that metric though, lets look at the percentage of *use* in 
 
 .. html::
     <div class="plotContainer">
-    <h4 class="text-center">Weapon Usage Breakdown in each Combat Rating Group</h4>
-    <div id="combatRatingPercentUsed" class="plot">
-        <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingPercentUsed.js'></script>
-    </div>
+        <h4 class="text-center">Weapon Usage Breakdown in each Combat Rating Group</h4>
+        <div id="combatRatingPercentUsed" class="plot">
+            <svg></svg>
+            <script src='../fullPlots/IronBanner/javascripts/combatRatingPercentUsed.js'></script>
+        </div>
     </div>
 
 This graph also contains some neat trends.  
 Most primary weapons show a general upward trend in use.  
 As your combat rating increases, it is more likely that you will use one of these exotic primaries.  
-Players still clearly favor Thorn over other weapons though hitting 35.53% at its peak.  
+Players still clearly favor Thorn over other weapons with Thorn hitting 35.53% at its peak.  
 What's interesting about these trends though is that the percent of use increases much more rapidly than the percent of kills.
 Also note that if you stack the bars, the percentages are not out of 100%.  That's because player's can be counted multiple times for each weapon that they use.
 It is still accurate to say that 11.86% of players use Red Death in the [100,120) bin.
-It would be wrong to say that 11.86% of players only use Red Death in the [100, 120) bin.  
+It would be wrong to say that 11.86% of players *only* use Red Death in the [100, 120) bin.  
 Stacking the bins does show that the usage of these top 20 powerhouses increases as the combat rating increases.
 
 Next, I'm going to divide the total number of kills with each weapon by the number of players who use that weapon.  
@@ -148,46 +148,46 @@ It was a point of contention with many people who stated that this metric was br
 They were (mostly) right. 
 I did not fully understand KPP and its impact when I first used it, so let me try again here because I do believe it is a useful metric.  
 
-Kills Per Player may not indicate a *weapon's* effectiveness like I stated last week (although I still think that's up for debate).  
+Kills Per Player may not indicate a *weapon's* effectiveness like I stated (although I still think that's up for debate).  
 It instead indicates a *player's* effectiveness.  
 This becomes more apparent when you seperate player's into combat rating bins.
 
 .. html::
     <div class='plotContainer'>
     <h4 class="text-center">Kills Per Player in each Combat Rating Group</h4>
-    <div id="combatRatingKillsPerPlayerAll" class="plot">
-        <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingKillsPerPlayerAll.js'></script>
-    </div>
+        <div id="combatRatingKillsPerPlayerAll" class="plot">
+            <svg></svg>
+            <script src='../fullPlots/IronBanner/javascripts/combatRatingKillsPerPlayerAll.js'></script>
+        </div>
     </div>
 
 Unlike the graph from Sunday, this graph did not attempt to determine the KPP of a weapon, but instead looks at the KPP for a particular combat rating group.
-KPP increases with combat rating, as it should.  Higher tier players are more *effective*.  
-While their contribution to the total number of kills is small, there is a very,very smaller number of them, so their KPP is very high.  
+KPP increases with combat rating - as it should.  Higher tier players are more *effective*.  
+While their contribution to the total number of kills is small, there is a very, very smaller number of them, so their KPP is very high.
 This is in contrast to the lower tier players.
-There are more lower tiered players, but the contribute much less kills to the total, so their KPP is much lower.  
+There are more lower tiered players, but they contribute less kills to the total, so their KPP is much lower.  
 What I am trying to say here is that KPP is still a useful metric, just not for what I was trying to show on Sunday.  
 You can do KPP per weapon per bin but I think the trend means something different than what I originally thought.
 I leave the plot here though so that you can at least see it and determine whether you buy it or not.
 
 .. html::
     <div class="plotContainer">
-    <h4 class="text-center">Kills Per Player for each Weapon by Combat Rating</h4>
-    <div id="combatRatingKPP" class="plot">
-        <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingKPP.js'></script>
-    </div>
+        <h4 class="text-center">Kills Per Player for each Weapon by Combat Rating</h4>
+        <div id="combatRatingKPP" class="plot">
+            <svg></svg>
+            <script src='../fullPlots/IronBanner/javascripts/combatRatingKPP.js'></script>
+        </div>
     </div>
 
 
 Another Look at Effectiveness
 ------------------------------
 
-One way to measure actually weapon efficiency that was suggested in the comments `another post <https://www.reddit.com/r/DestinyTheGame/comments/3e2udr/guardiangg_new_site_first_only_place_for/>`_ is to take the percent kills divided by the percent used.
+One way to measure weapon efficiency that was suggested in the comments of `another post <https://www.reddit.com/r/DestinyTheGame/comments/3e2udr/guardiangg_new_site_first_only_place_for/>`_ is to take the percent kills divided by the percent used.
 By taking the percent killed by the percent used, you get a ratio that tells you how effective a weapon is.
-As the percent of kills increases (and player usage stays the same), the ratio decreases.
+As the percent of kills increases (and player usage stays the same), the ratio increases.
 The weapon had to be in more hands to acheive the percent of kills that it reached.
-If the percent used decrases (and the kills stays the same), then the ratio increases.
+If the percent used decreases (and the kills stays the same), then the ratio also increases.
 The weapon needed to be in less hands to achieve the percent of kills it reached.
 
 The post didn't mention applying this metric to speicifc combat rating bins or skill levels but I think we need to do that for the same reasons that a simple average isn't always a good measurement.
@@ -208,11 +208,11 @@ Finally, let's look at this graph.
     </div>
 
 None of this should be a surprise.  After all, we already looked at the numerator and denominator values for this graph.
-We've seen that the percentage of kills with the top 20 weapons is pretty much equal across all combat rating bins, but the percentage of use generally increases as the combat rating increases.
+The top 20 weapons overall make up about an equal number of kills across each bin, but there is an increase in use as combat rating increases, so we get a general downward trend here.
 However, if you weren't expecting this result than this can be quite the surprise.
-If we accept *Percent Kills/Percent Used* as a measurement of *effectiveness* then this graph at a glance seems to say that the lowest combat rating group is the most effective.
+If we accept *Percent Kills/Percent Used* as a measurement of *effectiveness* then this graph at a glance seems to say that the lowest combat rating group is the most effective with these weapons.
 This would be the wrong conclusion.  We can't compare across groups in this manner.  *Percent Kills/Percent Used* is a measurement of *weapon* effectiveness.
-Since I have done this calculation within each bin, it's really a measurement of how effective each weapon is in each bin.
+Since I have done this calculation within each bin, it's really a measurement of how effective each weapon is in each **bin**.
 
 First we need to compare between weapons in a given bin.  
 Let's take the lowest bin.  
@@ -237,24 +237,35 @@ But we've gone through this entire analysis without ever defining what an "overp
 One way to look at an overpowered weapon is to say that it is a weapon that people feel they have to use in order to compete.
 This argument could be made for Thorn.
 Players feel like Thorn is so powerful to the point where if they don't use it, they don't stand a chance.
-This would explain it's high percentage of usage.
-At it's peak, Thorn is used by 35.53% of all players.  That means 4 players in a given game are likely using Thorn, but that means the other 8 players felt perfectly comfortable using some other primary or no primary at all.
-So it can't be that overpowered.
+We see this effect in the percent killed/percent used ratio.
+The percent of kills that Thorn makes up doesn't change across skill levels, but the percent of people using it does increase.
+Thorn is used by 35.53% of all players.  
+That means 4 players in a given game are likely using Thorn, but that also means the other 8 players feel perfectly comfortable using some other primary or no primary at all.
+Thorn is certainly powerful, but I don't think we can say that it is overpowered.
 
 The other way to define an overpowered weapon is to say that the weapon is too hard to obtain and those that obtain it have an unfair advantage.
-The Messenger might be such a weapon.  It's not easy for the average Destiny player to get to the lighthouse, and even if they do, there's no gaurantee that they will be awarded this weapon.
-If The Messenger was truly overpowered, we would see it in its effectiveness.  Such a small population has it, but if it's some sort of monster, then these players would be raking up the kills.
-It's effectiveness is actually on par with the other weapons especially in the mid to high combat rating range.
+We would expect to see this reflect in the percent kills/percent used ratio.  
+This weapon would have a high percentage of kills compared to its low percentage of  use.
+The Messenger might be such a weapon.  
+It's not easy for the average Destiny player to get to the lighthouse, and even if they do, there's no gaurantee that they will be awarded this weapon.
+The Messenger's effectiveness is actually on par with the other weapons especially in the mid to high combat rating range.
 
-What the kill-used effectiveness ratio and KPP try and do (each in their own way) is normalize weapon statistics.
-In other words, they are trying to remove the bias that comes with extreme use.  Of course we expect Thorn to have the highest number percentage of kills, because it also has the highest percentage of use.
+What the kill-used effectiveness ratio and KPP try to do (each in their own way) is "normalize" weapon statistics.
+In other words, they are trying to remove the bias that comes with extreme use.  
+Of course we expect Thorn to have the highest number percentage of kills, because it also consistently has the highest percentage of use.
 When you strip away Thorn's high percentage of use though to try and compare these weapons on some even terms, we see that Thorn actually falls in line with all these other weapons.
+None of these top 20 powerhouses stands out as being overpowered using the definitions of overpowered that I have outlined.
 
-I've given you two metrics, each one trying to show the effectiveness of a weapon as opposed to how people *feel* about a weapon in order to verify the statement that the Crucible is a much more well balanced machine than people give Bungie credit for.
-In other terms, these metrics attempt to remove the *perception* that people have for each weapon.
+One could argue that the bigger issue is that about 70% of all weapon kills come from only 20 weapons in a game that has hundreds.
+However, exotics and legendaries wouldn't be worth going after if they didn't have aspects that made them exotic and legendary.  
+What would the perfectly balanced game look like?  Uniform weapon kill distribution across all weapons in the game?
+I don't have a definitive answer on what the perfect game looks like, but I think it's important to consider when engaging in these discussions.
+Rather than just saying, "Nerf x", I think it's better to try and explain what the ideal is and why "Nerf x" helps us achieve that ideal.
 
 Just by usage and kills, Thorn appears to be the most overpowered weapon in the game.
 But finding a way to normalize the data and looking at weapon efficiency shows us that these top 20 weapons are actually fairly even.
-There is a nice balance here.  The issue is that people don't see it.  Weapon tunning isn't so much about applying nerfs to create more balance as it is to change the perception that people have about certain weapons in order to force them to try new ones.
-Reshifting the game like this can help make the game feel new again.  It reinvigorates the population.
+There is a nice balance here.  The issue is that people don't see it.  
+Weapon tunning isn't so much about applying nerfs to create more balance as it is to change the perception that people have about certain weapons in order to force them to try new ones.
+Reshifting the game like this can help make the game feel new again.  
+It reinvigorates the population as we hunger after the new "most powerful" weapons.
 It's not broken weapon balancing.  It's just good game desgin.

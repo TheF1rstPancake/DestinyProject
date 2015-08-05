@@ -12,9 +12,6 @@
 
 
 
-                //var width = $('#Top20Victory').width() - 60 - 60;
-                var width = $('#Top20Victory').width()
-                chart.width(width);
                 var height = 450 - 30 - 20;
                 chart.height(height);
 
@@ -37,7 +34,6 @@
             d3.select('#Top20Victory svg')
             .datum(datum)
             .transition().duration(500)
-            .attr('width', $('#Top20Victory').width())
             .attr('height', 450)
             .call(chart);
 

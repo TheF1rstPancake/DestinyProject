@@ -12,9 +12,6 @@
 
 
 
-                //var width = $('#combatRatingDist').width() - 60 - 60;
-                var width = $('#combatRatingDist').width()
-                chart.width(width);
                 var height = 450 - 30 - 20;
                 chart.height(height);
 
@@ -41,7 +38,6 @@
         d3.select('#combatRatingDist svg')
             .datum(datum)
             .transition().duration(500)
-            .attr('width', $('#combatRatingDist').width())
             .attr('height', 450)
             .call(chart);
 
