@@ -46,7 +46,7 @@ This week we are going to take a closer look at class armor.
 There has been **a lot** of analysis done on player weapon preferences, but not very much about their armor selection.
 I'm more interested in which slot players use for their exotic piece of armor rather than the exact pieces that they are using.
 It's also important to note that this isn't limited to Crucible like the other Stat Porn Sunday posts.
-These characters could be playing either Curcible or PvE.  There's no way for me to differentiate in this set.
+These characters could be playing either Crucible or PvE.  There's no way for me to differentiate in this set.
 
 I hate choices!
 ~~~~~~~~~~~~~~~~
@@ -68,8 +68,11 @@ Note that not all of the tick marks are showing us this graph.  You will have to
 
 Helmets are by far the prefered slot to use for exotic armor except for Sunsingers who seem to value their exotic chest pieces more.
 This is probably because helmets seem to be more tailored towards each super, which means you are more likely to select pieces that boost your characters super abilities.
-This hypothesis is further backed by the fact that **all** exotic chestpieces for the Warlock have Sunsinger specific perks.
-Legs are the least used overall, and its probably because there are no legs (to my knoweldge) that offer subclass specific perks.
+This hypothesis is further backed by the fact that **all but one** exotic chestpieces for the Warlock have Sunsinger specific perks.
+Voidfang Vestements are the only exception here, which are tailored towards Axion Bolts, but come with a perk that gives you full grenade energy on respawn. This makes it a viable choice for Sunsingers too.
+Legs are the least used overall, and its probably because there are very few legs (to my knoweldge) that offer subclass specific perks.
+Titans have exotic boots that have specific perks for the Striker subclass.
+This explains why Strikers have an increased use of exotic boots compared to Defenders.
 Maybe we will see a change in The Taken King where subclass specific perks are more evenly distributed between helmets and the other slots.
 
 If you stack the bars, you see another interesting tid-bit. 

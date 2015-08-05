@@ -50,7 +50,7 @@ def mostUsedWeapons(data):
 				plotText="Each bar is the number of players who finish a game where that weapon is there most used. "+
 						"It should be read as <em>y</em> percent of players finish a game with <em>x</em> as their most used weapon."
 				)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.width = None
 	
 	mostUsed.sort("Frequency",ascending=False,inplace=True)
 
@@ -99,7 +99,7 @@ def mostUsedVictory(data):
 				plotText="Each bar is the victory rate with the given weapon out of all weapon kills. " +
 						"It should be read as <em>y</em> percent of players who use <em>x</em> win.  "
 				)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.width = None
 	
 
 	top = weaponFreq.head(20).index.values
@@ -145,7 +145,7 @@ def mostUsedWeaponsV2(data):
 						"It should be read as <em>y</em> percent of weapon kills are with <em>x</em>.  "+
 						"Note that these percentages do not include super, grenade, melee, or other kills.  It is only out of weapon kills."
 				)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.width = None
 	
 
 	x = weaponFreq.head(20).index.values
@@ -196,7 +196,7 @@ def averageCombatRating(data):
 			subtitle="A look at the weapons with the relative combat ratings of players who use these weapons",
 			resize=True,
 			)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.width = None
 	
 
 	x = combatRatings.head(20).index.values
@@ -246,7 +246,7 @@ def killDeathRatio(data):
 			subtitle="A look at the Kill Death Ratio of players who use the top 20 most used weapons",
 			resize=True,
 			)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.width = None
 	
 
 	x = averageKD.head(20).index.values
@@ -310,7 +310,7 @@ def killsPerPlayer(data):
 							"Kills Per Player is caluclated by taking the total number of kills for that weapon divided by the numer of people who use it. " +
 							"Looking at this graph and comparing it to the top 20 weapons in Iron Banner, we can see that the most used weapon isn't necessarily the most effective. "
 				)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.width = None
 
 	x = top20Weapons.index.values
 	y = top20Weapons['KillsPerPlayer'].values
@@ -383,7 +383,7 @@ def weaponUsageByCR(data, top20Weapons, weapon_columns):
 						'Consistent percentages for a give weapon contributes to the total number of kills for that group equally compared to others. ' +
 						'The emphasis here is on <strong>kills</strong> not on use.'
 				)	
-	weaponGraph.width = "$('#"+weaponGraph.divTitle+"').width()"
+	weaponGraph.width = None
 
 	for s in weaponUsageByCR:
 		weaponGraph.add_serie(**s)
@@ -418,7 +418,7 @@ def KillsPerPlayerPerWeaponPerBin(data, top20Weapons, weapon_columns):
 				plotText="This graph shows the Kills-per-Player with each weapon within each group. " +
 						"Each bar is the number of kills with that weapon in that group divided by the number of players who use that weapon in that group."
 				)	
-	kppGraph.width = "$('#"+kppGraph.divTitle+"').width()"
+	kppGraph.width = None
 
 	for s in killsPerPlayerPerBin:
 		kppGraph.add_serie(**s)
@@ -469,7 +469,7 @@ def PercentKilledUsedPerBin(data, top20Weapons,weapon_columns):
 						"Be careful when comparing across groups though.  " +
 						"Just because Weapon-Z has an effectiveness of 2 in Group-A and only an effectiveness of 1 in Group-B does not mean that Group-A is more effective with the weapon than Group-B."
 				)	
-	percentKillsUsedGraph.width = "$('#"+percentKillsUsedGraph.divTitle+"').width()"
+	percentKillsUsedGraph.width = None
 
 	for s in percentKilledUsedSeries:
 		percentKillsUsedGraph.add_serie(**s)
@@ -503,7 +503,7 @@ def PercentUsedPerBin(data, top20Weapons, weapon_columns):
 							"<em>y</em> percent of players with a combat rating of <em>x</em> use <em>color</em> weapon. " +
 							"It is <strong>incorrect</strong> to say that <em>y</em> percent of players with a combat rating of <em>x</em> use <strong>only</strong> <em>color</em> weapon."
 				)	
-	percentUsedGraph.width = "$('#"+percentUsedGraph.divTitle+"').width()"
+	percentUsedGraph.width = None
 
 	for s in percentUsedSeries:
 		percentUsedGraph.add_serie(**s)
@@ -554,7 +554,7 @@ def combatRatingDist(data):
 				resize=True,
 				plotText="Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)"
 				)	
-	graph.width = "$('#"+graph.divTitle+"').width()"
+	graph.width = None
 
 	graph.add_serie(x=bin_strings, y = hist[0]/len(CR), name='Distribution')
 	graph.create_y_axis("yAxis", "Frequency", format=".2%")
@@ -594,7 +594,7 @@ def combatRatingDist(data):
 				resize=True,
 				plotText= "The distribution of kills across all players.  Each bar is the total kills in that bin divided by the total number of kills in the set."
 				)	
-	killsPerCombatRating.width = "$('#"+killsPerCombatRating.divTitle+"').width()"
+	killsPerCombatRating.width = None
 
 
 	total_kills = data[weapon_columns].sum(1).sum()
@@ -615,12 +615,12 @@ def combatRatingDist(data):
 				js_path = "javascripts",
 				html_path = FULL_PLOT_HTML_DIRECTORY,
 				title="Kills per Player in Each Combat Rating",
-				subtitle="A look at the the efficiency of each player in each combat rating group",
+				subtitle="A look at the efficiency of each player in each combat rating group",
 				resize=True,
 				plotText= "Each bar is the total number of kills in the bin divided by the number of players in that bin. " +
 						"We expect the KPP to increase with combat rating.  'Better' players should be getting more kills than 'worse' players."
 				)	
-	killsPerPlayerPerCombatRating.width = "$('#"+killsPerPlayerPerCombatRating.divTitle+"').width()"
+	killsPerPlayerPerCombatRating.width = None
 
 
 	total_kills = data[weapon_columns].sum(1).sum()
@@ -632,23 +632,47 @@ def combatRatingDist(data):
 	killsPerPlayerPerCombatRating.buildcontent()
 	_writeToFile(killsPerPlayerPerCombatRating)
 
+def killsPerGame(data):
+	logger.info("Kills Per Game")
+	groupByGame = data.groupby("gameId")
+
+	kills = groupByGame.kills.sum()
+	kills.sort()
+	series = [{
+		"name":"killsPerGame",
+		"x":kills.index.values.astype(str),
+		"y":kills.values.astype(float)
+	}]
+	killsPerGame = discreteBarChart(
+				name="killsPerGame",
+				key= 'killsPerGame',
+				js_path = "javascripts",
+				html_path = FULL_PLOT_HTML_DIRECTORY,
+				title="Kills per Player Game",
+				subtitle="A look at the how many kills per game there are",
+				resize=True,
+				)	
+	for s in series:
+		killsPerGame.add_serie(**s)
+	killsPerGame.buildcontent()
+	_writeToFile(killsPerGame)		
 
 
 if __name__ == "__main__":
-	data = pd.read_csv("datafiles/IronBanner.csv")
+	#data = pd.read_csv("datafiles/IronBanner.csv")
 	weapon_data = pd.read_csv("datafiles/IronBanner_WeaponUsage.csv", index_col=0)
 	extras = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
 	#combatRatings = pd.read_csv("datafiles/IB_WeaponsUpdated.csv")
 	
-	mostUsedWeapons(data)
-	extra_analysis.weaponPairings(data, FULL_PLOT_HTML_DIRECTORY)
+	#mostUsedWeapons(data)
+	#extra_analysis.weaponPairings(data, FULL_PLOT_HTML_DIRECTORY)
 	mostUsedWeaponsV2(weapon_data)
 	killsPerPlayer(weapon_data)
 	mostUsedVictory(extras)
 	killDeathRatio(extras)
 	#averageCombatRating(combatRatings)
 	#combatRatingDist(combatRatings)
-
+	#killsPerGame(combatRatings)
 
 
 	#write to index html file
