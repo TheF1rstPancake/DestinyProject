@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Destiny Project">
+    <meta name="author" content="Giovanni Briggs">
+
+        <title>I Pledge Allegiance · Destiny Project</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css" type="text/css">
+
+    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/main.css">
+
+    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/solarized-light.css">
+
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+    <link href="../static/css/plots.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body>
+  <div class="container" id="wrap">
+      <nav id="navbar" class="navbar navbar-default" role="navigation">
+    <div class="container">
+
+      <!--navbar-header-->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/DestinyProject/blog/output/DestinyProject/blog/output">Destiny Project</a>
+      </div> <!--navbar-header-->
+
+      <!-- Search Box -->
+
+      <!--Menuitems, collapable-->
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right" id="menuitem-list">
+        </ul>
+      </div><!-- /.navbar-collapse -->
+
+    </div> <!--container-->
+  </nav>
+
+
+    <div class="container">
+      <div class="col-md-1">
+      </div>
+
+      <div class="col-md-10">
+        <div class="row">
+              <div class="page-header">
+        <h1><a href="/DestinyProject/blog/output/drafts/i-pledge-allegiance.html">I Pledge Allegiance</a></h1>
+    </div>
+
+        </div>
+
+        <div class="row">
+
+    <span id="article_info">
+    <a class="label label-primary" 
+      href="/DestinyProject/blog/output/category/Stat Porn Sunday.html">Stat Porn Sunday</a>
+      <b> · </b>
+        <a class="label label-primary" 
+          href="/DestinyProject/blog/output/tag/Character.html">Character</a>
+        <a class="label label-primary" 
+          href="/DestinyProject/blog/output/tag/Ships.html">Ships</a>
+        <a class="label label-primary" 
+          href="/DestinyProject/blog/output/tag/Factions.html">Factions</a>
+    <!--<span class="glyphicon glyphicon-calendar"></span>-->
+      <b> · </b>
+      <a href="/DestinyProject/blog/output/archives.html#Year2015">2015</a>-<a href="/DestinyProject/blog/output/archives.html#Year2015Month07">07</a>-<a href="/DestinyProject/blog/output/archives.html#Year2015Month07">24</a>
+
+    <!--<span class="glyphicon glyphicon-user"></span>-->
+      <b> · </b>
+    <a href="/DestinyProject/blog/output/author/Giovanni Briggs.html">Giovanni Briggs</a>
+  </span>
+
+  <hr/>
+
+  <div id="article_content">
+    <p>A look at what impacts faction decisions and what players like to have as their loading screen.</p>
+<p>View project on <a class="reference external" href="https://github.com/Jalepeno112/DestinyProject/">Github</a></p>
+<p>Get the data file used for these plots on my <a class="reference external" href="https://drive.google.com/open?id=0B4f7JIyE52tbbVlxNTNONEQyNm8">Google Drive</a></p>
+<div class="section" id="recap">
+<h2>Recap</h2>
+<p>Welcome to Stat Porn Sunday where we all come together to nerd out over numbers and shit.
+That's probably the most accurate description of what goes on in these posts.</p>
+<p>Last week we talked about how players pick <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3fiuwn/stat_porn_sunday_who_needs_strength_when_you_have/">intellect, discipline, and strength</a> when building their characters.</p>
+<p>I've also been noticing that pretty much everything I post gets a solid 85% upvote rate.
+I'm genuinely curious as to why people are choosing to click down on these posts, so if there is something that you think I can be doing better, please leave a comment.
+You can even format at as: &quot;I downvoted this post because...&quot;.  The feedback is appreciated.</p>
+</div>
+<div class="section" id="id1">
+<h2>I pledge allegiance</h2>
+<p>This week we are going to look at Factions.
+I took my large player dataset and took only the characters who were level 20 and higher which gave me 255,000 players to work with.
+The reason for picking players at level 20 and above is because you can't pledge a faction until you are level 20.
+I then broke it down by the class items people have equipped and then built a map that paired factions to their respective class items.
+With this map, I searched the dataset for players that had one of these faction items equipped.</p>
+<p>First, let's look at the overall distribution of factions.</p>
+<div class="plotContainer">     <h4 class="text-center">Faction Distribution</h4>     <div id="FactionBreakdown">         <svg></svg>         <script src='../fullPlots/characterData/javascripts/FactionBreakdown.js'></script>     </div> </div><p>Dead Orbit is the clear winner.  18.76% of all Gaurdians at 20 or higher wear a Dead Orbit class item.
+It is little over twice the number of Gaurdians in either the Future War Cult or New Monarchy.
+An observant Gaurdian will also note that these percentages do not add up to 100%, so that means there are <strong>63.83%</strong> of Gaurdians who choose not to wear a faction item.
+This does <em>not</em> mean that 2/3 of Gaurdians <em>do not</em> pledge a faction.
+I couldn't find where Bungie keeps your respective Faction ranks.  This only means that 63.83% of Gaurdians do not wear one of the faction class items (they could be wearing emblems or shaders though or no faction items at all).</p>
+<p>But do certain classes have different preferences for different factions?
+Well, we can make a graph for that.</p>
+<div class="plotContainer">     <h4 class="text-center">Faction Distribution by Class</h4>     <div id="FactionBreakdown">         <svg></svg>         <script src='../fullPlots/characterData/javascripts/FactionBreakdownByClass.js'></script>     </div> </div><p>Each class seems to have slightly different faction preferences.
+The <em>Other</em> bar is in there just so you can verify that these numbers make sense (all x-tick marks add up to 100), but you can remove it by clicking on it in the legend.
+Hunters are an interesting group to look at.  They, like everyone else, prefer Dead Orbit over all others, but they have the highest rate of FWC and the lowest rate of New Monarchy.
+Not only that, but they have the lowest rate overall.  Only about 30% of all Hunters above level 20 equip a faction class item.
+My theory is that because the Hunter class item makes such a large difference in their appearance, they are more likely to pick class items for their style.
+This is in contrast to Warlocks whose class items really don't make a terrible impact on their appearance, so they are more likely to pick class items for the functionality.</p>
+<p>I believe being in a Faction is the only way to go (and I play as a Hunter), because by wearing a Faction class item you are pooling both your Vanguard and Crucible rep into one pool.
+Doing the Nightfall and Weekly Strikes give you a lot of rep, but if your like me and that's all you do in the story mode anymore, it can be a few weeks before you see those efforts turn into a package.
+By wearing a class item, I can turn out packages quicker, and while the loot isn't always great, I'm still holding out for a FWC ship.
+But the FWC cloak doesn't always jive with the shader or armor that I have equipped, so I often feel like I look like a clown.  For me though, the functionality outweighs the looks, but I could see how for many other Hunters that may not be the case.</p>
+<p>As everyone also knows, reward packages are often a bust (2 motes of light woot!) so maybe characters begin to abandon factions as they play more.</p>
+<div class="plotContainer">     <h4 class="text-center">Faction Distribution by Level</h4>     <div id="FactionBreakdown">         <svg></svg>         <script src='../fullPlots/characterData/javascripts/FactionBreakdownByLevel.js'></script>     </div> </div><p>This graph is a little confusing at first.
+The x-axis is character level, the y-axis is the percentage of players who are that level that wear a faction class item.
+For example, 10.41 percent of level 22 players where a Dead Orbit class item.</p>
+<p>What this shows us is that faction items actually become more prevelant as your level goes up.  21% of all players who are level 34 wear a Dead Orbit class item.
+1 out of every 5 level 34s that you meet today are going to be wearing a Dead Orbit class item.
+Dead Orbit shows the greatest increase overall, but all of the factions increase as level increases.</p>
+</div>
+
+  </div>
+
+  <hr/>
+
+
+
+        </div>
+
+        <div class="row">
+        </div>
+
+      </div>
+
+      <div class="col-md-1">
+      </div>
+    </div>
+
+
+  </div>
+
+    <nav id="footer" class="navbar navbar-default">
+    <div class="container">
+        <p id="footer-text" class="navbar-text text-center">
+          <span id="engine">
+            Compiled using
+            <a href="http://docs.getpelican.com">Pelican</a>
+          </span>
+          <span id="theme">
+            with theme
+            <a href="http://github.com/yuex/pelican-chameleon">Chameleon</a>
+          </span>
+          <span id="bootstrap">
+            on top of
+            <a href="http://getbootstrap.com/">Bootstrap</a>
+          </span>
+        </p>
+      </div>
+    </div>
+  </nav>
+
+
+</body>
+</html>
