@@ -34,7 +34,16 @@ def _writeGraph(graph):
         f.write(output)
 
 
-def shipBreakdown(data):
+def shipBreakdownAbove20(data):
+    data = data[data['level'] >= 20]
+    shipBreakdown(data, key="AboveLevel20")
+
+def shipBreakdownBelow20(data):
+    data = data[data['level'] < 20]
+    shipBreakdown(data, key="BelowLevel20")
+
+
+def shipBreakdown(data, key="Overall"):
     groupByShip = data.groupby("Ships")
     shipFreq = pd.DataFrame({s:{"Frequency":len(g)/float(len(data)), "Tier":data[data['Ships'] == s]['Ships Tier'].values[0]} for s, g in groupByShip}).T
 
@@ -47,11 +56,11 @@ def shipBreakdown(data):
     }]    
 
     graph = discreteBarChart(
-                name="MostUsedShips",
-                key= 'MostUsedShips',
+                name="MostUsedShips"+key,
+                key= 'MostUsedShips' + key,
                 js_path = "javascripts",
                 html_path = FULL_PLOT_HTML_DIRECTORY,
-                title="Top 10 Equipped Ships",
+                title="Top 10 Equipped Ships " + key,
                 subtitle="A look the top 10 most equipped ships",
                 resize=True,
                 )   
@@ -59,7 +68,7 @@ def shipBreakdown(data):
 
     for s in mostUsedSeries:
         graph.add_serie(**s)
-    graph.create_y_axis("yAxis", "Frequency", format=".3f")
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
     graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
     _writeGraph(graph)
 
@@ -70,11 +79,11 @@ def shipBreakdown(data):
     }]
 
     graph = discreteBarChart(
-                name="LeastUsedShips",
-                key= 'LeastUsedShips',
+                name="LeastUsedShips"+key,
+                key= 'LeastUsedShips'+key,
                 js_path = "javascripts",
                 html_path = FULL_PLOT_HTML_DIRECTORY,
-                title= "10 Least Equipped Ships",
+                title= "10 Least Equipped Ships " + key,
                 subtitle="A look the 10 least equipped ships",
                 resize=True,
                 )   
@@ -82,7 +91,7 @@ def shipBreakdown(data):
 
     for s in leastUsedSeries:
         graph.add_serie(**s)
-    graph.create_y_axis("yAxis", "Frequency", format="s")
+    graph.create_y_axis("yAxis", "Frequency", format=".3%")
     graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
     _writeGraph(graph)
 
@@ -124,9 +133,9 @@ def factionsByClass(data):
 
     series = [{
             "name": c,
-            "x":factionBreakdown[c].index.values,
-            'y':factionBreakdown[c].values
-    }for c in factionBreakdown.columns[0:3]]
+            "x":factionBreakdown.columns.values,
+            'y':factionBreakdown.ix[c].values
+    }for c in factionBreakdown[c].index.values]
 
     graph = multiBarChart(
                 name="FactionBreakdownByClass",
@@ -134,7 +143,7 @@ def factionsByClass(data):
                 js_path = "javascripts",
                 html_path = FULL_PLOT_HTML_DIRECTORY,
                 title="Faction Breakdown By Class",
-                subtitle="A look at how each class joins factions",
+                subtitle="A look at how each pledges to a faction",
                 resize=True,
                 )   
     graph.width = None
@@ -149,11 +158,12 @@ def factionsByClass(data):
     #now to factions by level
     #it follows the same structure as groupby class
     groupByLevel = data.groupby("level")
-    #factionItemsNotClass = {f: [i for i in factionItems[c][f] for c in factionItems.keys()] for f in factions}
-    factionItemsNotClass = {f:[] for f in factions}
-    for f in factions:
-        for c in factionItems.keys():
-            factionItemsNotClass[f] = factionItemsNotClass[f].append([i for i in factionItems[c][f]])
+
+    #we want to change the factionItems map to now map factions to their particular armor pieces irregardless of class
+    #the first step creates a map where the keys are the factions and the items are a list of lists of items
+    #the second step breaksdown the lists of lists into a single flattened list
+    factionItemsNotClass = {f:[factionItems[c][f] for c in factionItems.keys()] for f in factions}
+    factionItemsNotClass = {f: [i for sublist in factionItemsNotClass[f] for i in sublist] for f in factions}
 
     factionBreakdown = pd.DataFrame({c:{f:len(g[g['Class Armor'].isin(factionItemsNotClass[f])])/float(len(g)) for f in factions} for c,g in groupByLevel}).T
 
@@ -162,8 +172,6 @@ def factionsByClass(data):
         for f in factions:
             factionBreakdown.ix[c,'Other'] = 1.0- factionBreakdown.ix[c].sum()
     print "BY LEVEL: \n", factionBreakdown
-    print(factionBreakdown.sum())
-
     series = [{
             "name": c,
             "x":factionBreakdown[c].index.values.astype(str),
@@ -205,8 +213,9 @@ def factionsByClass(data):
                 js_path = "javascripts",
                 html_path = FULL_PLOT_HTML_DIRECTORY,
                 title="Faction Breakdown By Level",
-                subtitle="A look at how each players join factions",
+                subtitle="A look at how players join factions",
                 resize=True,
+                color="category10"
                 )   
     graph.width = None
 
@@ -491,7 +500,9 @@ if __name__ == "__main__":
     exoticSelectionByClass(data)
     statBreakdownByClass(data)
     """
-    #shipBreakdown(data)
+    shipBreakdown(data)
+    shipBreakdownAbove20(data)
+    shipBreakdownBelow20(data)
     factionsByClass(data)
     #write to index html file
     template = jinja2_env.get_template(os.path.join('index.html'))

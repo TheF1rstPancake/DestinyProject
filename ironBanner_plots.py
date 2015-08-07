@@ -448,7 +448,6 @@ def PercentKilledUsedPerBin(data, top20Weapons,weapon_columns):
 				series['y'].append(percentKills/percentUsed)
 
 		percentKilledUsedSeries.append(series)
-
 	percentKillsUsedGraph = multiBarChart(
 				name="combatRatingPercentKilledUsed",
 				key= 'combatRatingPercentKilledUsed',
@@ -660,18 +659,18 @@ def killsPerGame(data):
 
 if __name__ == "__main__":
 	#data = pd.read_csv("datafiles/IronBanner.csv")
-	weapon_data = pd.read_csv("datafiles/IronBanner_WeaponUsage.csv", index_col=0)
-	extras = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
-	#combatRatings = pd.read_csv("datafiles/IB_WeaponsUpdated.csv")
+	#weapon_data = pd.read_csv("datafiles/IronBanner_WeaponUsage.csv", index_col=0)
+	#extras = pd.read_csv("datafiles/IB_Weapons_Fixed.csv")
+	combatRatings = pd.read_csv("datafiles/IB_WeaponsUpdated.csv")
 	
 	#mostUsedWeapons(data)
 	#extra_analysis.weaponPairings(data, FULL_PLOT_HTML_DIRECTORY)
-	mostUsedWeaponsV2(weapon_data)
-	killsPerPlayer(weapon_data)
-	mostUsedVictory(extras)
-	killDeathRatio(extras)
+	#mostUsedWeaponsV2(weapon_data)
+	#killsPerPlayer(weapon_data)
+	#mostUsedVictory(extras)
+	#killDeathRatio(extras)
 	#averageCombatRating(combatRatings)
-	#combatRatingDist(combatRatings)
+	combatRatingDist(combatRatings)
 	#killsPerGame(combatRatings)
 
 
