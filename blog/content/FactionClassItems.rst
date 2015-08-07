@@ -56,7 +56,7 @@ Well, we can make a graph for that.
 .. html::
     <div class="plotContainer">
         <h4 class="text-center">Faction Distribution by Class</h4>
-        <div id="FactionBreakdown">
+        <div id="FactionBreakdownByClass">
             <svg></svg>
             <script src='../fullPlots/characterData/javascripts/FactionBreakdownByClass.js'></script>
         </div>
@@ -79,7 +79,7 @@ As everyone also knows, reward packages are often a bust (2 motes of light woot!
 .. html::
     <div class="plotContainer">
         <h4 class="text-center">Faction Distribution by Level</h4>
-        <div id="FactionBreakdown">
+        <div id="FactionBreakdownByLevel">
             <svg></svg>
             <script src='../fullPlots/characterData/javascripts/FactionBreakdownByLevel.js'></script>
         </div>
