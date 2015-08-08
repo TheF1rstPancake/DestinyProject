@@ -1,0 +1,266 @@
+{% macro genurl(string, force=False) %}
+  {% if (force or
+        ( string.startswith('/') and not string.startswith('//') )) %}
+    {% set url = '/'.join([SITEURL.rstrip('/'),string.lstrip('/')]) %}
+    {{- url -}}
+  {% else %}
+    {{- string -}}
+  {% endif %}
+{% endmacro %}
+
+{% macro newtab(string, force=False) %}
+  {% if ( string.startswith('http://') or
+          string.startswith('https://')) %}
+    target="_blank"
+  {% endif %}
+{% endmacro %}
+
+{% macro article_panel_list(parent='', id='', title_left='', title_right='', entry_list=[], show_date=False, title_left_link='') %}
+  {% if not title_left_link %}
+    {% set title_left_link = "#%s" % id %}
+  {% endif %}
+
+  <div class="panel panel-primary">
+    <div class="panel-heading panel-title">
+      <a id="{{ id }}" href="{{ genurl( title_left_link ) }}">
+        {{- title_left -}}
+      </a>
+      {% if title_right %}
+        <a class="accordion-toggle" data-toggle="collapse" 
+          {#data-parent="{{ parent }}accordin"#}
+          title="toggle folding"
+          href="#{{ id }}collapse">
+          <span class="badge pull-right">
+            {{- title_right -}}
+          </span>
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="panel-body hidden"></div>
+
+    <ul class="list-group">
+      <div class="panel-collapse collapse in" id="{{ id }}collapse">
+        {% for article in entry_list %}
+        <a href="{{ genurl( article.url, force=True ) }}">
+          <li class="list-group-item">
+            {% if show_date %}
+              {{- article.date|strftime("%m-%d") -}}
+              <b> · </b>
+            {% endif %}
+            {{- article.title -}}
+          </li>
+        </a>
+        {% endfor %}
+      </div>
+    </ul>
+
+  </div>
+{% endmacro %}
+
+{% macro pagetitle(name) %}
+  {% if name and name != '' %}
+    <title>{{ name }} · {{ SITENAME }}</title>
+  {% else %}
+    <title>{{ SITENAME }}</title>
+  {% endif %}
+{% endmacro %}
+
+{% macro pageheader(name, link) %}
+  {% if name and name != '' %}
+    <div class="page-header">
+      {% if link %}
+        <h1><a href="{{ genurl( link ) }}">{{ name }}</a></h1>
+      {% else %}
+        <h1>{{ name }}</h1>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro navbar(link) %}
+  <nav id="navbar" class="navbar navbar-default" role="navigation">
+    <div class="container">
+
+      <!--navbar-header-->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ genurl( SITEURL ) }}">{{ SITENAME }}</a>
+      </div> <!--navbar-header-->
+
+      <!-- Search Box -->
+      {% for title,url in MENUITEMS %}
+        {% if title == 'Search' %}
+          <form class="navbar-form navbar-right" role="search"
+            action="http://www.google.com/cse" 
+            id="searchbox_{{ url }}" target="_blank"> 
+              <input type="hidden" name="cx" value="{{ url }}" /> 
+              <input type="text" name="q" class="form-control" placeholder="Search">
+          </form>
+        {% endif %}
+      {% endfor %}
+
+      <!--Menuitems, collapable-->
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav navbar-right" id="menuitem-list">
+          {% for title,url in MENUITEMS %}
+            {% if url is string %}
+              {% if title != 'Search' %}
+                <li {% if url == link %}class="active"{% endif %}>
+                  <a href="{{ genurl( url ) }}" {{ newtab(url) }}>{{ title }}</a>
+                </li>
+              {% endif %}
+
+            {% elif url is iterable %}
+              <li class="btn-group
+                {%- for title,item_url in url -%}
+                  {%- if item_url == link -%}
+                    {{- ' active' -}}
+                  {%- endif -%}
+                {%- endfor -%}
+              ">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  {{- title }}<b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  {% for title,item_url in url %}
+                  <li {% if item_url == link %}class="active"{% endif %}>
+                    <a href="{{ genurl( item_url ) }}" {{ newtab(item_url) }}>{{ title }}</a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div><!-- /.navbar-collapse -->
+
+    </div> <!--container-->
+  </nav>
+{% endmacro %}
+
+{% macro footer() %}
+  <nav id="footer" class="navbar navbar-default">
+    <div class="container">
+        <p id="footer-text" class="navbar-text text-center">
+          <span id="engine">
+            Compiled using
+            <a href="http://docs.getpelican.com">Pelican</a>
+          </span>
+          <span id="theme">
+            with theme
+            <a href="http://github.com/yuex/pelican-chameleon">Chameleon</a>
+          </span>
+          <span id="bootstrap">
+            on top of
+            <a href="http://getbootstrap.com/">Bootstrap</a>
+          </span>
+        </p>
+      </div>
+    </div>
+  </nav>
+{% endmacro %}
+
+{% macro pagination() %}
+  {% if DEFAULT_PAGINATION %}
+    <ul class="pagination">
+
+      {% if articles_page.has_previous() %}
+        <li>
+          {% if articles_page.previous_page_number() == 1 %}
+            <a href="{{ genurl( page_name + '.html', force=True ) }}">&laquo;</a>
+          {% else %}
+            <a href="{{ genurl( page_name + articles_page.previous_page_number()|string + '.html' ) }}">&laquo;</a>
+          {% endif %}
+        </li>
+      {% else %}
+        <li class="disabled">
+          <a>&laquo;</a>
+        </li>
+      {% endif %}
+
+      {% for num in articles_paginator.page_range %}
+      {% if articles_page.number != num %}
+        <li>
+          {% if num == 1 %}
+            {% set page_link = page_name+'.html' %}
+          {% else %}
+            {% set page_link = page_name+num|string+'.html' %}
+          {% endif %}
+          <a href="{{ genurl( page_link, force=True ) }}">
+            {{- num }}<span class="sr-only">(current)</span></a>
+        </li>
+      {% else %}
+        <li class="active">
+          <a>{{- num }}<span class="sr-only">(current)</span></a>
+        </li>
+      {% endif %}
+      {% endfor %}
+
+      {% if articles_page.has_next() %}
+        <li>
+          <a href="{{ genurl( page_name + articles_page.next_page_number()|string + '.html' ) }}">&raquo;</a>
+        </li>
+      {% else %}
+        <li class="disabled">
+          <a>&raquo;</a>
+        </li>
+      {% endif %}
+
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro article_info(article) %}
+  <span id="article_info">
+    <a class="label label-primary" 
+      href="{{ genurl( '/category/' + article.category|string + '.html') }}">
+      {{- article.category -}}
+    </a>
+    {% if article.tags %}
+      <b> · </b>
+      {% for tag in article.tags %}
+        <a class="label label-primary" 
+          href="{{ genurl( '/tag/' + tag|string + '.html' ) }}">
+          {{- tag -}}
+        </a>
+      {% endfor %}
+    {% endif %}
+    <!--<span class="glyphicon glyphicon-calendar"></span>-->
+    {% if article.locale_date %}
+      <b> · </b>
+      {% set year = article.date|strftime('%Y') %}
+      {% set month = article.date|strftime('%m') %}
+      {% set day = article.date|strftime('%d') %}
+      <a href="{{ genurl( '/archives.html#Year' + year ) }}">{{ year }}</a>
+      {{- '-' -}}
+      <a href="{{ genurl( '/archives.html#Year' + year + 'Month' + month ) }}">{{ month }}</a>
+      {{- '-' -}}
+      <a href="{{ genurl( '/archives.html#Year' + year + 'Month' + month ) }}">{{ day }}</a>
+
+    {% endif %}
+    <!--<span class="glyphicon glyphicon-user"></span>-->
+    {% if article.author %}
+      <b> · </b>
+      {% if AUTHORS[article.author] %}
+        {% set author_url = AUTHORS[article.author] %}
+      {% else %}
+        {% set author_url = ["/author/",article.author,".html"]|join %}
+      {% endif %}
+    {% endif %}
+    <a href="{{ genurl( author_url ) }}">{{ article.author }}</a>
+  </span>
+{% endmacro %}
+
+{% macro taglist(list,prefix='',suffix='') %}
+  {% for tag, articles in list|sort %}
+    <a class="label label-primary" 
+      href="{{prefix}}{{tag}}{{suffix}}">
+      {{- tag }} {{ articles|count }}</a>
+  {% endfor %}
+{% endmacro %}

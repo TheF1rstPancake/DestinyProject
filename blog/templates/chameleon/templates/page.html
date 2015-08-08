@@ -1,0 +1,9 @@
+{% set name = page.title %}
+{% set link = page.url %}
+{% extends "base.html" %}
+
+{% block content %}
+<div id="page-content">
+  {{ page.content }}
+</div>
+{% endblock %}

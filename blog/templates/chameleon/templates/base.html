@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% from 'macro.html' import genurl with context %}
+<html lang="{{ DEFAULT_LANG }}">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="{{ SITENAME }}">
+    <meta name="author" content="{{ AUTHOR }}">
+    {% if FAVICON and FAVICON_TYPE %}
+    <link rel="icon" type="image/{{ FAVICON_TYPE }}" href="{{ genurl( FAVICON ) }}">
+    {% endif %}
+
+    {% from 'macro.html' import pagetitle with context %}
+    {{ pagetitle(name) }}
+
+    <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+    {% if BS3_URL %}
+    <link rel="stylesheet" href="{{ genurl( BS3_URL ) }}">
+    {% else %}
+    <link rel="stylesheet" href="{{ genurl( 'http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' ) }}">
+    {% endif %}
+
+    {% if BS3_THEME %}
+    <link rel="stylesheet" href="{{ genurl(BS3_THEME) }}" type="text/css">
+    {% endif %}
+
+    <link rel="stylesheet" href="{{ genurl( '/theme/css/main.css' ) }}">
+
+    {% if CODE_HIGHLIGHT %}
+    <link rel="stylesheet" href="{{ genurl( CODE_HIGHLIGHT ) }}">
+    {% else %}
+    <link rel="stylesheet" href="{{ genurl( '/theme/css/solarized-light.css' ) }}">
+    {% endif %}
+
+    {% if CSS_OVERWRITE %}
+    <link rel="stylesheet" href="{{ genurl( CSS_OVERWRITE ) }}">
+    {% endif %}
+
+    {% if JQUERY_JS %}
+    <script src="{{ JQUERY_JS }}"></script>
+    {% else %}
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    {% endif %}
+
+    {% if JQUERY_MIGRATE_JS %}
+    <script src="{{ JQUERY_MIGRATE_JS }}"></script>
+    {% else %}
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    {% endif %}
+
+    {% if BS3_JS %}
+    <script src="{{ BS3_JS }}"></script>
+    {% else %}
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    {% endif %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+    <link href="../static/css/plots.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body>
+  <div class="container" id="wrap">
+    {% set link = ['/',link]|join %}
+    {% from 'macro.html' import navbar with context %}
+    {{ navbar(link) }}
+
+    <div class="container">
+      <div class="col-md-1">
+        {% block left_sidebar %}{% endblock %}
+      </div>
+
+      <div class="col-md-10">
+        <div class="row">
+          {% from 'macro.html' import pageheader with context %}
+          {{ pageheader(name,link) }}
+        </div>
+
+        <div class="row">
+          {% block content %}{% endblock %}
+        </div>
+
+        <div class="row">
+          {% block pagefooter %}{% endblock %}
+        </div>
+
+      </div>
+
+      <div class="col-md-1">
+        {% block right_sidebar %}{% endblock %}
+      </div>
+    </div>
+
+
+  </div>
+
+  {% from 'macro.html' import footer with context %}
+  {{ footer() }}
+
+</body>
+</html>

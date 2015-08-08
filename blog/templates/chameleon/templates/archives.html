@@ -1,0 +1,59 @@
+{% set name = 'Archives' %}
+{% set link = 'archives.html' %}
+{% extends "base.html" %}
+
+{% block content %}
+{% if dates %}
+{# year list #}
+  <div class="panel-group" id="accordion">
+    {% for articles_group_by_year in dates|groupby('date.year')|reverse %}
+      {% set year = articles_group_by_year %}
+      {% set parent = ["Year",year.grouper]|join %}
+      <div class="panel panel-primary">
+      {# year list heading #}
+        <div class="panel-heading panel-title">
+          <a id="{{ parent }}" href="#{{ parent }}">{{ year.grouper }}</a>
+          <a class="accordion-toggle" data-toggle="collapse" 
+            {# data-parent="#accordion" #}
+            title="toggle folding"
+            href="#collapseYear{{ year.grouper }}">
+            <span class="badge pull-right">
+              {{ year.list|count }}
+            </span>
+          </a>
+        </div>
+      {# end year list heading #}
+
+      {# year list body #}
+        <div class="panel-collapse collapse in" 
+          id="collapseYear{{ year.grouper }}">
+          <div class="panel-body">
+
+            {# month list #}
+                <div class="panel-group" id="accordionYear{{ year.grouper }}">
+                {% for articles_group_by_month in year.list|groupby('date.month')|reverse %}
+
+                  {% set month = articles_group_by_month %}
+
+                  {% from 'macro.html' import article_panel_list with context %}
+                  {% set id = [parent,"Month",month.grouper]|join %}
+                  {% set title_left = month.list[0].date|strftime('%B') %}
+                  {% set title_right = month.list|count %}
+                  {% set entry_list = month.list %}
+                  {{ article_panel_list(parent,id,title_left,title_right,entry_list,show_date=True) }}
+
+                {% endfor %}
+                </div>
+            {# end month list #}
+
+          </div>
+        </div>
+      {# end year list body #}
+
+      </div>
+    {% endfor %}
+  </div>
+{# end year list #}
+
+{% endif %}
+{% endblock %}
