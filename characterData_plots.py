@@ -2,13 +2,14 @@ import pandas as pd
 import destinyPlatform as destiny 
 import json
 import os
+import time
 import numpy as np
 import jinja2
 import logging
 import sys
 from nvd3py import *
 
-FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content","fullPlots","characterData")
+FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content","pages","fullPlots","characterData")
 FULL_PLOT_JS_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "javascripts")
 FULL_PLOT_JSON_DIRECTORY = os.path.join(FULL_PLOT_HTML_DIRECTORY, "datafiles")
 
@@ -17,20 +18,30 @@ PLOT_TEMPLATES = "plotTemplates"
 jinja2_env = jinja2.Environment(loader=jinja2.FileSystemLoader('plotTemplates'))
 
 
-def _writeGraph(graph):
-    graph.buildcontent()
+def _writeGraph(graph, htmlTemplate="htmlTemplate.html", author="Giovanni Briggs", 
+                date=None, category='Full Plots', tags=None, extension=".html", url=None):
 
+    if date is None:
+        date = time.strftime("%Y-%m-%d")
+
+    #write to javascript file
+    graph.buildcontent()
     with open(graph.fullJS, 'w') as f:
         f.write(graph.htmlcontent)
 
     #write to html file
-    template = jinja2_env.get_template(os.path.join('htmlTemplate.html'))
+    template = jinja2_env.get_template(os.path.join(htmlTemplate))
     template_values = {
         'destinyGraph': graph.__dict__,
+        'date': date,
+        'category': category,
+        'author':author,
+        'tags': tags,
+        'url':url
     }
     output = template.render(template_values)
 
-    with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + ".html")), 'w') as f:
+    with open(os.path.join(FULL_PLOT_HTML_DIRECTORY, (graph.name + extension)), 'w') as f:
         f.write(output)
 
 
@@ -41,6 +52,35 @@ def shipBreakdownAbove20(data):
 def shipBreakdownBelow20(data):
     data = data[data['level'] < 20]
     shipBreakdown(data, key="BelowLevel20")
+
+
+def classDistribution(data):
+    groupByClass = data.groupby('Subclass')
+
+    classFreq = pd.DataFrame({c:{'Frequency':len(g)/float(len(data))} for c,g in groupByClass}).T
+
+    series = [{
+            "name": "Subclass",
+            "x": classFreq.index.values,
+            "y": classFreq['Frequency'].values
+    }]
+
+    graph = discreteBarChart(
+                name="SubclassDistribution",
+                key= 'SubclassDistribution',
+                js_path = "javascripts",
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title="Subclass Distribution",
+                subtitle="A look at the distribution of subclasses",
+                resize=True,
+                )   
+    graph.width = None
+
+    for s in series:
+        graph.add_serie(**s)
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Subclass", extras={"rotateLabels":-25})
+    _writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url='pages/fullPlots/characterData/{0}'.format(graph.name+'.html'))
 
 
 def shipBreakdown(data, key="Overall"):
@@ -70,7 +110,7 @@ def shipBreakdown(data, key="Overall"):
         graph.add_serie(**s)
     graph.create_y_axis("yAxis", "Frequency", format=".2%")
     graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
-    _writeGraph(graph)
+    _writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url='pages/fullPlots/characterData/{0}'.format(graph.name+'.html'))
 
     leastUsedSeries = [{
             "name":"Most Used Ships",
@@ -93,7 +133,7 @@ def shipBreakdown(data, key="Overall"):
         graph.add_serie(**s)
     graph.create_y_axis("yAxis", "Frequency", format=".3%")
     graph.create_x_axis("xAxis", "Ship", extras={"rotateLabels":-25})
-    _writeGraph(graph)
+    _writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url='pages/fullPlots/characterData/{0}'.format(graph.name+'.html'))
 
 
 def factionsByClass(data):
@@ -193,7 +233,7 @@ def factionsByClass(data):
     for s in series:
         graph.add_serie(**s)
     graph.create_y_axis("yAxis", "Frequency", format=".2%")
-    graph.create_x_axis("xAxis", "Class", extras={"rotateLabels":-25})
+    graph.create_x_axis("xAxis", "Level", extras={"rotateLabels":-25})
     
     _writeGraph(graph)
 
@@ -222,7 +262,7 @@ def factionsByClass(data):
     for s in series:
         graph.add_serie(**s)
     graph.create_y_axis("yAxis", "Frequency", format=".2%")
-    graph.create_x_axis("xAxis", "Class", extras={"rotateLabels":-25})
+    graph.create_x_axis("xAxis", "Faction", extras={"rotateLabels":-25})
     
     _writeGraph(graph)
 
@@ -500,14 +540,15 @@ if __name__ == "__main__":
     exoticSelectionByClass(data)
     statBreakdownByClass(data)
     """
-    shipBreakdown(data)
-    shipBreakdownAbove20(data)
-    shipBreakdownBelow20(data)
+    #shipBreakdown(data)
+    #shipBreakdownAbove20(data)
+    #shipBreakdownBelow20(data)
+    classDistribution(data)
     factionsByClass(data)
     #write to index html file
     template = jinja2_env.get_template(os.path.join('index.html'))
     template_values = {
-        'files': [ f for f in os.listdir(FULL_PLOT_HTML_DIRECTORY) if os.path.isfile(os.path.join(FULL_PLOT_HTML_DIRECTORY,f)) ]
+        'files': [ os.path.splitext(f)[0]+".html" for f in os.listdir(FULL_PLOT_HTML_DIRECTORY) if os.path.isfile(os.path.join(FULL_PLOT_HTML_DIRECTORY,f))]
     }
     output = template.render(template_values)
 
