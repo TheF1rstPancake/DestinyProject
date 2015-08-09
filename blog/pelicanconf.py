@@ -38,8 +38,11 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 #SOCIAL = (('You can add links in your config file', '#'),
 #          ('Another social link', '#'),)
 
-STATIC_PATHS=['images', 'static/css/', 'crucibleDataAnalysisJS', 'javascripts', "fullPlots"]
+STATIC_PATHS=['images', 'static/css/', 'crucibleDataAnalysisJS', 'javascripts', "pages/fullPlots"]
+STATIC_EXCLUDE_SOURCES = True
 FAVICON = 'images/favicon.png'
+
+DISPLAY_PAGES_ON_MENU = False
 
 #don't process HTML files
 #these are leftovers or Sphinx Doc pages that we don't need to try and process
