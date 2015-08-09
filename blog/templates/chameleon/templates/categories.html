@@ -1,0 +1,36 @@
+{% set name = "Categories" %}
+{% set link = "categories.html" %}
+
+{% extends "base.html" %}
+
+{% block content %}
+{% if categories %}
+    <p>
+      {% from 'macro.html' import taglist %}
+      {{ taglist(categories, "#", "") }}
+    </p>
+
+  <div class="panel-group" id="accordion">
+    {% for category, articles in categories|sort %}
+
+      {% from "macro.html" import article_panel_list with context %}
+      {% set parent = "accordion" %}
+      {% set id = category %}
+      {% set title_left = category %}
+      {% set title_left_link = "/category/%s.html" % (category) %}
+      {% set title_right = articles|count %}
+      {% set entry_list = articles %}
+      {{ article_panel_list(
+        parent=parent,
+        id=id,
+        title_left=title_left,
+        title_left_link=title_left_link,
+        title_right=title_right,
+        entry_list=entry_list,
+      ) }}
+
+    {% endfor %}
+  </div>
+
+{% endif %}
+{% endblock %}

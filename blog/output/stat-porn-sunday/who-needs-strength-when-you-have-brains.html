@@ -1,106 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <meta name="description" content="Destiny Project">
-    <meta name="author" content="Giovanni Briggs">
-
-        <title>Who needs strength when you have brains · Destiny Project</title>
-
-
-    <!-- Bootstrap core CSS -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-
-    <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css" type="text/css">
-
-    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/main.css">
-
-    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/solarized-light.css">
+    <title>Who needs strength when you have brains - Destiny Project</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <link href="/DestinyProject/blog/output/images/favicon.png" rel="icon">
 
-    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<link rel="canonical" href="/DestinyProject/blog/output/stat-porn-sunday/who-needs-strength-when-you-have-brains.html">
 
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        <meta name="author" content="Giovanni Briggs" />
+        <meta name="keywords" content="Characters,Shaders,Class,Armor" />
+        <meta name="description" content="Examining trends in armor usage" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
-    <link href="../static/css/plots.css" rel="stylesheet" type="text/css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css" rel="stylesheet" type="text/css"/>
+        <meta property="og:site_name" content="Destiny Project" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Who needs strength when you have brains"/>
+        <meta property="og:url" content="/DestinyProject/blog/output/stat-porn-sunday/who-needs-strength-when-you-have-brains.html"/>
+        <meta property="og:description" content="Examining trends in armor usage"/>
+        <meta property="article:published_time" content="2015-08-02" />
+            <meta property="article:section" content="Stat Porn Sunday" />
+            <meta property="article:tag" content="Characters" />
+            <meta property="article:tag" content="Shaders" />
+            <meta property="article:tag" content="Class" />
+            <meta property="article:tag" content="Armor" />
+            <meta property="article:author" content="Giovanni Briggs" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/bootstrap.yeti.min.css" type="text/css"/>
+    <link href="/DestinyProject/blog/output/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/DestinyProject/blog/output/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.js"></script>
+        <script src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+        <link href="/DestinyProject/blog/output/static/css/plots.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
 
 </head>
-
 <body>
-  <div class="container" id="wrap">
-      <nav id="navbar" class="navbar navbar-default" role="navigation">
-    <div class="container">
 
-      <!--navbar-header-->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/DestinyProject/blog/output/DestinyProject/blog/output">Destiny Project</a>
-      </div> <!--navbar-header-->
-
-      <!-- Search Box -->
-
-      <!--Menuitems, collapable-->
-      <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="nav navbar-nav navbar-right" id="menuitem-list">
-        </ul>
-      </div><!-- /.navbar-collapse -->
-
-    </div> <!--container-->
-  </nav>
-
-
-    <div class="container">
-      <div class="col-md-1">
-      </div>
-
-      <div class="col-md-10">
-        <div class="row">
-              <div class="page-header">
-        <h1><a href="/DestinyProject/blog/output/stat-porn-sunday/who-needs-strength-when-you-have-brains.html">Who needs strength when you have brains</a></h1>
-    </div>
-
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/DestinyProject/blog/output/" class="navbar-brand">
+Destiny Project            </a>
         </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/misc.html">Misc</a>
+                        </li>
+                        <li class="active">
+                            <a href="/DestinyProject/blog/output/category/stat-porn-sunday.html">Stat porn sunday</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/DestinyProject/blog/output/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/DestinyProject/blog/output/stat-porn-sunday/who-needs-strength-when-you-have-brains.html"
+                       rel="bookmark"
+                       title="Permalink to Who needs strength when you have brains">
+                        Who needs strength when you have brains
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-08-02T00:00:00+02:00"> Sun 02 August 2015</time>
+    </span>
 
-        <div class="row">
 
-    <span id="article_info">
-    <a class="label label-primary" 
-      href="/DestinyProject/blog/output/category/Stat Porn Sunday.html">Stat Porn Sunday</a>
-      <b> · </b>
-        <a class="label label-primary" 
-          href="/DestinyProject/blog/output/tag/Characters.html">Characters</a>
-        <a class="label label-primary" 
-          href="/DestinyProject/blog/output/tag/Shaders.html">Shaders</a>
-        <a class="label label-primary" 
-          href="/DestinyProject/blog/output/tag/Class.html">Class</a>
-        <a class="label label-primary" 
-          href="/DestinyProject/blog/output/tag/Armor.html">Armor</a>
-    <!--<span class="glyphicon glyphicon-calendar"></span>-->
-      <b> · </b>
-      <a href="/DestinyProject/blog/output/archives.html#Year2015">2015</a>-<a href="/DestinyProject/blog/output/archives.html#Year2015Month08">08</a>-<a href="/DestinyProject/blog/output/archives.html#Year2015Month08">02</a>
 
-    <!--<span class="glyphicon glyphicon-user"></span>-->
-      <b> · </b>
-    <a href="/DestinyProject/blog/output/author/Giovanni Briggs.html">Giovanni Briggs</a>
-  </span>
 
-  <hr/>
 
-  <div id="article_content">
-    <p>View project on <a class="reference external" href="https://github.com/Jalepeno112/DestinyProject/">Github</a></p>
+<span class="label label-default">Tags</span>
+	<a href="/DestinyProject/blog/output/tag/characters.html">Characters</a>
+        /
+	<a href="/DestinyProject/blog/output/tag/shaders.html">Shaders</a>
+        /
+	<a href="/DestinyProject/blog/output/tag/class.html">Class</a>
+        /
+	<a href="/DestinyProject/blog/output/tag/armor.html">Armor</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>View project on <a class="reference external" href="https://github.com/Jalepeno112/DestinyProject/">Github</a></p>
 <p>Welcome to Stat Porn Sunday where we all come together to drool over our keyboards while looking at Destiny stats.  Our moms should be proud.</p>
 <div class="section" id="recap">
 <h2>Recap</h2>
@@ -191,55 +211,86 @@ Each cell is the number of characters in that subclass who have that armor piece
 <table class="table table-bordered">     <tr><th></th><th>Sunsinger</th><th>Voidwalker</th></tr>     <tr><td>Apotheosis Veil</td><td>0.047215597</td><td>0.026171854</td></tr>     <tr><td>Claws of Ahamkara</td><td>0.035841158</td><td>0.017174424</td></tr>     <tr><td>Heart of the Praxic Fire</td><td>0.102503377</td><td>0.024913854</td></tr>     <tr><td>Light Beyond Nemesis</td><td>0.142113778</td><td>0.052918011</td></tr>     <tr><td>Nothing Manacles</td><td>0.028035824</td><td>0.115763277</td></tr>     <tr><td>Obsidian Mind</td><td>0.040694475</td><td>0.128480009</td></tr>     <tr><td>Purifier Robes</td><td>0.192681666</td><td>0.058879834</td></tr>     <tr><td>Skull of Dire Ahamkara</td><td>0.018312514</td><td>0.034157414</td></tr>     <tr><td>Starfire Protocol</td><td>0.04322954</td><td>0.02433955</td></tr>     <tr><td>Sunbreakers</td><td>0.031238013</td><td>0.012443253</td></tr>     <tr><td>The Ram</td><td>0.099901599</td><td>0.142974348</td></tr>     <tr><td>Voidfang Vestments</td><td>0.042562418</td><td>0.070338566</td></tr> </table></div>
 </div>
 
-  </div>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
 
-  <hr/>
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
 
-      <ul class="pager">
-        <li class="previous">
-          <a href="/DestinyProject/blog/output/stat-porn-sunday/we-have-a-perception-issue.html">
-          &laquo; Newer</a>
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
         </li>
-        <li class="next">
-          <a href="/DestinyProject/blog/output/misc/optimizing-crucible-returns-in-bungies-destiny.html">
-          Older &raquo;</a>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/Jalepeno112/DestinyProject" target="_blank">
+                Github Repo
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/giovannibriggs" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.bungie.net" target="_blank">
+                Bungie
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.bungie.net/en/Clan/Forum/39966/0/1/0" target="_blank">
+                BungieNetPlatform
+            </a>
         </li>
       </ul>
-
-
+    </li>
+    </ul>
+</section>
+            </aside>
         </div>
-
-        <div class="row">
-        </div>
-
-      </div>
-
-      <div class="col-md-1">
-      </div>
     </div>
-
-
-  </div>
-
-    <nav id="footer" class="navbar navbar-default">
-    <div class="container">
-        <p id="footer-text" class="navbar-text text-center">
-          <span id="engine">
-            Compiled using
-            <a href="http://docs.getpelican.com">Pelican</a>
-          </span>
-          <span id="theme">
-            with theme
-            <a href="http://github.com/yuex/pelican-chameleon">Chameleon</a>
-          </span>
-          <span id="bootstrap">
-            on top of
-            <a href="http://getbootstrap.com/">Bootstrap</a>
-          </span>
-        </p>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 Giovanni Briggs
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
       </div>
-    </div>
-  </nav>
+   </div>
+</footer>
+<script src="/DestinyProject/blog/output/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/DestinyProject/blog/output/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/DestinyProject/blog/output/theme/js/respond.min.js"></script>
 
 
 </body>

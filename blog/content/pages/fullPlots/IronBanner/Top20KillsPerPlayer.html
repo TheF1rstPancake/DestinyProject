@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css" rel="stylesheet">        
+    <link href="../../static/css/plots.css" rel='stylesheet' type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+    <title>Kills per Player for the top 20 Weapons Used</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="title container-fluid">
+        <h1>Kills per Player for the top 20 Weapons Used</h1>
+        <h2>A different way to look at the most used weapons in Iron Banner</h2>
+        <a href="https://github.com/Jalepeno112/DestinyProject/" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+
+    <div id="content-wrapper" class="container-fluid">
+    	<div id="Top20KillsPerPlayer" class="plot">
+            <script src='javascripts\Top20KillsPerPlayer.js'></script>
+	    	<svg></svg>
+		</div>
+        <div class = "container-fluid">
+            <p>
+               Each bar is the kills per player for that weapon.  Kills Per Player is caluclated by taking the total number of kills for that weapon divided by the numer of people who use it. Looking at this graph and comparing it to the top 20 weapons in Iron Banner, we can see that the most used weapon isn't necessarily the most effective. 
+            </p>
+        </div>
+    </div>
+  </body>
+</html>
