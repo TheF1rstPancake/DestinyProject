@@ -11,7 +11,7 @@ import sys
 
 logging.getLogger("requests").setLevel(logging.WARNING)
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("DestinyProject")
 logger.setLevel(logging.INFO)
 
 ch = logging.StreamHandler(sys.stdout)

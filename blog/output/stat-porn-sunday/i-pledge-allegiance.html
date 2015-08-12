@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>I Pledge Allegiance - Destiny Project</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/DestinyProject/blog/output/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/DestinyProject/blog/output/stat-porn-sunday/i-pledge-allegiance.html">
+
+        <meta name="author" content="Giovanni Briggs" />
+        <meta name="keywords" content="Character,Factions" />
+        <meta name="description" content="Examining faction distribution in Destiny." />
+
+        <meta property="og:site_name" content="Destiny Project" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="I Pledge Allegiance"/>
+        <meta property="og:url" content="/DestinyProject/blog/output/stat-porn-sunday/i-pledge-allegiance.html"/>
+        <meta property="og:description" content="Examining faction distribution in Destiny."/>
+        <meta property="article:published_time" content="2015-08-09" />
+            <meta property="article:section" content="Stat Porn Sunday" />
+            <meta property="article:tag" content="Character" />
+            <meta property="article:tag" content="Factions" />
+            <meta property="article:author" content="Giovanni Briggs" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/bootstrap.yeti.min.css" type="text/css"/>
+    <link href="/DestinyProject/blog/output/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/DestinyProject/blog/output/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.js"></script>
+        <script src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+        <link href="/DestinyProject/blog/output/static/css/plots.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/DestinyProject/blog/output/" class="navbar-brand">
+Destiny Project            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/iron-banner.html">Iron banner</a>
+                        </li>
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/misc.html">Misc</a>
+                        </li>
+                        <li class="active">
+                            <a href="/DestinyProject/blog/output/category/stat-porn-sunday.html">Stat porn sunday</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/DestinyProject/blog/output/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/DestinyProject/blog/output/stat-porn-sunday/i-pledge-allegiance.html"
+                       rel="bookmark"
+                       title="Permalink to I Pledge Allegiance">
+                        I Pledge Allegiance
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-08-09T00:00:00+02:00"> Sun 09 August 2015</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/DestinyProject/blog/output/tag/character.html">Character</a>
+        /
+	<a href="/DestinyProject/blog/output/tag/factions.html">Factions</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>A look at the distribution of Factions among the Destiny population.</p>
+<div class="section" id="recap">
+<h2>Recap</h2>
+<p>Last week we talked about how players pick <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3fiuwn/stat_porn_sunday_who_needs_strength_when_you_have/">intellect, discipline, and strength</a> when building their characters.</p>
+<p>If there is something that you think I can be doing better, please leave a comment.
+The feedback is appreciated!</p>
+</div>
+<div class="section" id="class-distribution">
+<h2>Class Distribution</h2>
+<p>Yesterday (8/8/15) there was a post about the distribution of classes.
+I can't find the original post for the life of me, but it asked people to fill out a survey so that we could see what the distribution of classes is.
+I thought I would add to that discussion by creating a plot that shows the distribution of <em>subclasses</em>.</p>
+<div class="plotContainer">     <h4 class="text-center">Subclass Distribution</h4>     <div id="SubclassDistribution">         <svg></svg>         <script src='../pages/fullPlots/characterData/javascripts/SubclassDistribution.js'></script>     </div> </div></div>
+<div class="section" id="faction-facts">
+<h2>Faction Facts</h2>
+<p>This week we are going to look at factions.
+I took my large player dataset and took only the characters who were level 20 and higher which gave me 255,000 players to work with.
+The reason for picking players at level 20 and above is because you can't pledge a faction until you are level 20.
+I then broke it down by the class items people have equipped and then built a map that paired factions to their respective class items.
+With this map, I searched the dataset for players that had one of these faction items equipped.</p>
+<p>First, let's look at the overall distribution of factions.</p>
+<div class="plotContainer">     <h4 class="text-center">Faction Distribution</h4>     <div id="FactionBreakdown">         <svg></svg>         <script src='../pages/fullPlots/characterData/javascripts/FactionBreakdown.js'></script>     </div> </div><p>Dead Orbit is the clear winner.  <strong>18.76%</strong> of all Guardians at 20 or higher wear a Dead Orbit class item.
+It is little over twice the number of Guardians in either the Future War Cult or New Monarchy.
+An observant Guardian will also note that these percentages do not add up to 100%, so that means there are <strong>63.83%</strong> of Guardians who choose not to wear a faction item.
+This does <em>not</em> mean that 2/3 of Guardians <em>do not pledge</em> a faction.
+I couldn't find where Bungie keeps your respective faction ranks.  This only means that 63.83% of Guardians <em>do not wear</em> one of the faction class items (they could be wearing emblems or shaders though or no faction items at all).</p>
+<p>But maybe different classes have a different preferences for factions.</p>
+<div class="plotContainer">     <h4 class="text-center">Faction Distribution by Class</h4>     <div id="FactionBreakdownByClass">         <svg></svg>         <script src='../pages/fullPlots/characterData/javascripts/FactionBreakdownByClass.js'></script>     </div> </div><p>Each class seems to have slightly different faction preferences.
+The <em>Other</em> bar is in there just so you can verify that these numbers make sense (all x-tick marks add up to 100), but you can remove it by clicking on it in the legend.
+Hunters, like everyone else, prefer Dead Orbit, but they prefer FWC over New Monarchy.
+Not only that, but they have the lowest rate of faction attendance overall.
+Only about 30% of all Hunters above level 20 equip a faction class item.
+My theory is that because the Hunter class item makes such a large difference in their appearance, they are more likely to pick class items for their style.
+This is in contrast to Warlocks whose class items really don't make a terrible impact on their appearance, so they are more likely to pick class items for the functionality.</p>
+<p>I believe being in a Faction is the only way to go (and I play as a Hunter), because by wearing a Faction class item you are combining both your Vanguard and Crucible rep into one pool.
+Doing the Nightfall and Weekly Strikes gives you a lot of rep, but if you're like me and that's all you do in the story mode anymore, it can be a few weeks before you see those efforts turn into a Vanguard package.
+By wearing a class item, I can turn out packages quicker, and while the loot isn't always great, I'm still holding out for a FWC ship.
+But the FWC cloak doesn't always jive with the shader or armor that I have equipped, so I often feel like I look like a clown.
+For me though, the functionality outweighs the looks, but I could see how this may not be the case for other Hunters.</p>
+<p>As everyone also knows, reward packages are often a bust (2 motes of light woot!) so maybe players start to become bitter and abandon factions as they play more.</p>
+<div class="plotContainer">     <h4 class="text-center">Faction Distribution by Level</h4>     <div id="FactionBreakdownByLevel">         <svg></svg>         <script src='../pages/fullPlots/characterData/javascripts/FactionBreakdownByLevel.js'></script>     </div> </div><p>This graph is a little confusing at first.
+The x-axis is character level, the y-axis is the percentage of players who are that level that wear a faction class item.
+For example, 10.41 percent of level 22 players wear a Dead Orbit class item.</p>
+<p>What this shows us is that faction items actually become more prevelant as your level goes up.  21% of all players who are level 34 wear a Dead Orbit class item.
+1 out of every 5 level 34s that you meet today are going to be wearing a Dead Orbit class item.
+Dead Orbit shows the greatest increase overall, but all of the factions increase as level increases.</p>
+</div>
+<div class="section" id="concluding-thoughts">
+<h2>Concluding Thoughts</h2>
+<p>Factions are an interesting game mechanic.
+They are completely optional and they don't really offer much, yet there is a clear preference for which faction people like.
+Overall, the majority of player's choose not to wear a faction item, but for the player's who do, they are most likely running with Dead Orbit.</p>
+<p>If a war were to ever break out between the factions, Dead Orbit would win because the other two factions would be seriously out gunned.</p>
+</div>
+
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/Jalepeno112/DestinyProject" target="_blank">
+                Github Repo
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/giovannibriggs" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.bungie.net" target="_blank">
+                Bungie
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.bungie.net/en/Clan/Forum/39966/0/1/0" target="_blank">
+                BungieNetPlatform
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 Giovanni Briggs
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/DestinyProject/blog/output/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/DestinyProject/blog/output/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/DestinyProject/blog/output/theme/js/respond.min.js"></script>
+
+
+</body>
+</html>

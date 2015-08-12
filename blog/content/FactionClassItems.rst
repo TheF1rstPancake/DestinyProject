@@ -1,12 +1,10 @@
 I Pledge Allegiance
 ===============================================
-:date: 2015-07-24
-:modified: 2010-07-24
+:date: 2015-08-09
 :tags: Character, Factions
 :authors: Giovanni Briggs
-:summary: Examining weapon balance in PvP.
+:summary: Examining faction distribution in Destiny.
 :category: Stat Porn Sunday
-:status: draft
 
 A look at the distribution of Factions among the Destiny population.
 
