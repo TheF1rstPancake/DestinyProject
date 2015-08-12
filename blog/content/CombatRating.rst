@@ -21,11 +21,11 @@ For those of you who have been following Stat Porn Sundays in the past, this plo
 
 .. html::
     <div class="plotContainer">
-    <h4 class="text-center">Combat Rating Distribution Curve</h4>
-    <div id="combatRatingDist">
-        <svg></svg>
-        <script src='../fullPlots/IronBanner/javascripts/combatRatingDist.js'></script>
-    </div>
+        <h4 class="text-center">Combat Rating Distribution Curve</h4>
+        <div id="combatRatingDist">
+            <svg></svg>
+            <script src='../fullPlots/IronBanner/javascripts/combatRatingDist.js'></script>
+        </div>
     </div>
 
 As we can see fom that graph, the distribution of combat ratings looks pretty normally distributed, which is what we would expect from a metric like this.
