@@ -37,7 +37,8 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 # Social widget
 #SOCIAL = (('You can add links in your config file', '#'),
 #          ('Another social link', '#'),)
-
+# code blocks with line numbers
+#PYGMENTS_RST_OPTIONS = {'linenos': 'table'}
 STATIC_PATHS=['images', 'static/css/', 'crucibleDataAnalysisJS', 'javascripts', "pages/fullPlots"]
 STATIC_EXCLUDE_SOURCES = True
 FAVICON = 'images/favicon.png'
