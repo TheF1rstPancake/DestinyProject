@@ -6,6 +6,8 @@ I'm a Leaf on the Wind
 :summary: Examining what people choose to fly.
 :category: Stat Porn Sunday
 
+See the `original post on reddit <https://www.reddit.com/r/DestinyTheGame/comments/3h7wqg/stat_porn_sunday_im_a_leaf_on_the_wind/>`_
+
 Here we are again
 -------------------
 Welcome to the *sixth* installment in this wonderful series where we take a few moments to think about the things that no one else has the time (or energy) to think about.
