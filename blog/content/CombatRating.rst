@@ -19,14 +19,8 @@ However, assuming the Bungie does aggregate combat rating in some form over time
 Let's look at the distribution of combat rating in order to better understand it's function.
 For those of you who have been following Stat Porn Sundays in the past, this plot will look familiar.
 
-.. html::
-    <div class="plotContainer">
-        <h4 class="text-center">Combat Rating Distribution Curve</h4>
-        <div id="combatRatingDist">
-            <svg></svg>
-            <script src='../fullPlots/IronBanner/javascripts/combatRatingDist.js'></script>
-        </div>
-    </div>
+.. plot:: combatRatingDist Combat Rating Distribution Curve
+    :dir: ../pages/fullPlots/combatRating/
 
 As we can see fom that graph, the distribution of combat ratings looks pretty normally distributed, which is what we would expect from a metric like this.
 Bungie needs a way to compare player skill level.  
@@ -38,7 +32,7 @@ What this analysis is going to try and do is **examine how Bungie determines pla
 
 -1s and 0s
 ------------
-I did remove all players who had a combat rating of -1 or 0 when making that distribution graph.  This removes 4.4% of the total population but still leaves us with over 100,000 entries.These anomlous cases are interesting because they can tell us a few things about Combat Rating.
+I did remove all players who had a combat rating of -1 or 0 when making that distribution graph.  This removes 4.4% of the total population but still leaves us with over 100,000 entries. These anomlous cases are interesting because they can tell us a few things about Combat Rating.
 
 First, take the instances where combat rating is 0.  
 I took this subset of data and then went and tried to find the columns that had a constant value.
@@ -102,16 +96,18 @@ This leads me to believe that combat rating is being calculated in some sort of 
         #do math
         return combatRating
 
-Moving forward, when I refer to *the dataset* I am talking about all players in my dataset who had a combat rating of 0 or greater.
-I leave the 0s in here because I cannot definitively tell if it is the result of a logic-block or if combat rating is a direct multiple of score.
-However, I am certain that scores of -1 are a result of a pre-processing of the data.
+However, I ended up throwing out the all players with a combat rating less than *or equal to* 0.
+The reason is that we know already know what causes them to be 0.
+I don't want this group of players artificially decreasing or inflating the prediciton scores.
+
+Moving forward, when I refer to *the dataset* I am talking about **all players in my dataset who had a combat rating greater than 0.**
 
 First Predictions
 -------------------
 In order to do the first prediction, I tried to minimize the number of columns that I was looking at.
 I narrowed it down to only columns with numerical data and tried to avoid columns that were subsets of other columns.
 For example, I have a series of columns that are titled *weaponKills[WeaponType]* where *[WeaponType]* is something like *PulseRifle* or *Sniper*.
-After all this, there were still 24 columns that I could use.
+After all this, there were still 23 columns that I could use.
 
 In order to predict combat rating, I am using a lot of modules from `scikit <http://scikit-learn.org/>`_.
 
@@ -127,7 +123,188 @@ I then ran a `ridge regression <http://scikit-learn.org/stable/modules/generated
 I sliced the dataset in 10 different ways, each time using 80% of the dataset for training, and 20% for testing and ran the ridge regression across each training/test pair.
 Finally, I calculated several different scoring metrics and took the average of these across all of the runs.
 
-What I finally ended up with was a **variance score of 0.8862443** and a **r-sqaured score of 0.8715312**.
-For both of those scores, a value of 1 indicates a perfect match.  So, my first test using only 3 predictors had an accuracy of 88%.
+What I finally ended up with was a **variance score of 0.8668675** and a **r-sqaured score of 0.8459838**.
+For both of those scores, a value of 1 indicates a perfect match.  
+
+So, my first test using only 3 predictors had an accuracy of 85% with the following coeffecients
+    - *kills*: -0.929154918057
+    - *longestKillSpree*: 3.40214824993
+    - *score*: 0.0311323984706
+
+Giving us the grand equation:
+    
+    .. code-block:: python
+        
+        combat_rating = (-0.929154918057 * kills) + (3.40214824993 * longestKillSpree) + (0.0311323984706 * score)
+
+It's interesting to note that *kills* has a negative coefficient.  That means that the more kills someone has, the *lower* their combat rating.
+Logically, it makes very little sense.  Why punish people who have a higher number of kills?
+1 kill is almost 1 less combat rating point.  But since (on average) players get **12 kills** in a given match, that means that this isn't dropping their combat rating by a lot.  
+
+This decrease is also made up by the *longestKillSpree* variable.  The average player has a *longestKillSpree* value of 3.7.
+Let's knock it down to 3 since you can't have .7 of a kill.  Let's plug the average player into this equation and see what we get.
+
+.. code-block:: python
+   
+    combat_rating = (-0.929154918057 * 12) + (3.40214824993*3) + (0.0311323984706*score)
+    combat_rating = -0.9434142668940009 + (0.0311323984706*score)
+
+So the average player really only sees a knock down of less than a point to their combat rating under this model.
+If we think about this setup a little bit more, it actually makes a lot of sense.
+A player who runs around and gets a ton of kills but only gets 1 kill per life is maybe not as "good" as a player who has a lower number of kills, but never dies.
+
+Let's take two test cases.  The standard deviation on *kills* is about 7, so let's go one standard deviation in either direction.
+
+.. code-block:: python
+   
+    high_kills_cr = (-0.929154918057 * 19 ) + (3.40214824993 * 1) + (0.0311323984706 * score)
+    high_kills_cr = -14.251795193153 + (0.0311323984706 * score)
+    low_kills_cr = (-0.929154918057 * 5 ) + (3.40214824993 * 5) + (0.0311323984706 * score)
+    low_kills_cr = 12.364966659364999 + (0.0311323984706 * score)
+
+This extreme case helps illustrate the point that combat rating seems to favor you're ability to get a spree going.
+The player who runs around and gets a lot of kills, but can't stay alive for more than 1 kill is going to be penalized.  But this does not mean that the player with the 5 kill streak *did not die*.  They could have died 15 times, but had one good streak.
+
+But the real dominating factor is your score.  Score get's hit with a tiny coefficient, but score has the fastest growth.
+Kills and longestKillSpree only increase in increments of 1, whereas score is increasing in a variety of increments, all of which are greater than 25.
+Our cautious player with only 5 kills, but a 5 kill-streak, is not going to have as many points as our blood-lusting player with 19 kills with a longestKillSpree of 1.
+
+So let's calculate this all the way to the end using some real player data.  I hand-picked these two players to compare.
+
+.. code-block:: python
+   
+    high_kills_cr = (-0.929154918057 * 20) + (3.40214824993 * 2) + (0.0311323984706 * 4140)
+    high_kills_cr =  117.109327807004
+    low_kills_cr = (-0.929154918057 * 7) + (3.40214824993 * 5) + (0.0311323984706 * 1455)
+    low_kills_cr =  55.804296597973995
+
+So while the *low_kills* player may have had a greater boost from their longestKillSpree, their combat rating is still significantly lower because they do not have as high of a score.
+
+In general, what this means is that score is the predominate factor in deciding your combat rating, but what differentiates players who a near equal score is the combination of their kills and their longestKillSpree.
+
+Predictions Round 2
+-------------------------
+Noticeably absent from this conversation is any mention of objectives.
+The first round of predictions used only 3 variables all of which were related to a player's ability to kill oponents.
+Score takes into account everything you do though, which is part of the reason why it's probably one of the best predictors.
+
+For the second round of predictions, I used *all* 24 columns.
+It gave me a **R-Squared value of 0.9272879** and a **Variance score of 0.9322257**.
+Below is a table of the coeffeicients for each variable.
+
+.. html::
+    <table class="table table-bordered">
+      <tr>
+        <th class="tg-031e">variable</th>
+        <th class="tg-031e">coeffecient</th>
+      </tr>
+      <tr>
+        <td class="tg-031e">assists</td>
+        <td class="tg-031e">-0.927857209</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">averageLifespan</td>
+        <td class="tg-031e">-0.500777443</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">averageScorePerKill</td>
+        <td class="tg-031e">0.008664059</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">averageScorePerLife</td>
+        <td class="tg-031e">0.070264954</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">completed</td>
+        <td class="tg-031e">23.25449517</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">deaths</td>
+        <td class="tg-031e">-1.825502308</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">defensiveKills</td>
+        <td class="tg-031e">-0.59322549</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">kills</td>
+        <td class="tg-031e">-0.610896445</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">killsDeathsAssists</td>
+        <td class="tg-031e">3.782712579</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">killsDeathsRatio</td>
+        <td class="tg-031e">-2.160936885</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">longestKillSpree</td>
+        <td class="tg-031e">-0.278656088</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">objectivesCompleted</td>
+        <td class="tg-031e">-1.29637071</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">offensiveKills</td>
+        <td class="tg-031e">0.468470248</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">orbsDropped</td>
+        <td class="tg-031e">-0.159636889</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">orbsGathered</td>
+        <td class="tg-031e">0.011888818</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">playerCount</td>
+        <td class="tg-031e">1.239542562</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">precisionKills</td>
+        <td class="tg-031e">-0.184764911</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">score</td>
+        <td class="tg-031e">0.029872563</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">standing</td>
+        <td class="tg-031e">-0.048855635</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">teamScore</td>
+        <td class="tg-031e">-0.000288886</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">zonesNeutralized</td>
+        <td class="tg-031e">-0.059174631</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">dominationKills</td>
+        <td class="tg-031e">1.649904316</td>
+      </tr>
+      <tr>
+        <td class="tg-031e">place</td>
+        <td class="tg-031e">-0.107990814</td>
+      </tr>
+    </table>
+
+A few notes about this:
+    1) *standing* is 0 if the player **won** the game, 1 if they lost it.  That's why standing has a negative coefficient.  Player's are penalized for losing.
+    2) *place* is a value that I calculated.  It is the player's place on the leaderboard at the end of the game.  1 is for the best player, and continues increasing from there.  It is essentially another way of looking at score.  But it has a negative coefficient because as a player falls down the leaderboard, they lose combat rating.
+
+But some of these values make **no sense** whatsoever.  Why would player's be penalized for getting precisionKills?  If you look carefully, you will also see that *longestKillSpree* now has a negative coefficient so player's are being penalized for having large sprees.  And why are all of the objective related coefficients negative? While this gave us a high accuracy, the equation itself makes no (intuitive) logical sense which then makes it difficult to further analyze.
+
+So what I did is I started back at the top 3 and added features in one at a time to see how it changed the relationship between all the variables.
+This process took *five-ever*.  I
+
+Another thing to consider is how *standing* and *completed* are represented.  With *standing* a 1 is a loss; 0 a win.  With *completed* it's the other way around - 1 is completed; 0 is quit.
+When doing a linear regression though each variable is given   
 
 
+
+If kills and score are 0 you get -1.  The only reason you would try and catch that here is if the it would produce some form of NaN value.
+In other words, if it would break your system.  If kills and score are both 0, averageScorePerKill will be 0/0 = NaN. Whereas if score is just 0, then you get 0/#ofkills which is 0.  This is also just a random fluke that cause the system to record your score as zero even though you really should have registered some points.

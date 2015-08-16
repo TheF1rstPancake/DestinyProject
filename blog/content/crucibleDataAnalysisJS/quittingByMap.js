@@ -1,4 +1,4 @@
-var data = $.getJSON('datafiles/quittingByMap.json', function(test_data){
+var data = $.getJSON('../crucibleDataAnalysisJS/datafiles/quittingByMap.json', function(test_data){
     //var plotDiv = "#testPlot svg"
     var plotDiv = "#quittingByMap svg";
     var margin = {top: 20, right: 10, bottom: 20, left: 10};

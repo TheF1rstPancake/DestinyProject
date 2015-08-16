@@ -7,11 +7,7 @@ We Have a Perception Issue
 :summary: Examining weapon balance in PvP.
 :category: Stat Porn Sunday
 
-A look at trends within Destiny's competitive multiplayer and what players can do to increase their chances for victory
-
-View project on `Github <https://github.com/Jalepeno112/DestinyProject/>`_
-
-Get the data file used for these plots on my `Google Drive <https://drive.google.com/open?id=0B4f7JIyE52tbbVlxNTNONEQyNm8>`_
+See the `original post on reddit <https://www.reddit.com/r/DestinyTheGame/comments/3fwqcu/stat_porn_sunday_weapon_balancing_follow_up/>`_
 
 Overview
 --------

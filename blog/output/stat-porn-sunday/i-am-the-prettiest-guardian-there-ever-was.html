@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>I am the Prettiest Guardian There Ever Was - Destiny Project</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/DestinyProject/blog/output/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/DestinyProject/blog/output/stat-porn-sunday/i-am-the-prettiest-guardian-there-ever-was.html">
+
+        <meta name="author" content="Giovanni Briggs" />
+        <meta name="keywords" content="Shaders,Character" />
+        <meta name="description" content="Examining shader usage." />
+
+        <meta property="og:site_name" content="Destiny Project" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="I am the Prettiest Guardian There Ever Was"/>
+        <meta property="og:url" content="/DestinyProject/blog/output/stat-porn-sunday/i-am-the-prettiest-guardian-there-ever-was.html"/>
+        <meta property="og:description" content="Examining shader usage."/>
+        <meta property="article:published_time" content="2015-07-26" />
+            <meta property="article:section" content="Stat Porn Sunday" />
+            <meta property="article:tag" content="Shaders" />
+            <meta property="article:tag" content="Character" />
+            <meta property="article:author" content="Giovanni Briggs" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/bootstrap.yeti.min.css" type="text/css"/>
+    <link href="/DestinyProject/blog/output/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/DestinyProject/blog/output/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.js"></script>
+        <script src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+        <link href="/DestinyProject/blog/output/static/css/plots.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/DestinyProject/blog/output/" class="navbar-brand">
+Destiny Project            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/iron-banner.html">Iron banner</a>
+                        </li>
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/misc.html">Misc</a>
+                        </li>
+                        <li class="active">
+                            <a href="/DestinyProject/blog/output/category/stat-porn-sunday.html">Stat porn sunday</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/DestinyProject/blog/output/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/DestinyProject/blog/output/stat-porn-sunday/i-am-the-prettiest-guardian-there-ever-was.html"
+                       rel="bookmark"
+                       title="Permalink to I am the Prettiest Guardian There Ever Was">
+                        I am the Prettiest Guardian There Ever Was
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-07-26T00:00:00+02:00"> Sun 26 July 2015</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/DestinyProject/blog/output/tag/shaders.html">Shaders</a>
+        /
+	<a href="/DestinyProject/blog/output/tag/character.html">Character</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>See the <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3eol7l/stat_porn_sunday_i_am_the_prettiest_guardian/">original post on reddit</a></p>
+<div class="section" id="welcome">
+<h2>Welcome</h2>
+<p>Welcome to Stat Porn Sunday where I make colorful graphs with fun facts that you can use to impress other Guardians.
+Here's the obligatory link to last week's <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3dur9n/stat_porn_sunday_dont_hate_the_game_hate_the/">Stat Porn Sunday: Don't hate the game; hate the player</a>.</p>
+<p>For those of you were involved in last week's post, I haven't forgotten about you.
+I've been re-examining the data and working all sorts of black magic to find new ways to re-engage the conversation.
+There may even be a midweek post (foreshadowing!).</p>
+</div>
+<div class="section" id="beautifying-my-guardian">
+<h2>Beautifying My Guardian</h2>
+<p>I'm on vacation this week so this stat is going to be pretty basic.
+I created a dataset full of 300,000 different characters. A
+ll of the data was collected two Wednesdays ago so it's a snapshot in time.
+The game is a pretty static state right now (no major updates or content releases) so I expect this data to be usable today.
+The set includes everything from what armor they are wearing to what sparrow they have equipped.</p>
+<p>Today's topic is shaders.
+Whose rocking the hippest shaders and which Guardians are being hipsters straying away from the normal trends?
+Well now you can know for sure.</p>
+<div class="plotContainer">     <h4 class="text-center"><a href="/DestinyProject/blog/output/fullPlots/characterData/Top10Shaders.html">Top 10 Shaders</a></h4>     <div id="Top10Shaders">         <svg></svg>         <script src='../fullPlots/characterData/javascripts/Top10Shaders.js'></script>     </div> </div><p>Default shader is the most used.
+This shouldn't be surprising when you consider the fact that character's can't equip shaders until level 20.
+So now lets look at the top 10 shaders grouped by character level.
+The character level spread isn't normally distributed. About 46% of the characters in this sample set are at level 34.
+Note that the percentages for this graph are the frequency of that shader in that bin not the frequency overall. Also, just to make the plotting easier, this plot shows how the top 10 shaders overall are distributed within each bin.
+These are not necessarily the same as the top 10 shaders in each bin (my graphing library got made at me when I tried to do it that way).
+Also, because you can't equip a shader until level 20, this only looks at characters with a level of 20 or higher.</p>
+<div class="plotContainer">     <h4 class="text-center"><a href="/DestinyProject/blog/output/fullPlots/characterData/Top10ShadersByLevel.html">Top 10 Shaders by Level</a></h4>     <div id="Top10ShadersByLevel">         <svg></svg>         <script src='../fullPlots/characterData/javascripts/Top10ShadersByLevel.js'></script>     </div> </div><p>I'm not sure if people know this, but you can click on any of the items in the legend to make it disappear. You can also double click it to make it the only thing in the graph.</p>
+</div>
+
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/Jalepeno112/DestinyProject" target="_blank">
+                Github Repo
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/giovannibriggs" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.bungie.net" target="_blank">
+                Bungie
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.bungie.net/en/Clan/Forum/39966/0/1/0" target="_blank">
+                BungieNetPlatform
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 Giovanni Briggs
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/DestinyProject/blog/output/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/DestinyProject/blog/output/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/DestinyProject/blog/output/theme/js/respond.min.js"></script>
+
+
+</body>
+</html>

@@ -7,12 +7,13 @@ Who needs strength when you have brains
 :summary: Examining trends in armor usage
 :category: Stat Porn Sunday
 
-View project on `Github <https://github.com/Jalepeno112/DestinyProject/>`_
+See the `original post on reddit <https://www.reddit.com/r/DestinyTheGame/comments/3fiuwn/stat_porn_sunday_who_needs_strength_when_you_have/>`_
 
-Welcome to Stat Porn Sunday where we all come together to drool over our keyboards while looking at Destiny stats.  Our moms should be proud.
 
 Recap
 -------
+Welcome to Stat Porn Sunday where we all come together to drool over our keyboards while looking at Destiny stats.  Our moms should be proud.
+
 First, hope you all find the new site useable.
 It's a work in progress, but this way I can present all of the plots in one page rather than forcing you to open links all over the place.
 For all you mobile users out there, I am trying to resolve a lot of the mobile problems.

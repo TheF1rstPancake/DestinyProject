@@ -54,7 +54,7 @@ BS3_THEME = "https://bootswatch.com/yeti/bootstrap.min.css"
 DEFAULT_PAGINATION = 10
 
 PLUGIN_PATHS = ['pelican_plugins']
-PLUGINS = ['pelican_javascript', 'html_rst_directive']
+PLUGINS = ['pelican_javascript', 'html_rst_directive', 'plot_directive']
 
 #BOOTSTRAP_FLUID = True
 BOOTSTRAP_NAVBAR_INVERSE = True

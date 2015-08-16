@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Mix and Match - Destiny Project</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/DestinyProject/blog/output/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/DestinyProject/blog/output/stat-porn-sunday/mix-and-match.html">
+
+        <meta name="author" content="Giovanni Briggs" />
+        <meta name="keywords" content="Crucible,weapon" />
+        <meta name="description" content="Examining how people pair primaries and secondaries." />
+
+        <meta property="og:site_name" content="Destiny Project" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Mix and Match"/>
+        <meta property="og:url" content="/DestinyProject/blog/output/stat-porn-sunday/mix-and-match.html"/>
+        <meta property="og:description" content="Examining how people pair primaries and secondaries."/>
+        <meta property="article:published_time" content="2015-07-12" />
+            <meta property="article:section" content="Stat Porn Sunday" />
+            <meta property="article:tag" content="Crucible" />
+            <meta property="article:tag" content="weapon" />
+            <meta property="article:author" content="Giovanni Briggs" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/bootstrap.yeti.min.css" type="text/css"/>
+    <link href="/DestinyProject/blog/output/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/DestinyProject/blog/output/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.js"></script>
+        <script src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+        <link href="/DestinyProject/blog/output/static/css/plots.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/DestinyProject/blog/output/" class="navbar-brand">
+Destiny Project            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/iron-banner.html">Iron banner</a>
+                        </li>
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/misc.html">Misc</a>
+                        </li>
+                        <li class="active">
+                            <a href="/DestinyProject/blog/output/category/stat-porn-sunday.html">Stat porn sunday</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/DestinyProject/blog/output/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/DestinyProject/blog/output/stat-porn-sunday/mix-and-match.html"
+                       rel="bookmark"
+                       title="Permalink to Mix and Match">
+                        Mix and Match
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-07-12T00:00:00+02:00"> Sun 12 July 2015</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/DestinyProject/blog/output/tag/crucible.html">Crucible</a>
+        /
+	<a href="/DestinyProject/blog/output/tag/weapon.html">weapon</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>See the <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3d1hy0/stat_sunday_weapon_pairings/">original post on reddit</a>.</p>
+<div class="section" id="welcome">
+<h2>Welcome</h2>
+<p>Hey everyone it's Sunday again which means a new Crucible statistic for your viewing pleasure (woo! excitement!).
+Last week's post was about <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3c88p0/stat_sunday_kills_per_minute/">Kills per Minute</a>.</p>
+</div>
+<div class="section" id="i-need-a-weapon">
+<h2>I Need a Weapon</h2>
+<p>Before we begin, it is important to note that all of this data was taken from Control matches around the release of House of Wolves, but I think the general trends remain true.</p>
+<p>This week, I looked at how frequently Primary and Secondary weapons are paired together.
+The first plot shows how frequently players use particular primary/secondary weapon combos.
+A player's weapon combo is determined by their most used weapon class during a game. For example, if a player has 5 kills with Hand Cannons, 3 kills with Pulse Rifles and 5 kills with Shotguns, then their primary/secondary weapon combo is Hand Cannon/Shotgun.</p>
+<div class="plotContainer">     <h4 class="text-center"><a href="/DestinyProject/blog/output/fullPlots/weaponPairings.html">Frequency of Primary/Secondary Weapon Pairings</a></h4>     <div id="weaponPairings">         <svg></svg>         <script src='../fullPlots/javascripts/weaponPairings.js'></script>     </div> </div><p>There are several takeaways from this graph. First, hand cannons are the most used primary weapon (surprise!) with shotguns being the most used secondary weapon (double surprise!) and the hand cannon/shotgun combo is the most used primary/secondary weapon combo (triple surprise!).</p>
+<p>What is actually surprising is what the second most used primary weapon is: <em>None</em>.</p>
+<p><em>None</em> occurs when a player has no primary weapon kills at the end of the match, and this accounts for about 15% of all players. One discrepancy here is that Universal Remote and No Land Beyond will still appear as secondary weapons even though they fit in the primary weapon slot. But even so, 15% is huge.
+But now lets compare how secondaries are used with each primary weapon respectively. The next plot will show the distribution of secondary weapons across each primary weapon.</p>
+<div class="plotContainer">     <h4 class="text-center"><a href="/DestinyProject/blog/output/fullPlots/primarySecondary.html">Frequency of Secondary Weapons with each Primary Weapons</a></h4>     <div id="primarySecondary">         <svg></svg>         <script src='../fullPlots/javascripts/primarySecondary.js'></script>     </div> </div><p>What we see here is that the use of each secondary weapon is pretty static across all primary weapons.
+So, when a player switches between their Thorn and their Red Death, they probably aren't switching out their secondary weapon.
+Auto Rifle users don't appear to follow the same trend as everyone else though. Auto-rifle users are the most likely to use only their auto-rifle during a game.</p>
+</div>
+<div class="section" id="tl-dr">
+<h2>TL;DR</h2>
+<p>Players use the Hand Cannon/Shotgun weapon combo the most, but about 15% of players complete a Crucible match without ever using a primary weapon.
+Furthermore, user's don't seem to switch out their secondary when choosing a different primary. Across the board, if a player has any primary weapon, you have a 40% chance that they are using a shotgun with it.
+If there is any other trends you'd like to see, post them in the comments and I'll see what I can do!</p>
+</div>
+
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/Jalepeno112/DestinyProject" target="_blank">
+                Github Repo
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/giovannibriggs" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.bungie.net" target="_blank">
+                Bungie
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.bungie.net/en/Clan/Forum/39966/0/1/0" target="_blank">
+                BungieNetPlatform
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 Giovanni Briggs
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/DestinyProject/blog/output/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/DestinyProject/blog/output/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/DestinyProject/blog/output/theme/js/respond.min.js"></script>
+
+
+</body>
+</html>

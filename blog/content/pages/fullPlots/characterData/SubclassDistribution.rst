@@ -1,8 +1,8 @@
 Subclass Distribution
 =====================
 
-:date: 2015-08-09
-:modified: 2015-08-09
+:date: 2015-08-12
+:modified: 2015-08-12
 
 :authors: Giovanni Briggs
 :summary: A look at the distribution of subclasses

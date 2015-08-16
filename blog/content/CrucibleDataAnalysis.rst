@@ -92,10 +92,12 @@ The main point here is that while people prefer to use Legendary and Exoctic wea
 Another interesting set of factors to look at is map. It is often argued that certain teams on certain maps always win.  This leads to people sometimes leaving a match because they believe that the odds are stacked against them.
 
 .. html::
+  <div class="plotContainer">
   <div id="victoryByMap" class="plot">
-  <h2 style="text-align:center">Victory Rate for each Team by Map</h2>
-  <svg></svg>
-  <script src='../crucibleDataAnalysisJS/victoryByMap.js'></script>
+    <h2 style="text-align:center">Victory Rate for each Team by Map</h2>
+    <svg></svg>
+    <script src='../crucibleDataAnalysisJS/victoryByMap.js'></script>
+  </div>
   </div>
 
 All things being equal, we would expect the victory rate for each team on any give map to be about 50%. 
@@ -113,10 +115,12 @@ Losing a team member can definitely set a team back, and as we can see, certain 
 This also seems to be corelated to victory rate of a team on a given map.
 
 .. html::
+  <div id="plotContainer">
   <div id="quittingByMap" class="plot">
     <h2 style="text-align:center">Quitting Rate for each Team by Map</h2>
     <svg></svg>
     <script src='../crucibleDataAnalysisJS/quittingByMap.js'></script>
+  </div>
   </div>
 
 We can also look at  a player’s Combat Rating. Combat Rating is a metric that Bungie created to effectively rank player’s along a scale.
@@ -180,10 +184,12 @@ Be careful how heavily you rely on sniper rifles on certain maps.
 While setting up shop and camping usually results in less deaths, teams who rely on snipers more heavily during a game tend to lose.
 
 .. html::
+  <div id="plotContainer">
   <div id="sniperRatioVictoryPlot" class="plot">
     <h2 style="text-align:center">Sniper Rifle Usage Rate by Winners and Losers</h2>
     <svg></svg>
-    <script src="/../crucibleDataAnalysisJS/sniperRatioVictory.js"></script>
+    <script src="../crucibleDataAnalysisJS/sniperRatioVictory.js"></script>
+  </div>
   </div>
 
 PTFO
@@ -197,10 +203,12 @@ Across the board, the team with the higher average score per kill wins more.
 Since holding the majority of the objectives is directly related to getting more points per kill, teams should push to play to the objective.
 
 .. html::
+  <div id="plotContainer">
   <div id="averageScorePerKill" class="plot">
   <h2 style="text-align:center">Average Score per Kill</h2>
   <svg></svg>
-  <script src='/../crucibleDataAnalysisJS/averageScorePerKill.js'></script>
+  <script src='../crucibleDataAnalysisJS/averageScorePerKill.js'></script>
+  </div>
   </div>
 
 Furthermore, teams often question whether or not to go for domination.
@@ -208,10 +216,12 @@ The benefit is the max multiplier, but the cost is that you might cause the game
 As we've seen, starting spawn location on a map is important, and so a team that pushes for domination may end up swaping spawns and actually place themselves in a bad place.
 
 .. html::
+  <div class="plotContainer">
   <div id="dominationKills" class="plot">
-  <h2 style="text-align: center">Domination Kills by Map</h2>
-  <svg></svg>
-  <script src='/../crucibleDataAnalysisJS/dominationKills.js'></script>
+    <h2 style="text-align: center">Domination Kills by Map</h2>
+    <svg></svg>
+    <script src='../crucibleDataAnalysisJS/dominationKills.js'></script>
+  </div>
   </div>
 
 From this plot though, we can clearly see that domination is helpful in winning.
