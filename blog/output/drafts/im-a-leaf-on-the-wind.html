@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>I'm a Leaf on the Wind - Destiny Project</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/DestinyProject/blog/output/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="/DestinyProject/blog/output/drafts/im-a-leaf-on-the-wind.html">
+
+        <meta name="author" content="Giovanni Briggs" />
+        <meta name="keywords" content="Character,Ships" />
+        <meta name="description" content="Examining what people choose to fly." />
+
+        <meta property="og:site_name" content="Destiny Project" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="I&#39;m a Leaf on the Wind"/>
+        <meta property="og:url" content="/DestinyProject/blog/output/drafts/im-a-leaf-on-the-wind.html"/>
+        <meta property="og:description" content="Examining what people choose to fly."/>
+        <meta property="article:published_time" content="2015-08-16" />
+            <meta property="article:section" content="Stat Porn Sunday" />
+            <meta property="article:tag" content="Character" />
+            <meta property="article:tag" content="Ships" />
+            <meta property="article:author" content="Giovanni Briggs" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/bootstrap.yeti.min.css" type="text/css"/>
+    <link href="/DestinyProject/blog/output/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/DestinyProject/blog/output/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/DestinyProject/blog/output/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.js"></script>
+        <script src ="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+        <link href="/DestinyProject/blog/output/static/css/plots.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/DestinyProject/blog/output/" class="navbar-brand">
+Destiny Project            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/DestinyProject/blog/output/category/misc.html">Misc</a>
+                        </li>
+                        <li class="active">
+                            <a href="/DestinyProject/blog/output/category/stat-porn-sunday.html">Stat porn sunday</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/DestinyProject/blog/output/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/DestinyProject/blog/output/drafts/im-a-leaf-on-the-wind.html"
+                       rel="bookmark"
+                       title="Permalink to I'm a Leaf on the Wind">
+                        I'm a Leaf on the Wind
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-08-16T00:00:00+02:00"> Sun 16 August 2015</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/DestinyProject/blog/output/tag/character.html">Character</a>
+        /
+	<a href="/DestinyProject/blog/output/tag/ships.html">Ships</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <div class="section" id="here-we-are-again">
+<h2>Here we are again</h2>
+<p>Welcome to the sixth installment in this wonderful series where we take a few moments to think about the things that no one else has the time (or energy) to think about.</p>
+<p>Last week we talked about <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3gdai9/stat_porn_sunday_i_pledge_allegiance/">faction distribution</a>.
+Today we are going to continue look at character data and examine <strong>ship distribution</strong>.</p>
+</div>
+<div class="section" id="fly-away">
+<h2>Fly Away</h2>
+<p>Ships have 0 functionality in the game.
+They are really nothing more than a loading screen, but there are some interesting dynamics when we look at how player's chose their ships.</p>
+<p>This post is going to be a bit different from other's since I'm not going to immediately throw out all players below level 20 and say that they don't matter.
+Player's of all levels can equip a ship as long as they have completed the story mission where you get your first one.
+Ships are also one of the only ways to show off to the community your acheivements.
+Class items serve the same role, but they compete with Faction items.
+Ships are also a way to assert some sort of difference from the rest of the community.
+As we've seen, most people <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3eol7l/stat_porn_sunday_i_am_the_prettiest_guardian/">equip the same shaders</a>, but there are a lot more ships out there to chose from.</p>
+<p>But maybe then again, ships could potentially follow the same trend as shaders, with players opting to pick the &quot;coolest&quot; looking ships.</p>
+<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/characterData/MostUsedShipsOverall.html'>Top 10 Ships Overall</a></h4><div class ='plot' id='MostUsedShipsOverall''><svg></svg><script src='../pages/fullPlots/characterData/javascripts/MostUsedShipsOverall.js''></script></div></div><p>Ship choices have a greater amount of variation than shaders.  With ships the top 10 only account for about 46% percent of all use versus shaders, where the top 10 accounted for about 65% of all use.
+But this isn't necessarily a fair analysis because many players can't equip ship other than the <em>Arcadia Class Jumpship</em> because it's the first one you get and they may not have others.</p>
+<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/characterData/MostUsedShipsAboveLevel20.html'>Top 10 Ships For Players Above Level 20</a></h4><div class ='plot' id='MostUsedShipsAboveLevel20''><svg></svg><script src='../pages/fullPlots/characterData/javascripts/MostUsedShipsAboveLevel20.js''></script></div></div><p>When we just look at the players who are level 20 and above, we see that the top 10 ships account for about 50% of all use.
+Still more variation than shaders, but still shows that there are a lot of people out there who are all flying the same model.
+What's also interesting about this graph is that many of the top 10 ships are rewards for raids, or require a significant amount of work to obtain.
+The Hildian Seeker is not the most challenging ship to obtain, but you do have to go out of your way to get it.
+It's not like it's a random Crucible drop or something.
+This shows that players prefer to use ships as means to boast their accomplishments rather than using them as a tool to stand out.
+You'd think the two would be the same thing - that these accomplishments would make one stand out - but in reality it's not the case.</p>
+<p>If players really wanted to stand out these would be the ships that they would use.</p>
+<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/characterData/LeastUsedShipsAboveLevel20.html'>10 Least Used Ships for Players Above Level 20</a></h4><div class ='plot' id='LeastUsedShipsAboveLevel20''><svg></svg><script src='../pages/fullPlots/characterData/javascripts/LeastUsedShipsAboveLevel20.js''></script></div></div><p>None of these ships are legendary tier.
+So it seems like players will either choose a ship that shows off some sort of accomplishment (generally legendary tier) or a legendary tier ship.
+All of those ships in the top <em>least</em> used are purchasable through the Shipwright.
+So it's not like they are impossible to obtain.
+I find it interesting that people (myself included) don't even consider these Common ships and instead settle for the Legendary tier ships.
+Legendary is somehow cooler than common even though some of the Common and Uncommon ships look cool too.
+The only difference is that the Legendary tier ships have a purple background and a slogan attached.</p>
+<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/characterData/shipTiearByLevel.html'>Ship Tier Frequency by Level</a></h4><div class ='plot' id='shipTiearByLevel''><svg></svg><script src='../pages/fullPlots/characterData/javascripts/shipTiearByLevel.js''></script></div></div><p>This graph shows what percent of people use what tier of ship in at a given level.  For instance, 87.83% of level 2 players use a Common ship.
+Most players don't even bother with a Rare or Uncommon ships, and by the time you hit level 34, 91% of players are using some form of Legendary ship.</p>
+<dl class="docutils">
+<dt>These plots also exist for players below level 20.  I don't find them too interesting, but they are here if you want to check them out:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="/DestinyProject/blog/output/pages/fullPlots/characterData/LeastUsedShipsBelowLevel20.html">Top 10 Ships for Players Below Level 20</a></li>
+<li><a class="reference external" href="/DestinyProject/blog/output/pages/fullPlots/characterData/LeastUsedShipsBelowLevel20.html">10 Least Used Ships for Players Below Level 20</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="landing-safely">
+<h2>Landing Safely</h2>
+<p>Generally, Common ships are the most used probably because they don't require a whole lot of effort to obtain early on.
+However, as soon as players seem to have the oportunity they immediately switch over to a Legendary ship bypassing all the possibilities that lie in between.</p>
+</div>
+
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/Jalepeno112/DestinyProject" target="_blank">
+                Github Repo
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/giovannibriggs" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.bungie.net" target="_blank">
+                Bungie
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://www.bungie.net/en/Clan/Forum/39966/0/1/0" target="_blank">
+                BungieNetPlatform
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 Giovanni Briggs
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/DestinyProject/blog/output/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/DestinyProject/blog/output/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/DestinyProject/blog/output/theme/js/respond.min.js"></script>
+
+
+</body>
+</html>

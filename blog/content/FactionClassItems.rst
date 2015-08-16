@@ -8,6 +8,8 @@ I Pledge Allegiance
 
 A look at the distribution of Factions among the Destiny population.
 
+See the `original post on reddit <https://www.reddit.com/r/DestinyTheGame/comments/3gdai9/stat_porn_sunday_i_pledge_allegiance/>`_.
+
 Recap
 -------
 Last week we talked about how players pick `intellect, discipline, and strength <https://www.reddit.com/r/DestinyTheGame/comments/3fiuwn/stat_porn_sunday_who_needs_strength_when_you_have/>`_ when building their characters.

@@ -45,6 +45,35 @@ def _writeGraph(graph, htmlTemplate="htmlTemplate.html", author="Giovanni Briggs
         f.write(output)
 
 
+def shipTierByLevel(data):
+    groupByLevel = data.groupby("level")
+    freq = pd.DataFrame({l: {tier:len(ship)/float(len(g)) for tier, ship in g.groupby("Ships Tier")} for l, g in groupByLevel}).T.fillna(0)
+
+    series = [{
+                "name": c,
+                "x": freq.index.values.astype(float),
+                "y": freq[c].values
+            } for c in freq.columns]
+    graph = lineChart(
+                name="shipTierByLevel",
+                key= 'shipTierByLevel',
+                js_path = "javascripts",
+                html_path = FULL_PLOT_HTML_DIRECTORY,
+                title="Ship Tier by Level",
+                subtitle="A look at ship distribution by level",
+                resize=True,
+                use_interactive_guideline = True,
+                plotText = "This plot shows the relative use of each ship tier type in each class level. " +
+                            "It should be read as *y* percent of players who are level *x* fly a ship that is tier *color*."
+                )   
+    graph.width = None
+
+    for s in series:
+        graph.add_serie(**s)
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Level")
+    _writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url='pages/fullPlots/characterData/{0}'.format(graph.name+'.html'))
+
 def shipBreakdownAbove20(data):
     data = data[data['level'] >= 20]
     shipBreakdown(data, key="AboveLevel20")
@@ -52,7 +81,6 @@ def shipBreakdownAbove20(data):
 def shipBreakdownBelow20(data):
     data = data[data['level'] < 20]
     shipBreakdown(data, key="BelowLevel20")
-
 
 def classDistribution(data):
     groupByClass = data.groupby('Subclass')
@@ -543,8 +571,9 @@ if __name__ == "__main__":
     #shipBreakdown(data)
     #shipBreakdownAbove20(data)
     #shipBreakdownBelow20(data)
-    classDistribution(data)
-    factionsByClass(data)
+    #classDistribution(data)
+    #factionsByClass(data)
+    shipTierByLevel(data)
     #write to index html file
     template = jinja2_env.get_template(os.path.join('index.html'))
     template_values = {

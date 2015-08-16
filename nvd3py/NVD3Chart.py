@@ -116,6 +116,7 @@ class NVD3Chart(object):
         self.charttooltip_dateformat = kwargs.get('charttooltip_dateformat',
                                                   '%d %b %Y')
         #self._slugify_name(kwargs.get('name', self.model))
+        #we can use all of these to add the plot to a javascript file rather than to an html file
         self.name = kwargs.get('name', self.model).replace(" ", "_")
         self.divTitle = kwargs.get("key", self.name).replace(" ", "_")
         self.jsFile = os.path.join(kwargs.get("js_path", '.'), (self.divTitle + ".js"))

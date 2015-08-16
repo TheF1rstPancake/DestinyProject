@@ -35,20 +35,22 @@ def combatRatingDist(data):
     #some of the bins barely contain any data.  Add these all to one extended bin
 
     bins = [c*hist[2] for c in xrange(0,num_bins)]
-    bin_strings = ["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(0,num_bins-1)]
+
+    #the first bin should be (0, bin_edge) because literal 0 is not included in this data.
+    bin_strings = ["(0,{0:.2f})".format(bins[1])]
+    bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(1,num_bins-1)])
     bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))
 
-
-    logger.info("Combat Rating Dist")
     graph = multiBarChart(
                 name="combatRatingDist",
                 key= 'combatRatingDist',
                 js_path = "javascripts",
-                html_path = FULL_PLOT_HTML_DIRECTORY,
-                title="Distribution of Combat Ratings in Iron Banner",
-                subtitle="A look at the distribution of combat ratings for players in IB",
+                html_path = plotutils.FULL_PLOT_HTML_DIRECTORY,
+                title="Distribution of Combat Ratings in Control",
+                subtitle="A look at the distribution of combat ratings for players in Control",
                 resize=True,
-                plotText="Shows the distribution of combat ratings in Iron Banner.  Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1)"
+                plotText="Shows the distribution of combat ratings in Control.  " + 
+                            "Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1). "
                 )   
     graph.width = None
 
@@ -58,3 +60,8 @@ def combatRatingDist(data):
     
     graph.buildcontent()
     plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url='pages/fullPlots/combatRating/{0}'.format(graph.name+'.html'))
+
+if __name__ == "__main__":
+    data = pd.read_csv("datafiles/data.csv", index_col=0)
+
+    combatRatingDist(data)
