@@ -133,7 +133,13 @@ def groupByTeam(dataFileName):
 			teamDict['highestScore'] = teamData['score'].max()
 			teamDict['lowestScore'] = teamData['score'].min()	
 
-			teamDict['dominationKills'] = teamData['dominationKills'].sum()
+			if 'dominationKills' in teamData.columns:
+				teamDict['dominationKills'] = teamData['dominationKills'].sum()
+
+			if 'resurectionsPerformed' in teamData.columns:
+				teamDict['resurectionsPerformed'] = teamData['resurectionsPerformed'].sum()
+			if 'resurectionsReceived' in teamData.columns:
+				teamDict['resurectionsReceived'] = teamData['resurectionsReceived'].sum()
 
 			#add to list
 			teamBreakdown.append(teamDict)
@@ -181,4 +187,4 @@ if __name__=="__main__":
 	args = parser.parse_args()
 
 	data = groupByTeam(args.datafile)
-	data.to_csv(args.outfile)
+	data.to_csv(args.outfile, encoding='utf-8')

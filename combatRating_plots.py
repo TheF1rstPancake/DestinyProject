@@ -11,22 +11,17 @@ from nvd3py import *
 import plotutils
 import scipy.stats
 
-plotutils.FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content","pages","fullPlots","combatRating")
-plotutils.FULL_PLOT_JS_DIRECTORY = os.path.join(plotutils.FULL_PLOT_HTML_DIRECTORY, "javascripts")
-plotutils.FULL_PLOT_JSON_DIRECTORY = os.path.join(plotutils.FULL_PLOT_HTML_DIRECTORY, "datafiles")
-
-PLOT_TEMPLATES = "plotTemplates"
-
 jinja2_env = jinja2.Environment(loader=jinja2.FileSystemLoader('plotTemplates'))
 
-def combatRatingDist(data):
+
+def combatRatingDist(data, pages_dir="pages/fullPlots/combatRating/", gamemode="Control", max_limit=240, num_bins=12):
     data = pd.DataFrame(data[(data['combatRating'] > 0)])
     CR = data['combatRating']
 
     #build a histogram of 20 bins from (0,300)
     #The range is set because of a first glance look at the data
-    num_bins = 12
-    hist = scipy.stats.histogram(CR,numbins=num_bins, defaultlimits=(0,240))
+    #num_bins = 12
+    hist = scipy.stats.histogram(CR,numbins=num_bins, defaultlimits=(0,max_limit))
 
     #add the extra points to the last bin.
     #this will cause there to be a slight increase in the last bin in comparison to the bin before it.
@@ -46,10 +41,10 @@ def combatRatingDist(data):
                 key= 'combatRatingDist',
                 js_path = "javascripts",
                 html_path = plotutils.FULL_PLOT_HTML_DIRECTORY,
-                title="Distribution of Combat Ratings in Control",
-                subtitle="A look at the distribution of combat ratings for players in Control",
+                title="Distribution of Combat Ratings in {0}".format(gamemode),
+                subtitle="A look at the distribution of combat ratings for players in {0}".format(gamemode),
                 resize=True,
-                plotText="Shows the distribution of combat ratings in Control.  " + 
+                plotText="Shows the distribution of combat ratings in {0}.  ".format(gamemode) + 
                             "Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1). "
                 )   
     graph.width = None
@@ -59,9 +54,14 @@ def combatRatingDist(data):
     graph.create_x_axis("xAxis", "Combat Rating", extras={"rotateLabels":-25})
     
     graph.buildcontent()
-    plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url='pages/fullPlots/combatRating/{0}'.format(graph.name+'.html'))
+    plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html')
 
 if __name__ == "__main__":
+    plotutils.FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content","pages","fullPlots","combatRating")
+    plotutils.FULL_PLOT_JS_DIRECTORY = os.path.join(plotutils.FULL_PLOT_HTML_DIRECTORY, "javascripts")
+    plotutils.FULL_PLOT_JSON_DIRECTORY = os.path.join(plotutils.FULL_PLOT_HTML_DIRECTORY, "datafiles")
+
+    PLOT_TEMPLATES = "plotTemplates"
     data = pd.read_csv("datafiles/data.csv", index_col=0)
 
     combatRatingDist(data)

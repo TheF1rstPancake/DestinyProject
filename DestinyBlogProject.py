@@ -352,7 +352,7 @@ def runBlogProject(start_user = ["Jalepeno112"], num_games=1000, datafilename = 
 
     logger.info("Writing to file")
     game_data.sort("date",inplace=True)
-    game_data.to_csv(datafilename)
+    game_data.to_csv(datafilename, encoding="utf-8")
     return game_data
 
 
@@ -362,7 +362,13 @@ if __name__ == "__main__":
     parser.add_argument("--datafilename", default="datafiles/data.csv")
     parser.add_argument("--gametype", default="Control")
     parser.add_argument("--start_user",default=HOOLIGAN_COMMITTEE, type=list)
+
+
     args = parser.parse_args()    
+
+    if not os.path.exists(os.path.dirname(args.datafilename)):
+        logger.error("Datafile {0} does not exist!  Try again".format(args.datafilename))
+        sys.exit(2)
 
     runBlogProject(start_user=args.start_user, 
         num_games=args.num_games, datafilename=args.datafilename, gametype=args.gametype)
