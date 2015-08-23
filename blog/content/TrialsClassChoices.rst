@@ -7,7 +7,7 @@ I Choose You
 :summary: A brief look at character selection trends in Trials of Osiris
 :category: Stat Porn Sunday
 
-See the `original post on reddit <http://www.reddit.com>`_.
+See the `original post on reddit <https://www.reddit.com/r/DestinyTheGame/comments/3i3pnl/stat_porn_sunday_trials_of_osiris_character/>`_.
 
 Recap
 ---------
