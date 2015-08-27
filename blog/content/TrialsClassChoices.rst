@@ -6,9 +6,8 @@ I Choose You
 :authors: Giovanni Briggs
 :summary: A brief look at character selection trends in Trials of Osiris
 :category: Stat Porn Sunday
-:status: draft
 
-See the `original post on reddit <>`_
+See the `original post on reddit <https://www.reddit.com/r/DestinyTheGame/comments/3i3pnl/stat_porn_sunday_trials_of_osiris_character/>`_.
 
 Recap
 ---------
