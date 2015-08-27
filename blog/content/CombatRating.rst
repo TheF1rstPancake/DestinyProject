@@ -298,13 +298,223 @@ A few notes about this:
 
 But some of these values make **no sense** whatsoever.  Why would player's be penalized for getting precisionKills?  If you look carefully, you will also see that *longestKillSpree* now has a negative coefficient so player's are being penalized for having large sprees.  And why are all of the objective related coefficients negative? While this gave us a high accuracy, the equation itself makes no (intuitive) logical sense which then makes it difficult to further analyze.
 
-So what I did is I started back at the top 3 and added features in one at a time to see how it changed the relationship between all the variables.
-This process took *five-ever*.  I
+Bungie's Definition of Combat Rating
+-------------------------------------
+When I originally set out to do this post, I thought I was going to be defining what Combat Rating is, but Bungie actually has public defined Combat Rating as: 
 
-Another thing to consider is how *standing* and *completed* are represented.  With *standing* a 1 is a loss; 0 a win.  With *completed* it's the other way around - 1 is completed; 0 is quit.
-When doing a linear regression though each variable is given   
+  "An assessment of your skill and teamwork.  It factors in your score compared to others in each match and penalizes you for quitting."
 
+That gives us something more to work with.  
+Looking at the last table in light of this definition, you see that a lot of those coefficients don't make sense.
+For example, *completed* has a positive coefficient.
+The model we currently have adds 22 times *completed* to the equation.  
+This means that player's are *rewarded* for completing a match because a 1 means the player successfully completed the match.
+However, Bungie's definition clearly says that players are *penalized* for not completing a match.  
+So, what we need to do is actually flip the representation of *completed* around so that 1 is quit, and 0 is completed.
+This causes the trending algorithm to give *completed* a negative coefficient.
 
+This creates a way for us to describe the different variables:
+  - **reward variables**:   variables that have a *positive* cofficient.  The *greater* the value, the *higher* your combat rating should be.
+  - **penalty variables**:  variables that have a *negative* coefficient.  The *greater* the value, the *lower* your combat rating should be.
 
-If kills and score are 0 you get -1.  The only reason you would try and catch that here is if the it would produce some form of NaN value.
-In other words, if it would break your system.  If kills and score are both 0, averageScorePerKill will be 0/0 = NaN. Whereas if score is just 0, then you get 0/#ofkills which is 0.  This is also just a random fluke that cause the system to record your score as zero even though you really should have registered some points.
+We have to define all of our variables in light of this framework, especially variables that are boolean or discrete in nature.
+
+The variables that are most affected by this are:
+  - **standing**: 0 is victory, 1 is loss, but I think it makes more sense to reward people for winning than penalizing them for losing.  So standing is flipped before the trending algorithm runs.
+  - **place**:  this variable ranks you against everyone else in the match.  1 means you were the highest scoring player, and it continuous to decrease.  But, this creates a *penalty* variable where lower ranked players are penalized more for doing worse.  To recity this I created a new variable named *rank* which is: 1.0-(place/number_of_players_in_game).  This creates a value between 0 and 1.  The closer you are to 1, the greater your score was relative to everyone else.
+
+After applying these changes, the accuracy of the prediciton did not change, and the coefficients made no more sense than they had initially.
+I felt like I had hit a pretty serious road block at this point because not only did the model create an equation that made no sense with amazing accuracy, it also didn't stay true to Bungie's definition of combat rating.  
+I decided to step away from doing actual predicitons to instead look at what the *goal* of Combat Rating is.
+And in order to do that, I took a trip down memory lane and went back to TrueSkill.
+
+Microsoft's TrueSkill
+----------------------
+TrueSkill is Microsoft's algorithm for ranking player's in online matchmaking.
+
+There are a lot of good resources for understanding TrueSkill:
+  - http://trueskill.org/ :   a Python implementation of the TrueSkill ranking system
+  - `TrueSkill(TM): A Bayesian Skill Rating System <http://research.microsoft.com/apps/pubs/default.aspx?id=67956>`_: Microsoft's published account of how TrueSkill works.
+  - `TrueSkill(TM) Homepage <http://research.microsoft.com/en-us/projects/trueskill/default.aspx>`_: The TrueSKill homepage with links to all of Microsoft's TrueSkill publications along with detailed explanations for how TrueSkill works.
+  - `Computing Your Skill <http://www.moserware.com/2010/03/computing-your-skill.html>`_: a *very* well done explanation for the stats behind TrueSkill and the other ranking systems that it is based on.
+
+Each of those links will take you on a long winded tangent about how TrueSkill and other ranking systems function.
+But the essence of TrueSkill is that it predicts your chances of winning based on your TrueSkill level relative to everyone else,
+then it modifies player's TrueSkill levels based on whether they beat the odds or not.
+A player who is predicted to lose but wins will have a greater increase in their TrueSkill level than someone who is predicted to win and wins.
+TrueSkill was also designed to lock players into a skill level quickly.
+The Microsoft report uses numbers from Halo 2 to show that TrueSkill can lock in on a player's skill level in approximately *10 games* for 4 vs 4 gamemodes.
+Note however, that a player is only evaluated based on whether they won or lost the game.
+
+This fast convergence actually became a problem in Halo 3 where we saw the birth of the infamous *Second Accounters*.
+These were players who felt like TrueSkill had unfairly locked them into a certain rank and that they could actually acheive higher.
+So, they created entirely new accounts.  
+These new accounts were set at an average level, and since these were usually players who had been playing for a while their actual skill level was much higher.
+The trick to a second account was to have high ranked friends who would then go into matchmaking with you.  
+TrueSkill would say that the new second accounter had a very low chance of success, and when they would win, their skill level would be jump drastically allowing them to reach the highest level possible (50) in a short amount of time.
+
+TrueSkill's purpose is to rank players in order to preform better matchmaking.  
+Matchmaking under TrueSkill is done by trying to find players that you are most likely to *tie* with.
+That is, the odds for winning or losing are as close to 50% as possible.
+
+This makes sense in a 1v1 context, but not so much sense in a team setting.  There are very few players in the low buckets and even fewer in the high buckets, so how do you let these player's find matches?  Ideally, you would only pair high level players with other high level players, but there may not be enough high level players to support that.  This would result in slow matchmaking for higher tier players and they would probably being playing with the same group of players over and over again.
+
+The natural inclination is to say that teams are nothing more than the sum of their parts.
+Team matchmaking is then about finding two groups where the *average* combat rating for each team is relatively close.
+
+.. plot:: combatRatingDistTeamBased Team Based Combat Rating Distribution Curve
+    :dir: ../pages/fullPlots/combatRating/
+
+.. html::
+  <table class="table table-bordered">
+    <tr>
+      <th>Variable</th>
+      <th>Value</th>
+    </tr>
+    <tr>
+      <td class="tg-031e">count</td>
+      <td class="tg-031e">22543.000000</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">mean</td>
+      <td class="tg-031e">95.371748</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">std</td>
+      <td class="tg-031e">23.118979</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">min</td>
+      <td class="tg-031e">6.531070</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">25%</td>
+      <td class="tg-031e">80.609082</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">50%</td>
+      <td class="tg-031e">95.655659</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">75%</td>
+      <td class="tg-031e">110.429940</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">max</td>
+      <td class="tg-031e">187.468461</td>
+    </tr>
+  </table>
+
+This curve is **much** more normally distributed than the player based combat rating distribution curve.
+What we see here is that the mean is almost right on the 50% mark which is a strong indication that the curve is normally distributed.  
+70.23% of values lie within 1 standard deviation of the mean.  
+With a perfectly normally distributed curve, that value should be 68%, so we are very close here.
+The reason that finding a normally distributed curve is so important is that it is what TrueSkill had other skill ranking systems use, so it allows us to compare Combat Rating to these other skill ranking systems.  
+It also strongly indicates to us Combat Rating is a part of the system that Bungie is using to rank players **and** to establish fair matchmaking.
+
+Matchmaking
+------------
+The claim I made can further be backed up by looking at the *difference* in Combat Rating between teams.
+
+.. plot:: combatRatingDiff Distribution of Difference in Combat Rating between Teams 
+  :dir: ../pages/fullPlots/combatRating
+
+It is important to understand that the Combat Rating for each team is the *average* of all the players on the team.
+Also, the Combat Rating values I am using are caluclated *postgame*.  
+It is not the difference going into the game, but the difference at the end of the game.
+
+So what that graph really shows us is how well Bungie's matchmaking creates "fair" matches.
+51% of matches end with the two teams being within 2 standard deviations of eachother.
+That's not too bad.  What is bad is that means that 49% of matches are outside of 2 standard deviations.
+In other words, 49% of matches are pretty definitive with one team clearly being the winner over the other.
+
+.. plot:: scoreDiff Distribution of Difference in Score between Teams
+  :dir: ../pages/fullPlots/combatRating
+
+The other way to see this "fairness" in play is to look at the difference in score at the end of a match.
+The shape of this curve is *very* similar to the difference in Combat Rating between teams.
+The score graph gives us some more perspective.  
+39% of games end with the two teams being within 4461 points from one another.
+I would say that this reprents our fair group.  However, that means that 61% of games end with a point difference greter than 4461.
+About 10% of games end with a team winning by over 11,000.
+
+The point of this is to show that score and Combat Rating are closely related (as Bungie's definition stated).
+It also shows us that the current matchmaking system is not necessarily ideal.  
+There are *likely* many factors that go into determing what makes a "good" match.  
+Such factors could be network connectivity, fireteam size, and combat rating.
+
+Predictions Round 2
+----------------------
+I've spent a considerable amount of text here convincing you that Bungie's definition of Combat Rating lines up with it's implementation.
+However, using score with all of the other variables completely throws off the prediciton. While we get a *very* good prediciton, the equation doesn't make any sense.
+That's because, score is already a linear calculation of how the player performed in a given game.
+Assists are worth half that of kills, so player's are rewarded for assists, but are rewarded even more for kills.
+
+Makes sense.
+
+When we remvoe score from the prediction and try to use all of the components that make up score we get an **R-Squared value of 0.883** and a **Variance score of 0.894**.
+Not as high as when we included score and a host of other variables, but it is still a strong score, and all of our coefficients make sense.
+
+.. html::
+  <table class="table table-bordered">
+    <tr>
+      <th class="tg-031e">Variable</th>
+      <th class="tg-031e">Coefficient</th>
+    </tr>
+    <tr>
+      <td class="tg-031e">completed</td>
+      <td class="tg-031e">-21.966525</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">deaths</td>
+      <td class="tg-031e">-1.383680</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">zonesNeutralized</td>
+      <td class="tg-031e">-0.044273</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">averageScorePerLife</td>
+      <td class="tg-031e">0.036985</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">averageScorePerKill</td>
+      <td class="tg-031e">0.046020</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">longestKillSpree</td>
+      <td class="tg-031e">0.199851</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">assists</td>
+      <td class="tg-031e">0.427323</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">objectivesCompleted</td>
+      <td class="tg-031e">0.490707</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">defensiveKills</td>
+      <td class="tg-031e">1.046707</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">offensiveKills</td>
+      <td class="tg-031e">1.208658</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">standing</td>
+      <td class="tg-031e">1.766655</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">rank</td>
+      <td class="tg-031e">2.719212</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">kills</td>
+      <td class="tg-031e">5.012036</td>
+    </tr>
+    <tr>
+      <td class="tg-031e">dominationKills</td>
+      <td class="tg-031e">10.015568</td>
+    </tr>
+  </table>
