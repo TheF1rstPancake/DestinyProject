@@ -97,6 +97,7 @@ def combatRatingDiffDist(data, num_bins=10, gamemode="Control",pages_dir="pages/
     plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html')    
 
 
+
 def scoreDifference(data, num_bins=10, max_limit=None, gamemode="Control", pages_dir="pages/fullPlots/combatRating/"):
     groupByGame = data.groupby("gameId")
     diff= pd.DataFrame({s:{"scoreDiff":abs(g.teamScore.values[0]- g.teamScore.values[1])} for s,g in groupByGame if len(g) == 2}).T
@@ -119,7 +120,48 @@ def scoreDifference(data, num_bins=10, max_limit=None, gamemode="Control", pages
     graph.create_x_axis("xAxis", "Score Difference", extras={"rotateLabels":-15})
     
     graph.buildcontent()
-    plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html')        
+    plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html') 
+
+def scoreDifferenceByMap(data, num_bins = 10, max_limit=None, gamemode='Control', pages_dir="pages/fullPlots/combatRating/"):
+    mapDict = {h:destiny.getMapName(h) for h in data.refrencedId.unique()}
+
+    graph = multiBarChart( 
+                name="scoreDiffMap",
+                key= "scoreDiffMap",
+                js_path = "javascripts",
+                html_path = plotutils.FULL_PLOT_HTML_DIRECTORY,
+                title="Distribution of Difference in Score between Teams on Each Map",
+                subtitle="A look at the distribution of combat ratings for teams in {0}".format(gamemode),
+                resize=True,
+                plotText="Shows the distribution of the difference in **score** between teams in {0}.  ".format(gamemode) + 
+                            "Each bar represents a bin extending from it's starting x position to the next in the following fashion [x, x1). "
+                )   
+    graph.width = None
+
+    #get the histogram bins
+    groupByGame = data.groupby("gameId")
+    diff= pd.DataFrame({s:{"scoreDiff":abs(g.teamScore.values[0]- g.teamScore.values[1]), "refrencedId":g.refrencedId.values[0]} for s,g in groupByGame if len(g) == 2}).T
+    print(diff.head())
+    hist = _makeHistogram(diff['scoreDiff'], max_limit=max_limit, num_bins=num_bins)
+
+    #then cut the entire dataset by the histogram bins
+    hist['bins'].append(np.inf)
+
+
+    diff['scoreDiffBin'] = pd.cut(diff['scoreDiff'], hist['bins'], right=False, labels=hist['bin_strings'])
+    diff.sort("refrencedId", inplace=True)
+    groupByMap = diff.groupby("refrencedId")
+
+    for m, df in groupByMap: 
+        df.sort("scoreDiff", inplace=True)
+        groupByBin = df.groupby("scoreDiffBin")
+        values = np.array([float(len(g))/len(df) for _,g in groupByBin])
+        graph.add_serie(x=hist["bin_strings"], y = values, name=mapDict[m])
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Score Difference", extras={"rotateLabels":-15})
+    
+    graph.buildcontent()
+    plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html') 
 
 def _makeHistogram(data, num_bins=10, max_limit=None):
     hist = None
@@ -140,7 +182,27 @@ def _makeHistogram(data, num_bins=10, max_limit=None):
     bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(1,num_bins-1)])
     bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))    
 
-    return {"hist":hist, "bin_strings":bin_strings}
+    return {"hist":hist, "bin_strings":bin_strings, "bins":bins}
+
+def standardScoreDist(data, max_limit=None, num_bins=10, gamemode="Control", pages_dir="pages/fullPlots/combatRating/"):
+    hist = _makeHistogram(data['standardScore'], max_limit=max_limit, num_bins=num_bins)
+    graph = multiBarChart( 
+                name="standardScoreDist",
+                key= "standardScoreDist",
+                js_path = "javascripts",
+                html_path = plotutils.FULL_PLOT_HTML_DIRECTORY,
+                title="Distribution of Standarized Score",
+                subtitle="A look at the distribution of standardized score",
+                resize=True,
+                )   
+    graph.width = None
+
+    graph.add_serie(x=hist["bin_strings"], y = hist["hist"][0]/float(data.shape[0]), name='Distribution')
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Standardized Score", extras={"rotateLabels":-15})
+    
+    graph.buildcontent()
+    plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html')        
 
 if __name__ == "__main__":
     plotutils.FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content","pages","fullPlots","combatRating")
@@ -148,10 +210,14 @@ if __name__ == "__main__":
     plotutils.FULL_PLOT_JSON_DIRECTORY = os.path.join(plotutils.FULL_PLOT_HTML_DIRECTORY, "datafiles")
 
     PLOT_TEMPLATES = "plotTemplates"
-    data = pd.read_csv("datafiles/data.csv", index_col=0)
+    #data = pd.read_csv("datafiles/standard_data.csv", index_col=0)
     teamData = pd.read_csv("datafiles/teamData.csv",index_col=0)
-    combatRatingDist(data)
-    combatRatingDist(teamData, gamemode="Control (Team Based)", key="combatRatingDistTeamBased", max_limit=188, num_bins=15)
-    combatRatingDiffDist(teamData, gamemode="Control",num_bins=10)
-    scoreDifference(teamData)
+    #combatRatingDist(data)
+    #combatRatingDist(teamData, gamemode="Control (Team Based)", key="combatRatingDistTeamBased", max_limit=188, num_bins=15)
+    #combatRatingDiffDist(teamData, gamemode="Control",num_bins=10)
+    scoreDifference(teamData, num_bins=12, max_limit=17000)
+
+    #standardScoreDist(data)
+
+    scoreDifferenceByMap(teamData, num_bins=12, max_limit=17000)
 

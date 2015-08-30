@@ -1,8 +1,8 @@
 Distribution of Difference in Combat Rating between Teams
 =========================================================
 
-:date: 2015-08-26
-:modified: 2015-08-26
+:date: 2015-08-27
+:modified: 2015-08-27
 
 :authors: Giovanni Briggs
 :summary: A look at the distribution of combat ratings for teams in Control
