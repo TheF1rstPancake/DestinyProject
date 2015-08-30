@@ -7,7 +7,7 @@ Fair and Square
 :summary: Examining just how scrupulously devoted to fair play Bungie is
 :category: Stat Porn Sunday
 
-See the `original post on reddit <http://www.reddit.com>`_.
+See the `original post on reddit <https://www.reddit.com/r/DestinyTheGame/comments/3izh13/stat_porn_sunday_fair_and_square/>`_.
 
 Recap
 ------
