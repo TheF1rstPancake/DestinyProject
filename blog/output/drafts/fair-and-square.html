@@ -14,14 +14,14 @@
 
         <meta name="author" content="Giovanni Briggs" />
         <meta name="keywords" content="Crucible,combat rating" />
-        <meta name="description" content="Examining how combat rating is calculated and how to exploit it." />
+        <meta name="description" content="Examining just how scrupulously devoted to fair play Bungie is" />
 
         <meta property="og:site_name" content="Destiny Project" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Fair and Square"/>
         <meta property="og:url" content="/DestinyProject/blog/output/drafts/fair-and-square.html"/>
-        <meta property="og:description" content="Examining how combat rating is calculated and how to exploit it."/>
-        <meta property="article:published_time" content="2015-08-05" />
+        <meta property="og:description" content="Examining just how scrupulously devoted to fair play Bungie is"/>
+        <meta property="article:published_time" content="2015-08-30" />
             <meta property="article:section" content="Stat Porn Sunday" />
             <meta property="article:tag" content="Crucible" />
             <meta property="article:tag" content="combat rating" />
@@ -103,7 +103,7 @@ Destiny Project            </a>
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2015-08-05T00:00:00+02:00"> Wed 05 August 2015</time>
+        <i class="fa fa-calendar"></i><time datetime="2015-08-30T00:00:00+02:00"> Sun 30 August 2015</time>
     </span>
 
 
@@ -117,44 +117,56 @@ Destiny Project            </a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <div class="section" id="recap">
+                <p>See the <a class="reference external" href="http://www.reddit.com">original post on reddit</a>.</p>
+<div class="section" id="recap">
 <h2>Recap</h2>
-<p>Welcome to Stat Porn Sunday.  What do we do here?  We stare with open mouths at graphs and numbers and go full nerd.</p>
-<p>Last week we looked at <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3i3pnl/stat_porn_sunday_trials_of_osiris_character/">Trials team class combinations</a>.</p>
+<p>Last week we looked at <a class="reference external" href="https://www.reddit.com/r/DestinyTheGame/comments/3i3pnl/stat_porn_sunday_trials_of_osiris_character/">fireteam class combinations in Trials</a>
+and saw that having a Warlock on your team generally increases your chances for winning a Trials match, and having 3 Titans on your team is a <em>really</em> bad idea.</p>
 </div>
 <div class="section" id="fairness">
 <h2>Fairness</h2>
-<p>Last week I said I would be looking more at Trials data.  That was the plan, but for the past couple of weeks I have been working on how combat rating is calculated.
-While looking into what makes combat rating work, how it's used and how it is calculated I found <strong>a few interesting trends related to the &quot;fairness&quot; of games</strong>.
-I thought that these trends were more interesting than what I was pulling out of the Trials dataset, so that is what we are going to talk about this week.</p>
-<p>There are a couple different ways to evaluate the fairness of matches.
-One way is too look at the difference in score between teams at the end of a match.</p>
-<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/combatRating/scoreDiff.html'>Distribution of Difference in Score between Teams</a></h4><div class ='plot' id='scoreDiff''><svg></svg><script src='../pages/fullPlots/combatRating/javascripts/scoreDiff.js''></script></div></div><p>This shows us that <strong>19.1%</strong> of games end with a score difference of less than 1,416.
-To me, this is a pretty close point margin.  I would even say that a difference of 5,000 is still a fair match.
-At 3000 I would say those are decisive victories, but I wouldn't say that they are unfair.
-A turn in momentum for the other team could have changed the game.
-I think that between 5000 and 80000 points, one team was clearly running the show and I would say that these matches border into the unfair territory but didn't ruin the fun for everyone.
-I will call these the &quot;could be fairer&quot; matches.
-At 8000 the game is unfair.
+<p>Last week I said I would be looking more at Trials data in the immediate future.
+That was the plan, but for the past couple of weeks I have also been working trying to figure out how combat rating is calculated and how it's used.
+While looking into that, I found <strong>a few interesting trends related to the &quot;fairness&quot; of matchmaking</strong>.
+I thought that these trends were more interesting than what I was pulling out of the Trials dataset.  I'll save those for another time, but this week we are going to talk about &quot;fairness&quot;.  Be aware that I am using <strong>Control</strong> games for this analysis.</p>
+<p>Fairness is in quotes because it's one of those words that can be defined in a number of different ways.
+One way to examine fairness is to say that, &quot;everyone gets what they deserve&quot;.
+This isn't terribly helpful from our perspective because &quot;everyone&quot; isn't defined, and there are no clear guidelines for determining what they deserve.
+Instead, we need a value that we can calculate that allows us to compare games and say that a given match is fairer than another.
+One such calculation is to take the difference in score between teams at the end of a match.</p>
+<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/combatRating/scoreDiff.html'>Distribution of Difference in Score between Teams</a></h4><div class ='plot' id='scoreDiff''><svg></svg><script src='../pages/fullPlots/combatRating/javascripts/scoreDiff.js''></script></div></div><p>This shows us that <strong>14.16%</strong> of games end with a score difference of less than 1,416.
+To me, this is a pretty close point margin.
+I would even say that a difference of 5,000 is still a fair match.
+Between 5,000 and 8,000 points, one team was clearly running the show and I would say that these matches border into the unfair territory but didn't ruin the fun for everyone.
+A change in momentum could have easily brought the scores closer together, and the other team was at least able to spawn and do something.
+At 8000 and above I think the game is unfair.
 One team clearly was much better than the other and dominated the match.</p>
-<p>These are <em>my</em> standards for a fair match and are not the only way to define what is and isn't far.
-Under my standards, about 60% of matches are fair, 27% of matches could have been fairer, and 13% of matches are unfair.</p>
-<p>All in all, I would argue that Bungie's matchmaking system does a very good job at creating far and balanced games.
-Yes, 1 in 10 games you are likely going to get dominated (or dominate), but for the most part, games end with a close enough score difference to keep things interesting.
-Of course, if you reduce the range for fair and could be fairer matches, your conclusion might differ.</p>
-<p>Another trend to look at is what the score difference distribution on each map is.
-This could tell us if certains map are unbalanced one way or the other.</p>
-<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/combatRating/scoreDiffMap.html'>Distribution of Difference in Score between Teams on each Map</a></h4><div class ='plot' id='scoreDiffMap''><svg></svg><script src='../pages/fullPlots/combatRating/javascripts/scoreDiffMap.js''></script></div></div><p>What we get out of this graph is that there are two types of maps.
-1 type has a very high percentage of very close games, and then steadily decreases.
-Blind Watch is a good example of this type.
-The other type has a steady rate of what I call fair matches, and then a sudden drop off.
-Pantheon falls into this second category.  Games aren't as close on Pantheon, but more than 50% of games still end with a score difference of less than 5000.
-Overall, that particularly stands out.
-In the ideal game, I would think that all maps would behave like Blind Watch, with a very high percentage of games ending with a difference of less than 1500.</p>
+<p>These are <em>my</em> standards for a fair match and are not the only way to define what is and isn't fair.
+Under my standards, somewhere around 58% of matches are fair, 29% of matches could have been fairer, and 13% of matches are unfair.</p>
+<p>A potential pitfall to this metric is that it measures fairness between teams and considers teams to be representative of the players that make up that team.
+If the match was fair between the teams, then the players in that match will view it as fair irregardless of their personal score.
+Another metric could be to look at the variance and/or standard deviation of all player scores at the end of the game.
+A small value means that all players had similar scores, which would mean a fair match for players on an individual basis.
+However (for the sake of time), I am going to make the assumption that Bungie makes fair matches by creating fair <em>teams</em>.</p>
+<p>I would then argue that Bungie's matchmaking system does a very good job at creating fair and balanced games.
+Yes, a little over 1 in 10 games you are likely going to get dominated (or dominate), but for the most part, games end with a close enough score difference to keep things interesting.
+Of course, my boundaries for fairness and unfairness were chosen based on my experience in the Crucible, but if you reduce the ranges for fair and &quot;could be fairer&quot; matches, your conclusion might differ from mine.</p>
+</div>
+<div class="section" id="map-balance">
+<h2>Map Balance</h2>
+<p>Another fun trend to look at is what the score difference distribution on each <em>map</em> is.
+This could tell us if certain map are unbalanced one way or the other.</p>
+<div class = 'plotContainer'><h4 class='text-center'><a href = '../pages/fullPlots/combatRating/scoreDiffMap.html'>Distribution of Difference in Score between Teams on each Map</a></h4><div class ='plot' id='scoreDiffMap''><svg></svg><script src='../pages/fullPlots/combatRating/javascripts/scoreDiffMap.js''></script></div></div><p>For the most part, these maps all have a 50% fair match rate.
+A lot of the smaller maps also seem to have a well defined sweet spot.
+Thieves' Den  and Firebase Delphi have a spike at the second bucket.  Asylum has its in the third bucket.
+Larger maps on the other hand are less predictable and have spikes all over the place.
+Bastion has one spike in the [5600, 7000) bucket, and another one at the [127500, 14000) bin and there isn't a very clean
+First Light and Skyshock present similar double spikes which may be another reason why these maps are no longer in Control rotation.</p>
+<p>Overall, there isn't any map that particularly stands out but it is interesting to see that the size of the map seems to have an influence on the fairness of the match.</p>
 </div>
 <div class="section" id="tl-dr">
 <h2>TL;DR:</h2>
-<p>Bungie's matchmaking system does a fantastic job at creating well balanced and interesting games.
+<p>Bungie's matchmaking system does a fantastic job at creating well balanced and interesting matches.
 About 60% of matches end with a score difference less than 5000, 27% of matches end between 5000 and 8000, and only 13% of matches end with a score difference greater than 8000.</p>
 </div>
 

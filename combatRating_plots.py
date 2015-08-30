@@ -100,7 +100,7 @@ def combatRatingDiffDist(data, num_bins=10, gamemode="Control",pages_dir="pages/
 
 def scoreDifference(data, num_bins=10, max_limit=None, gamemode="Control", pages_dir="pages/fullPlots/combatRating/"):
     groupByGame = data.groupby("gameId")
-    diff= pd.DataFrame({s:{"scoreDiff":abs(g.teamScore.values[0]- g.teamScore.values[1])} for s,g in groupByGame if len(g) == 2}).T
+    diff= pd.DataFrame({s:{"scoreDiff":abs(g.teamScore.values[0]- g.teamScore.values[1])} for s,g in groupByGame if len(g) == 2  if (g.teamScore != [0,0]).all()}).T
     hist = _makeHistogram(diff['scoreDiff'], max_limit=max_limit, num_bins=num_bins)
     graph = multiBarChart( 
                 name="scoreDiff",
@@ -140,7 +140,7 @@ def scoreDifferenceByMap(data, num_bins = 10, max_limit=None, gamemode='Control'
 
     #get the histogram bins
     groupByGame = data.groupby("gameId")
-    diff= pd.DataFrame({s:{"scoreDiff":abs(g.teamScore.values[0]- g.teamScore.values[1]), "refrencedId":g.refrencedId.values[0]} for s,g in groupByGame if len(g) == 2}).T
+    diff= pd.DataFrame({s:{"scoreDiff":abs(g.teamScore.values[0]- g.teamScore.values[1]), "refrencedId":g.refrencedId.values[0]} for s,g in groupByGame if len(g) == 2 if (g.teamScore != [0,0]).all()}).T
     print(diff.head())
     hist = _makeHistogram(diff['scoreDiff'], max_limit=max_limit, num_bins=num_bins)
 
@@ -215,9 +215,7 @@ if __name__ == "__main__":
     #combatRatingDist(data)
     #combatRatingDist(teamData, gamemode="Control (Team Based)", key="combatRatingDistTeamBased", max_limit=188, num_bins=15)
     #combatRatingDiffDist(teamData, gamemode="Control",num_bins=10)
+
     scoreDifference(teamData, num_bins=12, max_limit=17000)
-
-    #standardScoreDist(data)
-
     scoreDifferenceByMap(teamData, num_bins=12, max_limit=17000)
 
