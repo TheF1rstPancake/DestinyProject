@@ -1,8 +1,8 @@
 Distribution of Combat Ratings in Control
 =========================================
 
-:date: 2015-08-26
-:modified: 2015-08-26
+:date: 2015-08-29
+:modified: 2015-08-29
 
 :authors: Giovanni Briggs
 :summary: A look at the distribution of combat ratings for players in Control

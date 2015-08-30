@@ -443,7 +443,7 @@ It also shows us that the current matchmaking system is not necessarily ideal.
 There are *likely* many factors that go into determing what makes a "good" match.  
 Such factors could be network connectivity, fireteam size, and combat rating.
 
-Predictions Round 2
+Predictions Round 3
 ----------------------
 I've spent a considerable amount of text here convincing you that Bungie's definition of Combat Rating lines up with it's implementation.
 However, using score with all of the other variables completely throws off the prediciton. While we get a *very* good prediciton, the equation doesn't make any sense.
@@ -518,3 +518,41 @@ Not as high as when we included score and a host of other variables, but it is s
       <td class="tg-031e">10.015568</td>
     </tr>
   </table>
+
+I'm more or less satisified with this model.  
+It makes sense, as a high level of accuracy, but it doesn't necessarily stick with the definition Bungie gave us.
+This does not take score into account directly.
+It instead makes use of most of the factors that create a player's score and it even takes into account some factors that don't.
+Deaths is the biggest part of that.  Deaths are not taken into your score as a player, but this model penalizes player's for dying.
+This is a logical thing to do, but no where in Bungie's definition does it say anything about taking into account player deaths.
+It explicitly states that score is the determining factor.
+This model also doesn't have a very good way of comparing different players in each game.
+The rank variable does in some respects, but it doesn't take into account that in some games, everyone performs very well.
+
+Predicitons Round 4
+-----------------------
+What we need is a better way to implement Bungie's actual definition and have it potentially break our R-Squared score of 0.92.
+
+We know that score is a big component, and so is penalizing players for quitting and we have those factors under control.
+The last piece is making sure we accurately take into account the relativity piece.
+Players need to be ranked according to how other players in the game performed.  Doing the ranking from 1 to *num_players* is one way to do that, but it assumes that the difference between the top player and the second place player is extremely significant.
+While it can be, it doesn't have to be so we should come up with a way to standardize score such that score is a reflection of how well that player did compared to other players in a given game.
+
+This can be done with some simple math:
+  >>> standard_score = (score - mean(score))/(max(score) - min(score))
+
+This will generate a value between -1 and 1.  
+Negative values are for players who performed below the mean, and positive values for those that performed above the mean.
+Dividing that number by the range makes sure that everyone this value lives between -1 and 1.  
+
+We can also use this value to view "fairness" in matchmaking.  
+A fair match would be one where everyone is perfomring as close to the mean as possible.
+It is improbable that all 12 players in a game receive the exact same score, but the fluctuations around the positive and negatives should be minimal.
+
+Using the *standard_score* variable along with *completed* and *score* resulted in an R-Squared value of 0.8655 and a Variance score of 0.8809.  
+
+There is a flaw in *standard_score* though.  It really doesn't handle close game situations very well.
+If everyone is doing very well, then those who fall even slightly below average are still having points deducted from their combat rating.
+It is not fair to do this to them.
+
+What was really helpful for me at this point was to look at the extreme cases.
