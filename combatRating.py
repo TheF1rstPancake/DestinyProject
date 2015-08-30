@@ -158,7 +158,7 @@ def scoreModel(df):
     yFeature = 'combatRating'
 
     features = []
-    numeric_columns = ['score', 'completed', 'standardScore']
+    numeric_columns = ['completed', 'standardScore', 'contribution', 'score']
     KBest = None
     for i in range(0,1):
         print("splitting data into test and train sets")
@@ -270,11 +270,21 @@ def standardizeScore(df):
 
     df.to_csv("datafiles/standard_data.csv", encoding="utf-8")
     return df
+
+def calculateContribution(df):
+    groupByGame = df.groupby("gameId")
+    df['contribution'] = 0.0
+    i = 0
+    for s,g in groupByGame:
+        i = i + 1
+        df.ix[g.index, 'contribution'] = (g.score/g.score.sum())
+        print("Calculating: {0:.2f}".format(float(i)/len(groupByGame.groups.keys())))
+
+    df.to_csv("datafiles/standard_data.csv",encoding="utf-8")
+    return df
 if __name__ == "__main__":
     #create training and testing datasets
     df = pd.read_csv("datafiles/standard_data.csv", index_col = 0 )
-    
-   #df = standardizeScore(df)
 
     #teamData = pd.read_csv("datafiles/teamData.csv", index_col=0)
     #teamData = cleaning(teamData)
