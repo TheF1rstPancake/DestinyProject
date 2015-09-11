@@ -282,9 +282,24 @@ def calculateContribution(df):
 
     df.to_csv("datafiles/standard_data.csv",encoding="utf-8")
     return df
+
+def combatRatingStd(df):
+    groupByGame = df.groupby("gameId")
+    df['combatRatingStd'] = 0
+    i = 0
+    total = len(groupByGame.groups.keys())
+    for s,g in groupByGame:
+        i = i + 1
+        df.ix[g.index, 'combatRatingStd'] = g.combatRating.std()
+        print("Calculating: {0:.2f}".format(float(i)/total))
+    df.to_csv("datafiles/standard_data.csv",encoding="utf-8")
+    return df 
+
 if __name__ == "__main__":
     #create training and testing datasets
     df = pd.read_csv("datafiles/standard_data.csv", index_col = 0 )
+   
+    df = combatRatingStd(df)
 
     #teamData = pd.read_csv("datafiles/teamData.csv", index_col=0)
     #teamData = cleaning(teamData)
@@ -295,8 +310,7 @@ if __name__ == "__main__":
     #values, features = teamModel(teamData)
     values,features = scoreModel(df)
     prediction_df = pd.DataFrame(values).T
-    print  prediction_df.mean()
-    key_to_coef = pd.DataFrame(zip(features, prediction_df.mean().ix['Coefficient']), columns=['variable', 'coefficient'])
+    print(prediction_df.mean())
+    key_to_coef = pd.DataFrame(list(zip(features, prediction_df.mean().ix['Coefficient']), columns=['variable', 'coefficient']))
 
-    print(key_to_coef.sort("coefficient"))   
-    
+    print(key_to_coef.sort("coefficient"))
