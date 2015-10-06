@@ -4,7 +4,10 @@ import yaml
 import requests
 import sqlite3
 import zipfile
-import StringIO
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
 import os
 import logging
 import sys
@@ -53,6 +56,9 @@ GENDER_HASH = {
     2204441813: "Female",
     3111576190: "Male"
 }
+
+def writeToCsv(df, file_name):
+    df.to_csv(file_name, encoding="utf-8", float_format="%.8f")
 
 class NoDataError(Exception):
     pass
@@ -297,7 +303,7 @@ def fetchAndUnzip(url):
         raise requests.HTTPError
     #unzip content
     try:
-        z = zipfile.ZipFile(StringIO.StringIO(r.content))
+        z = zipfile.ZipFile(StringIO(r.content))
         z.extractall()
     except:
         raise

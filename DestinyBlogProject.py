@@ -35,7 +35,7 @@ logger.info('Destiny Blog Project - Hello World!')
 HOOLIGAN_COMMITTEE = ["Jalepeno112","lil spoon 219", 
                      "ArcticSupremecy", "sunnyD7768",
                      "BigBadCarp","InfernoMatrix","StangbroZ", 
-                     "Dmen7201", 'RangerCampos']
+                     "Dmen7201", 'RangerCampos', 'KILLING4STATUS', 'Grim314']
 
 def addGame(most_recent):
     #break the most recent game into a dataframe
