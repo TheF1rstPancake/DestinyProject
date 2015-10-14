@@ -35,7 +35,7 @@ logger.info('Destiny Blog Project - Hello World!')
 HOOLIGAN_COMMITTEE = ["Jalepeno112","lil spoon 219", 
                      "ArcticSupremecy", "sunnyD7768",
                      "BigBadCarp","InfernoMatrix","StangbroZ", 
-                     "Dmen7201", 'RangerCampos', 'KILLING4STATUS', 'Grim314']
+                     "Dmen7201", 'RangerCampos', 'Grim314']
 
 def addGame(most_recent):
     #break the most recent game into a dataframe
@@ -105,7 +105,7 @@ def addGame(most_recent):
         #   u'team'
         #   u'teamScore'
         #Standing tells us whether or not the user won the game 
-        player_data.update({k:v['basic']['value'] for k,v in player['values'].iteritems()})
+        player_data.update({k:v['basic']['value'] for k,v in player['values'].items()})
             
         #get bonus info
         #NOTE:  fireTeamId appears in the previous group but it does not contain any data.
@@ -231,7 +231,7 @@ def randomWalk(user_membership, game_data=None):
     :param gameData:          *optional*; a dataframe from a previous walk that you want to expand upon
     """
 
-    logger.info("Starting random walk with:\n\tMember:\t\t{0}\n\tCharacter:\t{1}".format(user_membership.keys()[0], user_membership.values()[0]))
+    logger.info("Starting random walk with:\n\tMember:\t\t{0}\n\tCharacter:\t{1}".format(list(user_membership.keys())[0], list(user_membership.values())[0]))
 
     #check if we need to initialize gameData
     if game_data is None:
@@ -367,7 +367,7 @@ if __name__ == "__main__":
     args = parser.parse_args()    
 
     if not os.path.exists(os.path.dirname(args.datafilename)):
-        logger.error("Datafile {0} does not exist!  Try again".format(args.datafilename))
+        logger.error("Datafile {0} does not exist!  Try again".format(os.path.dirname(args.datafilename)))
         sys.exit(2)
 
     runBlogProject(start_user=args.start_user, 

@@ -204,18 +204,40 @@ def standardScoreDist(data, max_limit=None, num_bins=10, gamemode="Control", pag
     graph.buildcontent()
     plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html')        
 
+def fireTeamHist(data, max_limit=6, num_bins=12, gamemode="Control", pages_dir="pages/fullPlots/combatRating"):
+    hist = _makeHistogram(data['membersInFireTeam'], max_limit=max_limit, num_bins=num_bins,gamemode=gamemode, pages_dir=pages_dir)
+    graph = multiBarChart( 
+                name="membersInFireTeamDist",
+                key= "membersInFireTeamDist",
+                js_path = "javascripts",
+                html_path = plotutils.FULL_PLOT_HTML_DIRECTORY,
+                title="Distribution of Fire Team Size",
+                subtitle="A look at the the frequency of different fire team sizes",
+                resize=True,
+                )   
+    graph.width = None
+
+    graph.add_serie(x=hist["bin_strings"], y = hist["hist"][0]/float(data.shape[0]), name='Distribution')
+    graph.create_y_axis("yAxis", "Frequency", format=".2%")
+    graph.create_x_axis("xAxis", "Fire Team Size", extras={"rotateLabels":-15})
+    
+    graph.buildcontent()
+    plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html')
+
+
 if __name__ == "__main__":
     plotutils.FULL_PLOT_HTML_DIRECTORY = os.path.join("blog","content","pages","fullPlots","combatRating")
     plotutils.FULL_PLOT_JS_DIRECTORY = os.path.join(plotutils.FULL_PLOT_HTML_DIRECTORY, "javascripts")
     plotutils.FULL_PLOT_JSON_DIRECTORY = os.path.join(plotutils.FULL_PLOT_HTML_DIRECTORY, "datafiles")
 
     PLOT_TEMPLATES = "plotTemplates"
-    #data = pd.read_csv("datafiles/standard_data.csv", index_col=0)
-    teamData = pd.read_csv("datafiles/teamData.csv",index_col=0)
+    data = pd.read_csv("datafiles/standard_data2.csv", index_col=0)
+    #teamData = pd.read_csv("datafiles/teamData.csv",index_col=0)
     #combatRatingDist(data)
     #combatRatingDist(teamData, gamemode="Control (Team Based)", key="combatRatingDistTeamBased", max_limit=188, num_bins=15)
     #combatRatingDiffDist(teamData, gamemode="Control",num_bins=10)
 
-    scoreDifference(teamData, num_bins=12, max_limit=17000)
-    scoreDifferenceByMap(teamData, num_bins=12, max_limit=17000)
+    #scoreDifference(teamData, num_bins=12, max_limit=17000)
+    #scoreDifferenceByMap(teamData, num_bins=12, max_limit=17000)
+    fireTeamHist(data)
 

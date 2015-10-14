@@ -21,6 +21,9 @@ logger.setLevel(logging.INFO)
 
 formatter = logging.Formatter("[%(levelname)1.1s %(asctime)s %(module)s]:%(lineno)d %(message)s", "%y%m%d %H:%M:%S")
 
+def writeToCsv(df, file_name):
+    df.to_csv(file_name, encoding="utf-8", float_format="%.8f")
+
 def _adjustData(game_data, columnTitle = None):
     """
     Go through the weapon columns and add further data about them.  Namely, weapon name and tier (ie. exoctic, legendary,etc.)
@@ -48,7 +51,7 @@ def _adjustData(game_data, columnTitle = None):
                                 "Type": "None",
                                 }
                         }
-            definition = destiny.getInventoryItemOnline(weapon_map.keys()[0])
+            definition = destiny.getInventoryItemOnline(list(weapon_map.keys())[0])
 
             if definition is not None and definition['ErrorStatus'] == 'Success':
                 logger.info("Successfully fetched data for {0}".format(i))
@@ -57,7 +60,7 @@ def _adjustData(game_data, columnTitle = None):
                 weapon_map[i]['Type'] = definition['Response']['data']['inventoryItem']['bucketTypeHash']
             unique_items_map.update(weapon_map)
         #update game data with the name, tier and type we just pulled
-        for hash,data in unique_items_map.iteritems():
+        for hash,data in unique_items_map.items():
             game_data.ix[game_data[t] == hash, t+'Name'] = data['Name']
             game_data.ix[game_data[t] == hash, t+'Tier'] = data['Tier']
             game_data.ix[game_data[t] == hash, t+'Type'] = data['Type']
@@ -65,6 +68,20 @@ def _adjustData(game_data, columnTitle = None):
         #game_data.to_csv("data_updated.csv",encoding='utf-8')
     return game_data
 
+def _addFireteamInfo(game_data):
+    count = 0
+    for g in game_data:
+        g['inFireTeam'] = 0
+        g['membersInFireTeam'] = 1
+        for t in g.fireTeamId.unique():
+            msk = g.fireTeamId == t
+            membersInFT = len(g[msk])
+            if membersInFT > 1:
+                g.ix[msk, ["inFireTeam", "membersInFireTeam"]] = [1, membersInFT]
+        print("{0:.3f} complete".format(count/len(game_data)))
+        count = count + 1
+
+    return game_data
 def _addFeatureMultiProcess(game_data, func, **kwargs):
     """
     Add a new feature to a dataframe by chunking the dataframe and then applying a function over the chunks.
@@ -86,7 +103,6 @@ def _addFeatureMultiProcess(game_data, func, **kwargs):
     game_list = [game for _, game in groupByClass]
 
     update_games = p.map(func, game_list)
-    
     #mapped_list is a list of tuples. The first item in the tuple is a 1 or 0 indicate successful completion
     #second is the dataframe
     #concat the dataframes together and then drop duplicates
@@ -101,6 +117,43 @@ def _addFeatureMultiProcess(game_data, func, **kwargs):
     game_data.to_csv("data_updated_multi.csv", encoding="utf-8")
 
     return game_data
+
+
+def chunks(l, n):
+    n = max(1, n)
+    return [l[i:i + n] for i in range(0, len(l), n)]
+
+def multiProcessByGame(game_data, func, writeToFile = False, **kwargs):
+    start = time.time()
+    p = multiprocessing.Pool(4)
+
+    #group the dataframe by map to make for nice chunks of data
+    #then place each chunk in a list so we can iterate over it
+    groupByGame = game_data.groupby('gameId')
+    num_games = len(groupByGame.groups)
+
+    game_list = chunks([game for _, game in groupByGame], round(num_games/4))
+
+    print("Length: ", len(game_list))
+
+    update_games = p.map(func, game_list)
+    
+    #mapped_list is a list of tuples. The first item in the tuple is a 1 or 0 indicate successful completion
+    #second is the dataframe
+    #concat the dataframes together and then drop duplicates
+    #p.join()
+
+    duration = time.time() - start
+    logger.info("Data fetched in {0} seconds".format(duration))
+
+    logger.info("Building dataframe from chunks and writing to file")
+    print(len(update_games))
+    game_data = pd.concat([i for g in update_games for i in g], ignore_index=True)
+    game_data = game_data.drop_duplicates()
+    if writeToFile:
+        game_data.to_csv("data_updated_multi.csv", encoding="utf-8")
+
+    return game_data    
 
 def _addMissingWeapons(game_data):
     game_data['weaponKillsMachinegun'] = 0
