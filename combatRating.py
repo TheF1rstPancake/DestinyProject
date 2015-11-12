@@ -334,18 +334,19 @@ def ratioPrediction(df, writeToFile=True):
 
     if writeToFile:
         destiny.writeToCsv(df, "datafiles/standard_data.csv")
-    return df
+    return df    
 
-def scoreOutOfMax(df):
+def scoreOutOfMax(df, writeToFile=True):
     groupByGame = df.groupby("gameId")
     df['maxScoreRatio'] = 0.0
     i = 0
     for s,g in groupByGame:
         i = i + 1
         df.ix[g.index, 'maxScoreRatio'] = (g.score/g.score.max())
+        df.ix[g.index, 'maxCombatRatingRatio'] = (g.combatRating/g.combatRating.max())
         print("Calculating: {0:.2f}".format(float(i)/len(groupByGame.groups.keys())))
-
-    destiny.writeToCsv(df, "datafiles/standard_data.csv")
+    if writeToFile:
+        destiny.writeToCsv(df, "datafiles/standard_data.csv")
     return df
 
 def calculateContribution(df):
