@@ -205,7 +205,7 @@ def scoreModel(df):
     yFeature = 'combatRating'
 
     features = []
-    numeric_columns = ['completed', 'score','contribution','scoreStdRatio']
+    numeric_columns = ['completed', 'score','scorePerMinute']
     KBest = None
     for i in range(0,1):
         print("splitting data into test and train sets")
@@ -397,6 +397,13 @@ def combatRatingRelative(df):
         print("Calculating: {0:.2f}".format(float(i)/total))
     destiny.writeToCsv(df,"datafiles/standard_data.csv")
     return df 
+
+def calculateRSquaredResult(values, features):
+    prediction_df = pd.DataFrame(values).T
+    print(prediction_df.mean())
+    key_to_coef = pd.DataFrame(list(zip(features, prediction_df.mean().ix['Coefficient'])), columns=['variable', 'coefficient'])
+
+    print(key_to_coef.sort("coefficient"))
 
 if __name__ == "__main__":
     #create training and testing datasets

@@ -707,3 +707,4 @@ It has been hard to find out exactly what the magic behind combat rating is.
 But another place to look is why two players with a very similar *combat rating* might have very different scores.
 I took all of the max scores in the each game and looked at their associated combat ratings.
 I found several games where two players had very similar combat ratings, but their scores were drastically different.
+

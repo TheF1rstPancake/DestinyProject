@@ -464,7 +464,7 @@ class NVD3Chart(object):
             if name[0] == 'x':
                 self.x_axis_date = True
 
-        for key, i in extras.iteritems():
+        for key, i in extras.items():
             axis[key] = i
 
         # Add new axis to list of axis
@@ -488,7 +488,7 @@ class NVD3Chart(object):
         if label:
             axis['axisLabel'] = "'" + label + "'"
 
-        for key, i in extras.iteritems():
+        for key, i in extras.items():
             axis[key] = i
 
         # Add new axis to list of axis

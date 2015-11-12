@@ -29,11 +29,11 @@ def combatRatingDist(data, pages_dir="pages/fullPlots/combatRating/", gamemode="
 
     #some of the bins barely contain any data.  Add these all to one extended bin
 
-    bins = [c*hist[2] for c in xrange(0,num_bins)]
+    bins = [c*hist[2] for c in iter(range((0,num_bins)))]
 
     #the first bin should be (0, bin_edge) because literal 0 is not included in this data.
     bin_strings = ["(0,{0:.2f})".format(bins[1])]
-    bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(1,num_bins-1)])
+    bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in iter(range((1,num_bins-1)))])
     bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))
 
     graph = multiBarChart(
@@ -69,11 +69,11 @@ def combatRatingDiffDist(data, num_bins=10, gamemode="Control",pages_dir="pages/
     hist[0][-1] = hist[0][-1]+hist[3]
 
     #some of the bins barely contain any data.  Add these all to one extended bin
-    bins = [c*hist[2] for c in xrange(0,num_bins)]
+    bins = [c*hist[2] for c in iter(range(0,num_bins))]
 
     #the first bin should be (0, bin_edge) because literal 0 is not included in this data.
     bin_strings = ["(0,{0:.2f})".format(bins[1])]
-    bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(1,num_bins-1)])
+    bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in iter(range(1,num_bins-1))])
     bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))
 
     graph = multiBarChart(
@@ -163,10 +163,10 @@ def scoreDifferenceByMap(data, num_bins = 10, max_limit=None, gamemode='Control'
     graph.buildcontent()
     plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html') 
 
-def _makeHistogram(data, num_bins=10, max_limit=None):
+def _makeHistogram(data, num_bins=10, max_limit=None, min_limit=0):
     hist = None
     if max_limit:
-        hist = scipy.stats.histogram(data,numbins=num_bins, defaultlimits=(0,max_limit))
+        hist = scipy.stats.histogram(data,numbins=num_bins, defaultlimits=(min_limit,max_limit))
     else:
         hist = scipy.stats.histogram(data,numbins=num_bins)
 
@@ -175,11 +175,11 @@ def _makeHistogram(data, num_bins=10, max_limit=None):
     hist[0][-1] = hist[0][-1]+hist[3]
 
     #some of the bins barely contain any data.  Add these all to one extended bin
-    bins = [c*hist[2] for c in xrange(0,num_bins)]
+    bins = [c*hist[2] for c in iter(range(0,num_bins))]
 
     #the first bin should be (0, bin_edge) because literal 0 is not included in this data.
-    bin_strings = ["(0,{0:.2f})".format(bins[1])]
-    bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in xrange(1,num_bins-1)])
+    bin_strings = ["({0},{1:.2f})".format(min_limit, bins[1])]
+    bin_strings.extend(["[{0:.2f}, {1:.2f})".format(bins[b], bins[b+1]) for b in iter(range(1,num_bins-1))])
     bin_strings.append("[{0:.2f}, Inf)".format(bins[-1]))    
 
     return {"hist":hist, "bin_strings":bin_strings, "bins":bins}
@@ -204,8 +204,8 @@ def standardScoreDist(data, max_limit=None, num_bins=10, gamemode="Control", pag
     graph.buildcontent()
     plotutils.writeGraph(graph, htmlTemplate="fullPlotTemplate.rst", extension=".rst", url=pages_dir+ graph.name+'.html')        
 
-def fireTeamHist(data, max_limit=6, num_bins=12, gamemode="Control", pages_dir="pages/fullPlots/combatRating"):
-    hist = _makeHistogram(data['membersInFireTeam'], max_limit=max_limit, num_bins=num_bins,gamemode=gamemode, pages_dir=pages_dir)
+def fireTeamHist(data, max_limit=7, num_bins=7, gamemode="Control", pages_dir="pages/fullPlots/combatRating/"):
+    hist = _makeHistogram(data['membersInFireTeam'], max_limit=max_limit, num_bins=num_bins, min_limit=0)
     graph = multiBarChart( 
                 name="membersInFireTeamDist",
                 key= "membersInFireTeamDist",
